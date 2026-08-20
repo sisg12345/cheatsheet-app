@@ -1,0 +1,98 @@
+.card {
+  --sheet-accent: var(--color-accent);
+
+  display: flex;
+  min-height: 430px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--sheet-accent) 8%, transparent),
+      transparent 42%
+    ),
+    var(--color-surface-raised);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-ink);
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.card:hover {
+  border-color: var(--sheet-accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px);
+}
+
+.topline {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.monogram {
+  color: var(--sheet-accent);
+  font-size: clamp(4.2rem, 10vw, 7.4rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.085em;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.card p {
+  margin: 10px 0 0;
+  color: var(--color-muted);
+  font-size: 0.88rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 22px 0 0;
+  padding-top: 17px;
+  border-top: 1px solid var(--color-line);
+}
+
+.stats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats dt {
+  color: var(--color-muted);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+}
+
+.stats dd {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.open {
+  align-items: flex-end;
+}
+
+.open dd {
+  color: var(--sheet-accent);
+  font-size: 1.4rem;
+}

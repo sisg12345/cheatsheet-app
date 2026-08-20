@@ -1,0 +1,141 @@
+.main {
+  min-height: calc(100vh - 4.25rem);
+
+  --sheet-accent: var(--accent);
+}
+
+.hero {
+  padding: 4.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 3rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  color: var(--muted);
+  font: 700 0.7rem var(--font-mono);
+  letter-spacing: 0.15em;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  align-items: end;
+  margin: 1.2rem 0 3rem;
+}
+
+.heading > div:first-child {
+  position: relative;
+}
+
+.monogram {
+  display: block;
+  color: var(--sheet-accent);
+  font: 800 clamp(4rem, 9vw, 8rem)/0.8 var(--font-mono);
+  letter-spacing: -0.08em;
+  opacity: 0.18;
+}
+
+.heading h1 {
+  margin-top: -1.5rem;
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  letter-spacing: -0.055em;
+}
+
+.heading p {
+  max-width: 650px;
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+.actions {
+  flex: 0 0 auto;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 4rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 6rem;
+}
+
+.sections {
+  min-width: 0;
+}
+
+.empty {
+  padding: 5rem 2rem;
+  text-align: center;
+  border: 1px solid var(--line);
+}
+
+.empty p {
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: 2rem max(1.5rem, calc((100vw - 1180px) / 2));
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.footer div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer span {
+  font: 700 0.62rem var(--font-mono);
+  letter-spacing: 0.12em;
+}
+
+.footer strong,
+.footer a {
+  color: var(--foreground);
+  font-size: 0.78rem;
+}
+
+.footer a:hover {
+  color: var(--sheet-accent);
+}
+
+@media (width <= 820px) {
+  .heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+}
+
+@media print {
+  .hero {
+    padding-top: 2rem;
+  }
+
+  .actions {
+    display: none;
+  }
+
+  .content {
+    display: block;
+  }
+
+  .footer {
+    break-before: page;
+  }
+}

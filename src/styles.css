@@ -1,0 +1,108 @@
+:root {
+  color-scheme: light;
+
+  --color-canvas: #f3f0e9;
+  --color-surface: #fffdf7;
+  --color-surface-raised: #fff;
+  --color-ink: #17201d;
+  --color-muted: #66716d;
+  --color-line: #d8d4c9;
+  --color-accent: #ff5d35;
+  --color-accent-strong: #d93c18;
+  --color-accent-soft: #ffebe4;
+  --color-navy: #14283f;
+  --color-code: #121d27;
+  --color-code-ink: #eff7f4;
+  --color-safe: #067552;
+  --color-warning: #9b5a00;
+  --color-danger: #b42318;
+  --shadow-sm: 0 8px 24px rgb(20 40 63 / 8%);
+  --shadow-lg: 0 24px 70px rgb(20 40 63 / 14%);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 26px;
+  --font-sans: inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", meiryo, sans-serif;
+  --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-canvas: #0f171c;
+  --color-surface: #151f25;
+  --color-surface-raised: #1a262d;
+  --color-ink: #f2f5f2;
+  --color-muted: #a7b1ad;
+  --color-line: #33434b;
+  --color-accent: #ff7957;
+  --color-accent-strong: #ff997f;
+  --color-accent-soft: #3a241f;
+  --color-navy: #dbe9ff;
+  --color-code: #091015;
+  --shadow-sm: 0 8px 24px rgb(0 0 0 / 22%);
+  --shadow-lg: 0 24px 70px rgb(0 0 0 / 34%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 104px;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  text-rendering: optimizelegibility;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@media print {
+  :root {
+    --color-canvas: #fff;
+    --color-surface: #fff;
+    --color-surface-raised: #fff;
+    --color-ink: #000;
+    --color-muted: #333;
+    --color-line: #bbb;
+  }
+
+  html {
+    scroll-padding-top: 0;
+  }
+}

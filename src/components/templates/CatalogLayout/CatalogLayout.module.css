@@ -1,0 +1,141 @@
+.main {
+  min-height: calc(100vh - 4.25rem);
+}
+
+.hero {
+  padding: 5.5rem max(1.5rem, calc((100vw - 1180px) / 2));
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow,
+.sectionTitle span {
+  color: var(--muted);
+  font: 700 0.72rem/1 var(--font-mono);
+  letter-spacing: 0.16em;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 5rem;
+  align-items: end;
+  margin: 1.5rem 0 3.5rem;
+}
+
+.hero h1 {
+  max-width: 800px;
+  font-size: clamp(3.2rem, 7vw, 6.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.065em;
+}
+
+.hero h1 em {
+  color: var(--accent);
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.hero h1 + p {
+  max-width: 580px;
+  margin-top: 1.75rem;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+}
+
+.overview div {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.overview dt {
+  color: var(--muted);
+  font: 700 0.62rem var(--font-mono);
+  letter-spacing: 0.12em;
+}
+
+.overview dd {
+  margin-top: 0.45rem;
+  font: 700 1.1rem var(--font-mono);
+}
+
+.catalog {
+  padding: 3.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 7rem;
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.2rem;
+}
+
+.sectionTitle p {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.comingSoon {
+  min-height: 250px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.comingSoon > span {
+  font: 700 0.75rem var(--font-mono);
+}
+
+.comingSoon strong {
+  color: var(--foreground);
+  font: 700 0.72rem var(--font-mono);
+  letter-spacing: 0.15em;
+}
+
+.comingSoon p {
+  max-width: 300px;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.empty {
+  padding: 5rem 2rem;
+  text-align: center;
+  border: 1px solid var(--line);
+}
+
+.empty p {
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+
+@media (width <= 760px) {
+  .hero {
+    padding-top: 3.5rem;
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

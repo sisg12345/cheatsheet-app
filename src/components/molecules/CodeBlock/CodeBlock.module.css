@@ -1,0 +1,36 @@
+.wrapper {
+  position: relative;
+  min-width: 0;
+  padding: 14px 92px 14px 15px;
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, var(--color-code-ink) 12%, transparent);
+  border-radius: var(--radius-sm);
+  background: var(--color-code);
+  color: var(--color-code-ink);
+}
+
+.wrapper code {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.copy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.copy button {
+  border-color: rgb(255 255 255 / 15%);
+  color: #f4f7f5;
+}
+
+.copy button:hover {
+  background: rgb(255 255 255 / 10%);
+}
+
+.compact {
+  padding-block: 10px;
+}
