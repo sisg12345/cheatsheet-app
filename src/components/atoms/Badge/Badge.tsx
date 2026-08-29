@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import type { ItemStatus } from "@/src/cheatsheets/types";
 import styles from "./Badge.module.css";
 
 interface BadgeProps {
-  children: React.ReactNode;
+  children: ReactNode;
   tone?: ItemStatus;
 }
 

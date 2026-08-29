@@ -6,6 +6,28 @@
     <meta name="description" content="HTML、Gitなどの技術チートシート集" />
     <link rel="icon" href="/favicon.svg" />
     <title>CheatSheet Hub</title>
+    <!--
+      テーマを最初の描画より前に確定させる。
+      <script type="module"> は defer 相当で React は必ず初回描画より後に動くため、
+      ライトテーマのフラッシュ（FOUC）を防ぐにはこの同期スクリプトが必須。
+      キーは src/features/theme-switch/theme.ts と一致させること
+      （tests/unit/themeBootstrap.test.ts が検証する）。
+    -->
+    <script>
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem("cheatsheet-theme");
+        } catch (e) {}
+        var theme = "light";
+        if (stored === "light" || stored === "dark") {
+          theme = stored;
+        } else if (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) {
+          theme = "dark";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

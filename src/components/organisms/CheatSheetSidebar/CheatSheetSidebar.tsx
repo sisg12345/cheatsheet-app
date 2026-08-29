@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { CheatSheetSection } from "@/src/cheatsheets/types";
+import { formatIndex } from "@/src/lib/formatIndex";
 import styles from "./CheatSheetSidebar.module.css";
 
 interface CheatSheetSidebarProps {
@@ -16,7 +17,7 @@ export function CheatSheetSidebar({ sections }: CheatSheetSidebarProps) {
       <nav aria-label="チートシート目次">
         {sections.map((section, index) => (
           <a key={section.id} href={`#${section.id}`}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
+            <span>{formatIndex(index)}</span>
             {section.title}
           </a>
         ))}

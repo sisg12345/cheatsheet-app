@@ -1,9 +1,8 @@
-"use client";
-
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { CheatSheetSummary } from "@/src/cheatsheets/types";
 import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetCard } from "@/src/components/organisms/CheatSheetCard/CheatSheetCard";
+import { useSearchShortcuts } from "@/src/features/cheat-sheet-search/useSearchShortcuts";
 import { includesSearch } from "@/src/lib/normalizeSearch";
 import styles from "./CatalogLayout.module.css";
 
@@ -26,22 +25,7 @@ export function CatalogLayout({ sheets }: CatalogLayoutProps) {
   );
   const totalItems = sheets.reduce((sum, sheet) => sum + sheet.itemCount, 0);
 
-  useEffect(() => {
-    const handleShortcut = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement;
-      const isTyping = ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
-      if (event.key === "/" && !isTyping) {
-        event.preventDefault();
-        searchRef.current?.focus();
-      }
-      if (event.key === "Escape") {
-        setQuery("");
-        searchRef.current?.blur();
-      }
-    };
-    window.addEventListener("keydown", handleShortcut);
-    return () => window.removeEventListener("keydown", handleShortcut);
-  }, []);
+  useSearchShortcuts(searchRef, () => setQuery(""));
 
   return (
     <main className={styles.main}>

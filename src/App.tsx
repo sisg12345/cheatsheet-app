@@ -7,7 +7,7 @@ import { CheatSheetLayout } from "@/src/components/templates/CheatSheetLayout/Ch
 function CheatSheetPage() {
   const { slug = "" } = useParams();
   const sheet = getCheatSheet(slug);
-  return sheet ? <CheatSheetLayout sheet={sheet} /> : <NotFound />;
+  return sheet ? <CheatSheetLayout key={sheet.slug} sheet={sheet} /> : <NotFound />;
 }
 
 function NotFound() {

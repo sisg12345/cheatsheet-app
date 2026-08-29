@@ -1,6 +1,7 @@
 import { Badge } from "@/src/components/atoms/Badge/Badge";
 import { CodeBlock } from "@/src/components/molecules/CodeBlock/CodeBlock";
 import type { CheatSheetSection as Section } from "@/src/cheatsheets/types";
+import { formatIndex } from "@/src/lib/formatIndex";
 import styles from "./CheatSheetSection.module.css";
 
 interface CheatSheetSectionProps {
@@ -19,7 +20,7 @@ export function CheatSheetSection({ section, index }: CheatSheetSectionProps) {
   return (
     <section className={styles.section} id={section.id}>
       <header className={styles.header}>
-        <span className={styles.number}>{String(index + 1).padStart(2, "0")}</span>
+        <span className={styles.number}>{formatIndex(index)}</span>
         <div>
           <h2>{section.title}</h2>
           {section.description ? <p>{section.description}</p> : null}

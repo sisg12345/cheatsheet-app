@@ -1,5 +1,7 @@
+import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import type { CheatSheetSummary } from "@/src/cheatsheets/types";
+import { formatIndex } from "@/src/lib/formatIndex";
 import styles from "./CheatSheetCard.module.css";
 
 interface CheatSheetCardProps {
@@ -12,10 +14,10 @@ export function CheatSheetCard({ sheet, index }: CheatSheetCardProps) {
     <Link
       className={styles.card}
       to={`/cheatsheets/${sheet.slug}`}
-      style={{ "--sheet-accent": sheet.accent } as React.CSSProperties}
+      style={{ "--sheet-accent": sheet.accent } as CSSProperties}
     >
       <div className={styles.topline}>
-        <span>{String(index + 1).padStart(2, "0")}</span>
+        <span>{formatIndex(index)}</span>
         <span>{sheet.eyebrow}</span>
       </div>
       <div className={styles.monogram} aria-hidden="true">

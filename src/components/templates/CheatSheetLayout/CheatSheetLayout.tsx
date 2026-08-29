@@ -1,12 +1,12 @@
-"use client";
-
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, type CSSProperties } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { CheatSheet } from "@/src/cheatsheets/types";
 import { Button } from "@/src/components/atoms/Button/Button";
 import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetSection } from "@/src/components/organisms/CheatSheetSection/CheatSheetSection";
 import { CheatSheetSidebar } from "@/src/components/organisms/CheatSheetSidebar/CheatSheetSidebar";
 import { filterCheatSheetSections } from "@/src/features/cheat-sheet-search/filterCheatSheet";
+import { useSearchShortcuts } from "@/src/features/cheat-sheet-search/useSearchShortcuts";
 import styles from "./CheatSheetLayout.module.css";
 
 interface CheatSheetLayoutProps {
@@ -14,7 +14,8 @@ interface CheatSheetLayoutProps {
 }
 
 export function CheatSheetLayout({ sheet }: CheatSheetLayoutProps) {
-  const [query, setQueryState] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("q") ?? "";
   const searchRef = useRef<HTMLInputElement>(null);
   const filteredSections = useMemo(
     () => filterCheatSheetSections(sheet.sections, query),
@@ -22,40 +23,25 @@ export function CheatSheetLayout({ sheet }: CheatSheetLayoutProps) {
   );
   const visibleItems = filteredSections.reduce((sum, section) => sum + section.items.length, 0);
 
-  const setQuery = useCallback((value: string) => {
-    setQueryState(value);
-    const url = new URL(window.location.href);
-    if (value) url.searchParams.set("q", value);
-    else url.searchParams.delete("q");
-    window.history.replaceState(null, "", url);
-  }, []);
+  const setQuery = useCallback(
+    (value: string) => {
+      setSearchParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          if (value) next.set("q", value);
+          else next.delete("q");
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
 
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      setQueryState(new URLSearchParams(window.location.search).get("q") ?? "");
-    });
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
-  useEffect(() => {
-    const handleShortcut = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement;
-      const isTyping = ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
-      if (event.key === "/" && !isTyping) {
-        event.preventDefault();
-        searchRef.current?.focus();
-      }
-      if (event.key === "Escape") {
-        setQuery("");
-        searchRef.current?.blur();
-      }
-    };
-    window.addEventListener("keydown", handleShortcut);
-    return () => window.removeEventListener("keydown", handleShortcut);
-  }, [setQuery]);
+  useSearchShortcuts(searchRef, () => setQuery(""));
 
   return (
-    <main className={styles.main} style={{ "--sheet-accent": sheet.accent } as React.CSSProperties}>
+    <main className={styles.main} style={{ "--sheet-accent": sheet.accent } as CSSProperties}>
       <header className={styles.hero}>
         <div className={styles.eyebrow}>{sheet.eyebrow} / CHEAT SHEET</div>
         <div className={styles.heading}>

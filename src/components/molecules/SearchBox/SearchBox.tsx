@@ -1,6 +1,4 @@
-"use client";
-
-import { forwardRef } from "react";
+import { useId, type Ref } from "react";
 import styles from "./SearchBox.module.css";
 
 interface SearchBoxProps {
@@ -8,24 +6,30 @@ interface SearchBoxProps {
   onChange: (value: string) => void;
   placeholder?: string;
   resultLabel?: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
-export const SearchBox = forwardRef<HTMLInputElement, SearchBoxProps>(function SearchBox(
-  { value, onChange, placeholder = "検索", resultLabel },
+export function SearchBox({
+  value,
+  onChange,
+  placeholder = "検索",
+  resultLabel,
   ref,
-) {
+}: SearchBoxProps) {
+  const inputId = useId();
+
   return (
     <div className={styles.group}>
       <div className={styles.search}>
         <span className={styles.icon} aria-hidden="true">
           ⌕
         </span>
-        <label className={styles.visuallyHidden} htmlFor="cheatsheet-search">
+        <label className={styles.visuallyHidden} htmlFor={inputId}>
           チートシートを検索
         </label>
         <input
           ref={ref}
-          id="cheatsheet-search"
+          id={inputId}
           type="search"
           value={value}
           onChange={(event) => onChange(event.target.value)}
@@ -41,4 +45,4 @@ export const SearchBox = forwardRef<HTMLInputElement, SearchBoxProps>(function S
       ) : null}
     </div>
   );
-});
+}
