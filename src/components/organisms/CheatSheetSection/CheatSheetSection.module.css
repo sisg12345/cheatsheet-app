@@ -1,3 +1,7 @@
+/* CheatSheetSection のスタイル。見出し（.header）と項目一覧（.items）を
+   1枚のカードにまとめる。 */
+
+/* セクションの外枠。overflow: hidden で、角丸から項目の境界線がはみ出さないようにする。 */
 .section {
   overflow: hidden;
   border: 1px solid var(--color-line);
@@ -6,6 +10,8 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* 見出し行。番号・タイトル・件数の3カラム。中央列を minmax(0, 1fr) にして、
+   長いタイトルでも枠を押し広げないようにしている。 */
 .header {
   display: grid;
   grid-template-columns: 42px minmax(0, 1fr) auto;
@@ -15,6 +21,7 @@
   border-bottom: 1px solid var(--color-line);
 }
 
+/* 通し番号のバッジ。 */
 .number {
   display: grid;
   width: 38px;
@@ -48,10 +55,13 @@
   letter-spacing: 0.08em;
 }
 
+/* 項目一覧。 */
 .items {
   display: grid;
 }
 
+/* 項目1行。見出し・説明・コードの3カラム。minmax の下限で、
+   狭いときも各列が潰れきらないようにしている。 */
 .item {
   display: grid;
   grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1.15fr) minmax(280px, 1.5fr);
@@ -61,6 +71,7 @@
   border-bottom: 1px solid var(--color-line);
 }
 
+/* 最終行の境界線はカード下端と重なるので消す。 */
 .item:last-child {
   border-bottom: 0;
 }
@@ -69,6 +80,7 @@
   background: color-mix(in srgb, var(--color-accent-soft) 42%, transparent);
 }
 
+/* 見出しとバッジ。入りきらないときは折り返す。 */
 .itemTitle {
   display: flex;
   flex-wrap: wrap;
@@ -84,6 +96,7 @@
   overflow-wrap: anywhere;
 }
 
+/* 説明と補足。 */
 .explanation p {
   margin: 0;
   font-size: 0.82rem;
@@ -96,10 +109,12 @@
   font-size: 0.72rem;
 }
 
+/* grid の子として、長いコードで列幅が広がらないようにする。 */
 .code {
   min-width: 0;
 }
 
+/* 狭い画面では3カラムをやめて縦積みにする。 */
 @media (width <= 820px) {
   .item {
     grid-template-columns: 1fr;
@@ -107,6 +122,7 @@
   }
 }
 
+/* さらに狭い画面では件数表示を落とし、見出しを2カラムにする。 */
 @media (width <= 520px) {
   .header {
     grid-template-columns: 38px 1fr;
@@ -118,6 +134,7 @@
   }
 }
 
+/* 印刷時はセクションをページ跨ぎさせず、影を消して3カラムのまま詰める。 */
 @media print {
   .section {
     break-inside: avoid;

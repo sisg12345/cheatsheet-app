@@ -1,3 +1,8 @@
+/**
+ * CheatSheetSection の Storybook。
+ * args には実データではなく最小構成のダミーセクションを置いている。
+ * content.ts を読み込むと、データ更新のたびにStoryの見た目が変わってしまうため。
+ */
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CheatSheetSection } from "./CheatSheetSection";
 

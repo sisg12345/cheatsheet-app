@@ -1,3 +1,8 @@
+/* Badge のスタイル。tone の値（normal / info / warning / danger）と
+   クラス名が1対1で対応しているため、クラス名は変更しない。 */
+
+/* 基本形。文字量に合わせて伸びる丸型ラベル。
+   min-height は文字サイズを小さくしても潰れないように固定してある。 */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -10,8 +15,13 @@
   font-size: 0.7rem;
   font-weight: 800;
   line-height: 1;
+
+  /* 「注意」「危険」が途中で折り返さないようにする。 */
   white-space: nowrap;
 }
+
+/* 以下の3つは状態色。背景は color-mix で surface に混ぜており、
+   ダークテーマでも下地に馴染むようにしている。 */
 
 .info {
   border-color: color-mix(in srgb, #175cd3 25%, transparent);
@@ -31,6 +41,8 @@
   color: var(--color-danger);
 }
 
+/* normal は既定色のまま。tone の値がそのままクラス名になる都合上、
+   スタイルが不要でも定義自体は残しておく必要がある。 */
 .normal {
   background: var(--color-surface);
 }

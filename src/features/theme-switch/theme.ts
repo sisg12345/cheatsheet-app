@@ -6,6 +6,9 @@
  * 両者がずれるとテーマの保存が無言で壊れるので、
  * tests/unit/themeBootstrap.test.ts が一致を検証している。
  */
+
+/** 対応するテーマ。`<html data-theme>` の値と一致する。 */
 export type Theme = "light" | "dark";
 
+/** localStorage に選択テーマを保存するキー。index.html と同じ値であること。 */
 export const THEME_STORAGE_KEY = "cheatsheet-theme";

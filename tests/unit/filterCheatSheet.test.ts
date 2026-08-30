@@ -1,3 +1,8 @@
+/**
+ * シート内検索の絞り込みが、検索欄の期待どおりに動くことを守るテスト。
+ * ダミーではなく実データ（htmlCheatSheet）を通し、
+ * 実際のコンテンツで検索が機能することまで確認している。
+ */
 import { describe, expect, it } from "vitest";
 import { htmlCheatSheet } from "@/src/cheatsheets/html/content";
 import { filterCheatSheetSections } from "@/src/features/cheat-sheet-search/filterCheatSheet";

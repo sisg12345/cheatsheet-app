@@ -1,3 +1,18 @@
+/**
+ * Gitチートシートのデータ。
+ *
+ * 表示側（components）はこの構造だけを見るので、ここに書いた順序がそのまま
+ * 目次とページの並び順になる。項目は必ず helpers.ts の item() で生成する。
+ *
+ *   item(id, label, syntax, description, note?, status?, keywords?)
+ *
+ * - id はシート内で一意。目次のアンカー（#id）とReactのkeyに使われる
+ * - status は normal / info / warning / danger。省略時は normal
+ * - 履歴やファイルを失いうるコマンドには必ず danger を付ける。
+ *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
+ * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
+ * - 内容を直したら updatedAt も更新する
+ */
 import { item } from "../helpers";
 import type { CheatSheet } from "../types";
 
@@ -14,6 +29,7 @@ export const gitCheatSheet: CheatSheet = {
   updatedAt: "2026-08-18",
   sources: [{ label: "Git公式リファレンス", url: "https://git-scm.com/docs" }],
   sections: [
+    // 最初の1回だけ実行する設定と、リポジトリの作り方。
     {
       id: "setup",
       title: "初期設定・リポジトリ開始",
@@ -57,6 +73,7 @@ export const gitCheatSheet: CheatSheet = {
         item("help", "ヘルプ", "git help <command>", "コマンドの公式マニュアルを表示する。"),
       ],
     },
+    // 毎日使う確認・記録の流れ。status → diff → add → commit の順に並べる。
     {
       id: "daily",
       title: "日常の変更・コミット",
@@ -121,6 +138,7 @@ export const gitCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 作業線の作成・切り替え・削除。
     {
       id: "branches",
       title: "ブランチ",
@@ -177,6 +195,7 @@ export const gitCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 履歴の合流。マージとリベースの違いが判断の要点なので隣り合わせに置く。
     {
       id: "integrate",
       title: "マージ・リベース",
@@ -234,6 +253,7 @@ export const gitCheatSheet: CheatSheet = {
         item("cherry-abort", "Cherry-pick中止", "git cherry-pick --abort", "開始前の状態へ戻す。"),
       ],
     },
+    // 共有リポジトリとのやり取り。push -f 系は履歴を壊しうるため danger 扱い。
     {
       id: "remote",
       title: "リモート・共有",
@@ -311,6 +331,9 @@ export const gitCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 取り消し系。danger が集中するセクション。
+    // reset --hard や clean -fd は未コミットの変更を復元不能に消すため、
+    // 「何が失われるか」を note に必ず書く。
     {
       id: "undo",
       title: "取り消し・復元",
@@ -390,6 +413,7 @@ export const gitCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // コミットせずに退避する操作。drop / clear は退避内容を失うため注意喚起を入れる。
     {
       id: "stash",
       title: "一時退避（stash）",
@@ -453,6 +477,7 @@ export const gitCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 調査系。履歴を書き換えないコマンドが中心なので、基本的に安全側。
     {
       id: "history",
       title: "履歴・差分・検索",
@@ -534,6 +559,7 @@ export const gitCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 競合の解消手順。中断（--abort）で元に戻せることを明示する。
     {
       id: "conflicts",
       title: "競合の解消",
@@ -590,6 +616,7 @@ export const gitCheatSheet: CheatSheet = {
         item("mergetool", "解消ツール", "git mergetool", "設定済みの競合解消ツールを起動する。"),
       ],
     },
+    // 上のどれにも属さない補助的な操作をまとめている。
     {
       id: "files-tags-tools",
       title: "ファイル・タグ・調査ツール",

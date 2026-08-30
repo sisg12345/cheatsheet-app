@@ -1,3 +1,8 @@
+/* グローバルスタイル。デザイントークンの定義と、素の要素に対する最低限の調整だけを置く。
+   コンポーネント固有のスタイルは各 *.module.css に書き、ここには足さない。 */
+
+/* ライトテーマのトークン。ダークテーマは下の [data-theme="dark"] で同じ名前を上書きするので、
+   使う側は常に var(--color-*) を参照するだけでよい。 */
 :root {
   color-scheme: light;
 
@@ -25,6 +30,8 @@
   --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
 }
 
+/* ダークテーマ。data-theme は index.html の初期化スクリプトと ThemeToggle が付け替える。
+   ここで上書きしないトークン（角丸・フォント・一部の色）はライトの値を引き継ぐ。 */
 [data-theme="dark"] {
   color-scheme: dark;
 
@@ -43,17 +50,22 @@
   --shadow-lg: 0 24px 70px rgb(0 0 0 / 34%);
 }
 
+/* ここから素の要素への調整。 */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* scroll-padding-top は固定ヘッダーの高さぶんの逃げ。
+   これが無いと、目次の #アンカーで飛んだ見出しがヘッダーの裏に隠れる。 */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 104px;
 }
 
+/* テーマ切り替え時に色が瞬間的に入れ替わらないよう、背景と文字色に transition を掛ける。 */
 body {
   min-width: 320px;
   margin: 0;
@@ -67,31 +79,40 @@ body {
     color 180ms ease;
 }
 
+/* フォーム要素はフォントを継承しない。明示的に body に揃える。 */
 button,
 input {
   font: inherit;
 }
 
+/* リンク色は各コンポーネント側で決めるので、既定の青は打ち消しておく。 */
 a {
   color: inherit;
 }
 
+/* コード・キー表示は等幅で統一する。 */
 code,
 pre,
 kbd {
   font-family: var(--font-mono);
 }
 
+/* 選択範囲。アクセント色の上に置く文字なので白を固定で指定している。 */
 ::selection {
   background: var(--color-accent);
   color: #fff;
 }
 
+/* キーボード操作時のフォーカスリング。太さと余白を確保して、
+   どのテーマでも位置がはっきり分かるようにしている。 */
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
 }
 
+/* 印刷・PDF保存時はトークンごと白黒に差し替える。各コンポーネント側は
+   var(--color-*) を参照しているだけなので、ここの上書きだけで紙面全体が切り替わる。
+   scroll-padding-top も不要になるため0に戻す。 */
 @media print {
   :root {
     --color-canvas: #fff;

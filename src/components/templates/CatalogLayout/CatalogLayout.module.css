@@ -1,12 +1,17 @@
+/* CatalogLayout のスタイル。ヒーロー（.hero）とカード一覧（.catalog）の2ブロック構成。 */
+
+/* ヘッダー（4.25rem）を引いた高さを最低限確保し、内容が短くてもフッター位置が浮かないようにする。 */
 .main {
   min-height: calc(100vh - 4.25rem);
 }
 
+/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。 */
 .hero {
   padding: 5.5rem max(1.5rem, calc((100vw - 1180px) / 2));
   border-bottom: 1px solid var(--line);
 }
 
+/* 装飾ラベル。等幅フォント＋広い字間で、見出しと区別する。 */
 .eyebrow,
 .sectionTitle span {
   color: var(--muted);
@@ -14,6 +19,7 @@
   letter-spacing: 0.16em;
 }
 
+/* キャッチコピーと収録数を左右に置く。下端を揃えるため align-items: end。 */
 .heroGrid {
   display: grid;
   grid-template-columns: 1.7fr 1fr;
@@ -22,6 +28,7 @@
   margin: 1.5rem 0 3.5rem;
 }
 
+/* 見出しは clamp で 3.2rem〜6.6rem。line-height を1未満まで詰めて塊として見せる。 */
 .hero h1 {
   max-width: 800px;
   font-size: clamp(3.2rem, 7vw, 6.6rem);
@@ -42,6 +49,7 @@
   font-size: 1rem;
 }
 
+/* 収録数の3項目。 */
 .overview {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -64,10 +72,12 @@
   font: 700 1.1rem var(--font-mono);
 }
 
+/* カード一覧ブロック。 */
 .catalog {
   padding: 3.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 7rem;
 }
 
+/* INDEX の見出し行。 */
 .sectionTitle {
   display: flex;
   justify-content: space-between;
@@ -80,6 +90,8 @@
   font-size: 0.78rem;
 }
 
+/* カードを2列に並べる。枠線は上と左だけ引き、各カードが右と下を持つことで
+   隣接する線が二重にならないようにしている。 */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -87,6 +99,7 @@
   border-left: 1px solid var(--line);
 }
 
+/* 追加予定を示すダミー枠。カードと同じ枠線の引き方を踏襲する。 */
 .comingSoon {
   min-height: 250px;
   padding: 2rem;
@@ -114,6 +127,7 @@
   font-size: 0.85rem;
 }
 
+/* 検索結果0件の表示。 */
 .empty {
   padding: 5rem 2rem;
   text-align: center;
@@ -125,6 +139,7 @@
   color: var(--muted);
 }
 
+/* 狭い画面ではヒーローもカードも1列に落とす。 */
 @media (width <= 760px) {
   .hero {
     padding-top: 3.5rem;

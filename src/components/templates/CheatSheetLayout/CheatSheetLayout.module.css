@@ -1,20 +1,26 @@
+/* CheatSheetLayout のスタイル。ヒーロー・本文（目次＋セクション）・フッターの3ブロック。
+   --sheet-accent は tsx がインラインで渡すシート固有色で、ここでは既定値を置いている。 */
+
 .main {
   min-height: calc(100vh - 4.25rem);
 
   --sheet-accent: var(--accent);
 }
 
+/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。 */
 .hero {
   padding: 4.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 3rem;
   border-bottom: 1px solid var(--line);
 }
 
+/* カテゴリ表示の装飾ラベル。 */
 .eyebrow {
   color: var(--muted);
   font: 700 0.7rem var(--font-mono);
   letter-spacing: 0.15em;
 }
 
+/* タイトル群と操作ボタンを左右に置く。 */
 .heading {
   display: flex;
   justify-content: space-between;
@@ -27,6 +33,7 @@
   position: relative;
 }
 
+/* 短縮名。シート色で目印にする。 */
 .monogram {
   display: block;
   color: var(--sheet-accent);
@@ -47,10 +54,13 @@
   color: var(--muted);
 }
 
+/* 印刷ボタン。伸縮させず、タイトル側に幅を譲る。 */
 .actions {
   flex: 0 0 auto;
 }
 
+/* 目次（固定230px）と本文の2カラム。本文側を minmax(0, 1fr) にして、
+   長いコード行があっても列が広がらないようにしている。 */
 .content {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
@@ -60,10 +70,12 @@
   padding: 3.5rem 1.5rem 6rem;
 }
 
+/* grid の子として、はみ出すコードで列幅が押し広げられるのを防ぐ。 */
 .sections {
   min-width: 0;
 }
 
+/* 検索結果0件の表示。 */
 .empty {
   padding: 5rem 2rem;
   text-align: center;
@@ -75,6 +87,7 @@
   color: var(--muted);
 }
 
+/* 更新日と出典リンク。 */
 .footer {
   display: flex;
   justify-content: space-between;
@@ -106,6 +119,7 @@
   color: var(--sheet-accent);
 }
 
+/* 狭い画面では見出しも本文も縦積みにする。 */
 @media (width <= 820px) {
   .heading {
     align-items: start;
@@ -122,6 +136,8 @@
   }
 }
 
+/* 印刷時は操作ボタンを消し、2カラムをやめて1段組にする。
+   出典は本文の続きに紛れないよう改ページしてから出す。 */
 @media print {
   .hero {
     padding-top: 2rem;

@@ -1,3 +1,4 @@
+/** Button の Storybook。variant ごとの見え方を並べて確認する。 */
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "./Button";
 

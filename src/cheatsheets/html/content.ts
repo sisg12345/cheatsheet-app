@@ -1,3 +1,16 @@
+/**
+ * HTMLチートシートのデータ。
+ *
+ * 表示側（components）はこの構造だけを見るので、ここに書いた順序がそのまま
+ * 目次とページの並び順になる。項目は必ず helpers.ts の item() で生成する。
+ *
+ *   item(id, label, syntax, description, note?, status?, keywords?)
+ *
+ * - id はシート内で一意。目次のアンカー（#id）とReactのkeyに使われる
+ * - status は normal / info / warning / danger。省略時は normal
+ * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
+ * - 内容を直したら updatedAt も更新する
+ */
 import { item } from "../helpers";
 import type { CheatSheet } from "../types";
 
@@ -14,6 +27,7 @@ export const htmlCheatSheet: CheatSheet = {
   updatedAt: "2026-08-18",
   sources: [{ label: "HTML Living Standard", url: "https://html.spec.whatwg.org/multipage/" }],
   sections: [
+    // ページの外枠。ブラウザと検索エンジンが最初に読む部分から並べる。
     {
       id: "document",
       title: "文書構造・メタ情報",
@@ -83,6 +97,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 見た目ではなく役割で組む要素。div の代わりに何を使うかの判断材料。
     {
       id: "semantic",
       title: "セマンティック構造",
@@ -142,6 +157,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 段落・見出しから、強調や引用などのインライン要素まで。
     {
       id: "text",
       title: "テキスト・文章",
@@ -200,6 +216,7 @@ export const htmlCheatSheet: CheatSheet = {
         item("wbr", "<wbr>", "verylong<wbr>identifier", "長い語の改行候補位置。"),
       ],
     },
+    // リストと、その仲間である説明リスト・図表のまとまり。
     {
       id: "grouping",
       title: "グループ・リスト",
@@ -235,6 +252,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // リンクと埋め込みメディア。代替テキストや遅延読み込みの指定を含む。
     {
       id: "media",
       title: "リンク・画像・メディア",
@@ -296,6 +314,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 表。レイアウト目的での使用を避ける旨は description に明記している。
     {
       id: "tables",
       title: "テーブル",
@@ -336,6 +355,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // フォーム。項目数が多いので、要素 → 入力タイプ → 補助要素の順に並べる。
     {
       id: "forms",
       title: "フォーム",
@@ -425,6 +445,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // JavaScript無しでも動く対話要素と、埋め込み系の要素。
     {
       id: "interactive",
       title: "埋め込み・対話要素",
@@ -470,6 +491,7 @@ export const htmlCheatSheet: CheatSheet = {
         item("slot", "<slot>", '<slot name="title"></slot>', "Web Componentsの差し込み口。"),
       ],
     },
+    // 要素を問わず使える属性。アクセシビリティに関わるものを優先して並べる。
     {
       id: "attributes",
       title: "主要なグローバル属性",
@@ -505,6 +527,7 @@ export const htmlCheatSheet: CheatSheet = {
         ),
       ],
     },
+    // 閉じタグを持たない空要素と、実装後に見直すチェック項目。
     {
       id: "quality",
       title: "空要素・品質チェック",

@@ -1,3 +1,7 @@
+/**
+ * index.html のテーマ初期化スクリプトが、TS側の定数と食い違わないことを守るテスト。
+ * 実行時ではなく、index.html を文字列として読んで内容を検証している。
+ */
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";

@@ -1,3 +1,4 @@
+/** CodeBlock の Storybook。コピーボタンの動作もここで確認できる。 */
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CodeBlock } from "./CodeBlock";
 

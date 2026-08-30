@@ -1,5 +1,12 @@
+/* CodeBlock のスタイル。常に濃い背景（--color-code）の上に文字を置く前提のため、
+   コピーボタンの色だけは白系をハードコードしている。 */
+
+/* コード枠。右側の広い padding は、絶対配置したコピーボタンとの重なりを避けるため。
+   position: relative がそのボタンの基準になる。 */
 .wrapper {
   position: relative;
+
+  /* grid/flex の子になったとき、長いコードで枠が広がらないようにする。 */
   min-width: 0;
   padding: 14px 92px 14px 15px;
   overflow-x: auto;
@@ -9,6 +16,8 @@
   color: var(--color-code-ink);
 }
 
+/* 長いコマンドは折り返す。overflow-wrap: anywhere で、
+   空白のない長いURLやパスも枠内に収める。 */
 .wrapper code {
   font-size: 0.8rem;
   line-height: 1.55;
@@ -16,12 +25,14 @@
   overflow-wrap: anywhere;
 }
 
+/* コピーボタンを右上に固定する。 */
 .copy {
   position: absolute;
   top: 6px;
   right: 6px;
 }
 
+/* 濃い背景の上に置くボタンなので、Button の配色をここで上書きする。 */
 .copy button {
   border-color: rgb(255 255 255 / 15%);
   color: #f4f7f5;
@@ -31,6 +42,7 @@
   background: rgb(255 255 255 / 10%);
 }
 
+/* 項目一覧に並べるときの詰めた表示。左右の padding は基本形のまま使う。 */
 .compact {
   padding-block: 10px;
 }

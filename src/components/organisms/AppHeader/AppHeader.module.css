@@ -1,3 +1,9 @@
+/* AppHeader のスタイル。スクロールしても残る半透明のバー。 */
+
+/* 常に最前面に留める。z-index: 40 は他に重なる要素が無いための余裕を持った値。
+   背景を半透明にして backdrop-filter でぼかすため、下のコンテンツが透ける。
+   高さは styles.css の scroll-padding-top（104px）と対応しており、
+   ページ内アンカーで飛んだ見出しがこのバーに隠れないようにしている。 */
 .header {
   position: sticky;
   z-index: 40;
@@ -7,6 +13,7 @@
   backdrop-filter: blur(18px);
 }
 
+/* 中身は最大1440pxで中央寄せ。画面幅いっぱいのバーの中に内容だけを収める。 */
 .inner {
   display: flex;
   align-items: center;
@@ -17,6 +24,7 @@
   padding: 10px 28px;
 }
 
+/* ブランド表記。 */
 .brand {
   display: inline-flex;
   gap: 10px;
@@ -27,6 +35,7 @@
   text-decoration: none;
 }
 
+/* ロゴマーク。アクセント色の面に置く文字なので白を固定で指定している。 */
 .mark {
   display: grid;
   width: 36px;
@@ -39,6 +48,7 @@
   letter-spacing: -0.08em;
 }
 
+/* ナビゲーション。 */
 .nav {
   display: flex;
   gap: 5px;
@@ -59,6 +69,8 @@
   color: var(--color-accent-strong);
 }
 
+/* 狭い画面ではブランド名の文字とシート直リンクを隠し、
+   ロゴ・一覧リンク・テーマ切り替えだけを残す。 */
 @media (width <= 640px) {
   .inner {
     min-height: 62px;
@@ -71,6 +83,7 @@
   }
 }
 
+/* 印刷時はナビゲーションを出さない。紙の上では操作できないため。 */
 @media print {
   .header {
     display: none;

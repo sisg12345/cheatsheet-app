@@ -1,3 +1,8 @@
+/* CheatSheetCard のスタイル。--sheet-accent は tsx 側がインラインで渡すシート固有色で、
+   ここではフォールバック値だけを定義している。 */
+
+/* カード本体。上下の要素を離すため space-between で組み、
+   min-height で収録数に関わらず高さを揃えている。 */
 .card {
   --sheet-accent: var(--color-accent);
 
@@ -7,6 +12,8 @@
   overflow: hidden;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
+
+  /* 左上からシート色をうっすら差した面。2層目が下地。 */
   background:
     linear-gradient(
       145deg,
@@ -25,12 +32,14 @@
     border-color 180ms ease;
 }
 
+/* ホバーで浮かせ、枠線をシート色に変える。 */
 .card:hover {
   border-color: var(--sheet-accent);
   box-shadow: var(--shadow-lg);
   transform: translateY(-5px);
 }
 
+/* 上端の通し番号とカテゴリ。 */
 .topline {
   display: flex;
   justify-content: space-between;
@@ -41,6 +50,7 @@
   text-transform: uppercase;
 }
 
+/* 大きな短縮名。clamp で画面幅に応じて 4.2rem〜7.4rem の範囲で伸縮させる。 */
 .monogram {
   color: var(--sheet-accent);
   font-size: clamp(4.2rem, 10vw, 7.4rem);
@@ -49,6 +59,7 @@
   letter-spacing: -0.085em;
 }
 
+/* タイトルと説明。 */
 .card h2 {
   margin: 0;
   font-size: clamp(1.45rem, 3vw, 2rem);
@@ -61,6 +72,7 @@
   font-size: 0.88rem;
 }
 
+/* 収録数の3列。dl の子 div を1列として等幅に割る。 */
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -81,6 +93,7 @@
   letter-spacing: 0.1em;
 }
 
+/* 数字は等幅フォントで桁を揃える。 */
 .stats dd {
   margin: 2px 0 0;
   font-family: var(--font-mono);
@@ -88,6 +101,7 @@
   font-weight: 800;
 }
 
+/* 3列目（OPEN）だけ右寄せにして、矢印をカードの角に寄せる。 */
 .open {
   align-items: flex-end;
 }

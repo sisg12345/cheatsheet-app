@@ -1,3 +1,7 @@
+/* SearchBox のスタイル。入力欄（.search）と件数表示（.result）を横並びにし、
+   狭い画面では縦積みに切り替える。 */
+
+/* 入力欄と件数表示の並び。 */
 .group {
   display: flex;
   gap: 12px;
@@ -5,17 +9,21 @@
   width: 100%;
 }
 
+/* アイコンと `/` キー表示を絶対配置する基準。残り幅をすべて入力欄に与える。 */
 .search {
   position: relative;
   flex: 1;
 }
 
+/* 左右の広い padding は、重ねて配置したアイコンと `/` キーの分の逃げ。 */
 .search input {
   width: 100%;
   min-height: 50px;
   padding: 11px 48px 11px 44px;
   border: 1px solid var(--color-line);
   border-radius: 999px;
+
+  /* 既定のフォーカスリングは消すが、下の :focus で枠線と影を付けて代替している。 */
   outline: none;
   background: var(--color-surface-raised);
   color: var(--color-ink);
@@ -27,6 +35,7 @@
   box-shadow: 0 0 0 4px var(--color-accent-soft);
 }
 
+/* 虫眼鏡アイコン。-54% は、字形の重心が中心より上にあるための微調整。 */
 .icon {
   position: absolute;
   z-index: 1;
@@ -37,6 +46,7 @@
   transform: translateY(-54%);
 }
 
+/* ショートカットキーの表示。 */
 .search kbd {
   position: absolute;
   top: 50%;
@@ -50,6 +60,7 @@
   transform: translateY(-50%);
 }
 
+/* 件数表示。件数が増えても折り返さず、入力欄の幅だけが変わるようにする。 */
 .result {
   flex: 0 0 auto;
   color: var(--color-muted);
@@ -57,6 +68,8 @@
   white-space: nowrap;
 }
 
+/* 視覚的に隠しつつ、支援技術には読ませるための定型。
+   display: none や visibility: hidden では読み上げからも消えてしまう。 */
 .visuallyHidden {
   position: absolute;
   width: 1px;
@@ -69,6 +82,7 @@
   border: 0;
 }
 
+/* 狭い画面では件数を入力欄の下へ回す。 */
 @media (width <= 620px) {
   .group {
     align-items: stretch;
