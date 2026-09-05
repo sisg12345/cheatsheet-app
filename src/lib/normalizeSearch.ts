@@ -8,10 +8,12 @@
  *
  * NFKCで全角英数・半角カナを標準形に畳んでから比較するため、
  * `ＭＥＴＡ` と `meta`、`ｶﾞ` と `ガ` が同じ語として一致する。
- * 小文字化を先に行うのは、NFKC後にケース差が残らないようにするため。
+ *
+ * NFKCを小文字化より先に行うこと。NFKCは互換文字から大文字を生成することがあり
+ * （`㎅` → `KB`、`ℬ` → `B`）、順序を逆にするとその大文字が残って一致しなくなる。
  */
 export function normalizeSearch(value: string): string {
-  return value.toLowerCase().normalize("NFKC").trim();
+  return value.normalize("NFKC").toLowerCase().trim();
 }
 
 /**

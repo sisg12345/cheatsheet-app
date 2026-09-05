@@ -4,18 +4,18 @@
 .main {
   min-height: calc(100vh - 4.25rem);
 
-  --sheet-accent: var(--accent);
+  --sheet-accent: var(--color-accent);
 }
 
 /* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。 */
 .hero {
   padding: 4.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 3rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--color-line);
 }
 
 /* カテゴリ表示の装飾ラベル。 */
 .eyebrow {
-  color: var(--muted);
+  color: var(--color-muted);
   font: 700 0.7rem var(--font-mono);
   letter-spacing: 0.15em;
 }
@@ -51,7 +51,7 @@
 .heading p {
   max-width: 650px;
   margin-top: 1rem;
-  color: var(--muted);
+  color: var(--color-muted);
 }
 
 /* 印刷ボタン。伸縮させず、タイトル側に幅を譲る。 */
@@ -79,12 +79,12 @@
 .empty {
   padding: 5rem 2rem;
   text-align: center;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-line);
 }
 
 .empty p {
   margin-top: 0.5rem;
-  color: var(--muted);
+  color: var(--color-muted);
 }
 
 /* 更新日と出典リンク。 */
@@ -93,8 +93,8 @@
   justify-content: space-between;
   gap: 3rem;
   padding: 2rem max(1.5rem, calc((100vw - 1180px) / 2));
-  border-top: 1px solid var(--line);
-  color: var(--muted);
+  border-top: 1px solid var(--color-line);
+  color: var(--color-muted);
 }
 
 .footer div {
@@ -111,7 +111,7 @@
 
 .footer strong,
 .footer a {
-  color: var(--foreground);
+  color: var(--color-ink);
   font-size: 0.78rem;
 }
 

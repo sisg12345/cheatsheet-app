@@ -28,6 +28,11 @@
   --radius-lg: 26px;
   --font-sans: inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", meiryo, sans-serif;
   --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
+
+  /* 固定ヘッダーの実高さ。AppHeader の .inner がこの値から自分の min-height を導き、
+     scroll-padding-top・サイドバーの追従位置・CatalogLayout の min-height も
+     すべてこれを基準に計算する。ヘッダーの高さを変えるときはここだけを直す。 */
+  --header-height: 71px;
 }
 
 /* ダークテーマ。data-theme は index.html の初期化スクリプトと ThemeToggle が付け替える。
@@ -58,11 +63,13 @@
   box-sizing: border-box;
 }
 
-/* scroll-padding-top は固定ヘッダーの高さぶんの逃げ。
-   これが無いと、目次の #アンカーで飛んだ見出しがヘッダーの裏に隠れる。 */
+/* scroll-padding-top は固定ヘッダーの高さ＋余白ぶんの逃げ。
+   これが無いと、目次の #アンカーで飛んだ見出しがヘッダーの裏に隠れる。
+   余白の2remは見出しがバーに貼り付いて見えないようにするためのもので、
+   ヘッダー高さそのものではない。 */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 104px;
+  scroll-padding-top: calc(var(--header-height) + 2rem);
 }
 
 /* テーマ切り替え時に色が瞬間的に入れ替わらないよう、背景と文字色に transition を掛ける。 */
@@ -110,8 +117,14 @@ kbd {
   outline-offset: 3px;
 }
 
-/* 印刷・PDF保存時はトークンごと白黒に差し替える。各コンポーネント側は
-   var(--color-*) を参照しているだけなので、ここの上書きだけで紙面全体が切り替わる。
+/* 印刷・PDF保存時は面と文字のトークンを白黒に差し替える。各コンポーネント側は
+   var(--color-*) を参照しているだけなので、ここの上書きが紙面全体に伝わる。
+
+   コード欄も必ず上書きすること。既定は濃い背景＋ほぼ白の文字で、ブラウザの印刷は
+   「背景グラフィックOFF」が既定のため、背景だけが落ちて白い紙に白い文字が残る。
+
+   アクセント色と状態色（accent / danger / warning / safe）はあえて残している。
+   白紙の上でも視認でき、カラー印刷では危険度の区別が保てるため。
    scroll-padding-top も不要になるため0に戻す。 */
 @media print {
   :root {
@@ -121,6 +134,10 @@ kbd {
     --color-ink: #000;
     --color-muted: #333;
     --color-line: #bbb;
+    --color-code: #fff;
+    --color-code-ink: #000;
+    --shadow-sm: none;
+    --shadow-lg: none;
   }
 
   html {

@@ -1,20 +1,21 @@
 /* CatalogLayout のスタイル。ヒーロー（.hero）とカード一覧（.catalog）の2ブロック構成。 */
 
-/* ヘッダー（4.25rem）を引いた高さを最低限確保し、内容が短くてもフッター位置が浮かないようにする。 */
+/* 固定ヘッダー（--header-height）を引いた高さを最低限確保し、
+   内容が短くてもフッター位置が浮かないようにする。 */
 .main {
-  min-height: calc(100vh - 4.25rem);
+  min-height: calc(100vh - var(--header-height));
 }
 
 /* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。 */
 .hero {
   padding: 5.5rem max(1.5rem, calc((100vw - 1180px) / 2));
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--color-line);
 }
 
 /* 装飾ラベル。等幅フォント＋広い字間で、見出しと区別する。 */
 .eyebrow,
 .sectionTitle span {
-  color: var(--muted);
+  color: var(--color-muted);
   font: 700 0.72rem/1 var(--font-mono);
   letter-spacing: 0.16em;
 }
@@ -37,7 +38,7 @@
 }
 
 .hero h1 em {
-  color: var(--accent);
+  color: var(--color-accent);
   font-family: Georgia, serif;
   font-weight: 400;
 }
@@ -45,7 +46,7 @@
 .hero h1 + p {
   max-width: 580px;
   margin-top: 1.75rem;
-  color: var(--muted);
+  color: var(--color-muted);
   font-size: 1rem;
 }
 
@@ -53,16 +54,16 @@
 .overview {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-line);
 }
 
 .overview div {
   padding: 1rem 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--color-line);
 }
 
 .overview dt {
-  color: var(--muted);
+  color: var(--color-muted);
   font: 700 0.62rem var(--font-mono);
   letter-spacing: 0.12em;
 }
@@ -86,29 +87,29 @@
 }
 
 .sectionTitle p {
-  color: var(--muted);
+  color: var(--color-muted);
   font-size: 0.78rem;
 }
 
-/* カードを2列に並べる。枠線は上と左だけ引き、各カードが右と下を持つことで
-   隣接する線が二重にならないようにしている。 */
+/* カードを2列に並べる。枠線はグリッド側では引かず、各カードが自分で四辺の枠線と
+   角丸を持つ（CheatSheetCard.module.css の .card）。カードはホバーで浮き上がるため、
+   隣接カードとは gap で間を取る。 */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
+  gap: 1.5rem;
 }
 
-/* 追加予定を示すダミー枠。カードと同じ枠線の引き方を踏襲する。 */
+/* 追加予定を示すダミー枠。枠線と角丸はカードと同じ引き方に揃える。 */
 .comingSoon {
   min-height: 250px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
 }
 
 .comingSoon > span {
@@ -116,7 +117,7 @@
 }
 
 .comingSoon strong {
-  color: var(--foreground);
+  color: var(--color-ink);
   font: 700 0.72rem var(--font-mono);
   letter-spacing: 0.15em;
 }
@@ -131,12 +132,12 @@
 .empty {
   padding: 5rem 2rem;
   text-align: center;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-line);
 }
 
 .empty p {
   margin-top: 0.5rem;
-  color: var(--muted);
+  color: var(--color-muted);
 }
 
 /* 狭い画面ではヒーローもカードも1列に落とす。 */

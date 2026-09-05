@@ -2,8 +2,9 @@
 
 /* 常に最前面に留める。z-index: 40 は他に重なる要素が無いための余裕を持った値。
    背景を半透明にして backdrop-filter でぼかすため、下のコンテンツが透ける。
-   高さは styles.css の scroll-padding-top（104px）と対応しており、
-   ページ内アンカーで飛んだ見出しがこのバーに隠れないようにしている。 */
+   このバーの高さは styles.css の --header-height が唯一の情報源で、
+   下の .inner がそこから 1px（border-bottom ぶん）引いた値を min-height にしている。
+   高さを変えるときは --header-height だけを直すこと。 */
 .header {
   position: sticky;
   z-index: 40;
@@ -19,7 +20,7 @@
   align-items: center;
   justify-content: space-between;
   width: min(1440px, 100%);
-  min-height: 70px;
+  min-height: calc(var(--header-height) - 1px);
   margin: 0 auto;
   padding: 10px 28px;
 }
