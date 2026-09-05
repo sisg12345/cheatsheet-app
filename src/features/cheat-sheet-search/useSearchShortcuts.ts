@@ -28,6 +28,12 @@ export function useSearchShortcuts(
 
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
+      // IME変換中のキーはショートカットとして扱わない。日本語入力ではEscapeが
+      // 変換の取り消しに割り当てられており、ここで拾うと「変換を戻すつもりが
+      // 検索語ごと消えてフォーカスも外れる」ことになる。
+      // keyCode 229 は isComposing を立てない環境向けの保険。
+      if (event.isComposing || event.keyCode === 229) return;
+
       const target = event.target as HTMLElement | null;
       const isTyping = TYPING_TAGS.includes(target?.tagName ?? "");
 
@@ -38,7 +44,7 @@ export function useSearchShortcuts(
         inputRef.current?.focus();
       }
 
-      // Escapeは入力中かどうかに関わらず受け付ける。
+      // Escapeは入力中かどうかに関わらず受け付ける（IME変換中を除く。上のガード参照）。
       // 検索語を消したうえでフォーカスも外し、ページ本文の閲覧に戻す。
       if (event.key === "Escape") {
         onClearRef.current();

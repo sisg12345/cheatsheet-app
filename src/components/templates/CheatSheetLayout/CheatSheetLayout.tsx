@@ -4,7 +4,7 @@
  * 検索語をURLの `?q=` に持たせているため、絞り込んだ状態のURLをそのまま共有でき、
  * リロードや戻る操作でも同じ表示が復元される。
  */
-import { useCallback, useMemo, useRef, type CSSProperties } from "react";
+import { useCallback, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { CheatSheet } from "@/src/cheatsheets/types";
 import { Button } from "@/src/components/atoms/Button/Button";
@@ -21,10 +21,18 @@ interface CheatSheetLayoutProps {
 }
 
 export function CheatSheetLayout({ sheet }: CheatSheetLayoutProps) {
-  // 検索語の置き場はURLのクエリ。useStateと二重に持たないことで、
-  // URL直打ちでの復元と入力欄の表示が必ず一致する。
+  // 検索語はURLの `?q=` に載せて共有・復元できるようにするが、入力欄の value は
+  // ローカルstateが持つ。URLへの反映はルーター経由で1フレーム遅れるため、URLを直接
+  // value にすると打鍵が速いときに文字が落ち、IME変換中は未確定文字列が壊れる
+  // （「めた」と打って「mめめtめた」になる）。
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get("q") ?? "";
+  const urlQuery = searchParams.get("q") ?? "";
+  // URLからは初期値だけを取り、以降は入力欄が真の値を持つ。URLへ書き戻さないのは、
+  // ナビゲーションが非同期で、打鍵が速いと古い値が遅れて届いて入力欄を巻き戻すため。
+  // 書き込みはすべて replace なので同一シート内で履歴は積まれず、戻る/進むでこの
+  // コンポーネントに別の `?q=` が渡ることはない。シートを跨ぐときは App.tsx の
+  // key={sheet.slug} で作り直されるため、そこで初期値を取り直す。
+  const [query, setQueryState] = useState(urlQuery);
   const searchRef = useRef<HTMLInputElement>(null);
 
   // 目次と本文の両方がこの結果を使うため、両者の表示は常に一致する。
@@ -36,12 +44,18 @@ export function CheatSheetLayout({ sheet }: CheatSheetLayoutProps) {
 
   const setQuery = useCallback(
     (value: string) => {
+      // 入力欄はこのstateを value に取るので、まず同期的に更新する。
+      setQueryState(value);
       setSearchParams(
         // 関数形式で既存のクエリを引き継ぎ、qだけを差し替える。
         (previous) => {
           const next = new URLSearchParams(previous);
-          if (value) next.set("q", value);
+          // ここで trim してはいけない。trim後が空だとURLからqが消え、上のuseEffectが
+          // 入力欄を空に戻す。日本語入力はスペースを変換キーに使うため、それだと
+          // 変換が成立しない。空白のみを「検索していない」と見なす判定は
+          // filterCheatSheetSections 側が trim 済みで行う。
           // 空文字なら残さない。`?q=` だけのURLが履歴に残らないようにする。
+          if (value) next.set("q", value);
           else next.delete("q");
           return next;
         },

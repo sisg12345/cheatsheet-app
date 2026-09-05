@@ -137,6 +137,10 @@ kbd {
    scroll-padding-top も不要になるため0に戻す。 */
 @media print {
   :root {
+    /* ダークテーマのまま印刷したとき、UAが描く部分（フォームのコントロールなど）が
+       暗いままにならないよう、配色スキームも明側に戻す。 */
+    color-scheme: light;
+
     --color-canvas: #fff;
     --color-surface: #fff;
     --color-surface-raised: #fff;

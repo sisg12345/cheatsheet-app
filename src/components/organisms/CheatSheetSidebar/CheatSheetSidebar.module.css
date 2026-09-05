@@ -64,9 +64,12 @@
   color: var(--color-accent-strong);
 }
 
-/* 狭い画面では追従をやめ、横スクロールする1行の目次にする。
-   position: static に戻さないと、本文の上に居座ってしまう。 */
-@media (width <= 980px) {
+/* 1段組に落ちたら追従をやめ、横スクロールする1行の目次にする。
+   position: static に戻さないと、本文の上に居座ってしまう。
+   境界は CheatSheetLayout.module.css の .content が2カラムをやめる 820px と
+   必ず揃えること。ずれると、2カラムのまま230pxの列に横スクロールの目次が
+   押し込まれる幅ができる。 */
+@media (width <= 820px) {
   .sidebar {
     position: static;
     display: flex;

@@ -89,3 +89,13 @@
     flex-direction: column;
   }
 }
+
+/* 印刷時は検索欄ごと出さない。紙の上では入力できず、空の入力欄と `/` キーの
+   表示だけが残ってしまうため。
+   このブロックは必ずファイル末尾に置くこと。.group の display 指定と詳細度が同じなので、
+   前に置くと後続の `display: flex` に打ち消される。 */
+@media print {
+  .group {
+    display: none;
+  }
+}
