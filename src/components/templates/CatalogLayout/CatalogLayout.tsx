@@ -94,7 +94,7 @@ export function CatalogLayout({ sheets }: CatalogLayoutProps) {
 
             {/* 予告カードは検索中には出さない。検索結果に一致しない枠が混ざると、
                 絞り込みの件数表示と見た目が食い違うため。 */}
-            {!query ? (
+            {!query.trim() ? (
               <article className={styles.comingSoon}>
                 <span>03+</span>
                 <div>

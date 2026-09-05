@@ -2,7 +2,7 @@
    --sheet-accent は tsx がインラインで渡すシート固有色で、ここでは既定値を置いている。 */
 
 .main {
-  min-height: calc(100vh - 4.25rem);
+  min-height: calc(100vh - var(--header-height));
 
   --sheet-accent: var(--color-accent);
 }

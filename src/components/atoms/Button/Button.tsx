@@ -21,8 +21,10 @@ export function Button({
   type = "button",
   ...props
 }: ButtonProps) {
-  // 受け取ったclassNameは最後に連結する。CSS Modulesの定義順ではなく
-  // 記述順で後勝ちになるため、呼び出し側から個別に上書きできる。
+  // 受け取ったclassNameは最後に連結する。ただしclass属性の並び順はカスケードに影響しない
+  // （効くのは詳細度と、次にスタイルシートの読み込み順）。単一クラス同士で上書きしたい
+  // ときは、呼び出し側が詳細度を上げること。CodeBlock が `.copy button` という子孫
+  // セレクタでButtonの配色を上書きしているのがその例。
   // 残りのpropsはそのままspreadし、標準属性を素通しさせる。
   return (
     <button

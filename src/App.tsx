@@ -18,7 +18,8 @@ function CheatSheetPage() {
   const { slug = "" } = useParams();
   const sheet = getCheatSheet(slug);
   // key を付けることで、シートを切り替えたときに CheatSheetLayout を作り直す。
-  // 前のシートの検索状態やスクロール位置を引きずらないため。
+  // 検索語はURLの ?q= が持つので遷移時に自然に切り替わるが、将来ローカルstateや
+  // useRef を足したときに前のシートの状態が残らないようにしておく。
   return sheet ? <CheatSheetLayout key={sheet.slug} sheet={sheet} /> : <NotFound />;
 }
 

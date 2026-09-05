@@ -41,7 +41,8 @@ export function ThemeToggle() {
   };
 
   // aria-labelには「切り替え先」を入れる。表示中のテーマ名ではなく操作結果を読み上げるため。
-  // アイコンは装飾なので aria-hidden にし、隣のテキストだけを読ませる。
+  // aria-label はボタン配下のテキストをすべて置き換えるので、読み上げられるのはこの文言だけ。
+  // アイコンの aria-hidden は、支援技術以外（読み上げ以外の抽出）で記号が拾われないための保険。
   return (
     <Button
       variant="ghost"

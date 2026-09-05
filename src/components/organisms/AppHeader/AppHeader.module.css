@@ -74,7 +74,8 @@
    ロゴ・一覧リンク・テーマ切り替えだけを残す。 */
 @media (width <= 640px) {
   .inner {
-    min-height: 62px;
+    /* 高さは styles.css が --header-height をこの境界で 63px に差し替えるため、
+       .inner 側の min-height 指定（--header-height - 1px）がそのまま追従する。 */
     padding: 8px 14px;
   }
 

@@ -35,6 +35,15 @@
   --header-height: 71px;
 }
 
+/* 狭い画面ではヘッダーが縮む（AppHeader の @media (width <= 640px) と同じ境界）。
+   高さの実体はここだけで持ち、.inner・scroll-padding-top・各レイアウトの
+   min-height はすべてこのトークンから導出する。 */
+@media (width <= 640px) {
+  :root {
+    --header-height: 63px;
+  }
+}
+
 /* ダークテーマ。data-theme は index.html の初期化スクリプトと ThemeToggle が付け替える。
    ここで上書きしないトークン（角丸・フォント・一部の色）はライトの値を引き継ぐ。 */
 [data-theme="dark"] {
