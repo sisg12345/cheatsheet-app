@@ -15,8 +15,6 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { CheatSheet } from "@/src/cheatsheets/types";
-import { Button } from "@/src/components/atoms/Button/Button";
-import { PrintFilterNote } from "@/src/components/molecules/PrintFilterNote/PrintFilterNote";
 import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetSection } from "@/src/components/organisms/CheatSheetSection/CheatSheetSection";
 import { CheatSheetSidebar } from "@/src/components/organisms/CheatSheetSidebar/CheatSheetSidebar";
@@ -200,21 +198,13 @@ export function CheatSheetLayout({ sheet }: CheatSheetLayoutProps) {
   // シート固有色をCSS変数として配下に流し込む（見出し・枠線・リンク色が切り替わる）。
   return (
     <main className={styles.main} style={{ "--sheet-accent": sheet.accent } as CSSProperties}>
-      {/* hero: シート名、印刷ボタン、シート内検索 */}
+      {/* hero: シート名とシート内検索 */}
       <header className={styles.hero}>
         <div className={styles.eyebrow}>{sheet.eyebrow} / CHEAT SHEET</div>
         <div className={styles.heading}>
-          <div>
-            <span className={styles.monogram}>{sheet.shortTitle}</span>
-            <h1>{sheet.title}</h1>
-            <p>{sheet.description}</p>
-          </div>
-          <div className={styles.actions}>
-            {/* 印刷用のCSS（@media print）で、ヘッダー・目次・操作ボタンを落として紙面を整える。 */}
-            <Button onClick={() => window.print()} variant="outline">
-              印刷 / PDF保存
-            </Button>
-          </div>
+          <span className={styles.monogram}>{sheet.shortTitle}</span>
+          <h1>{sheet.title}</h1>
+          <p>{sheet.description}</p>
         </div>
         <SearchBox
           ref={searchRef}
@@ -222,13 +212,6 @@ export function CheatSheetLayout({ sheet }: CheatSheetLayoutProps) {
           onChange={setQuery}
           placeholder="構文、説明、キーワードを検索"
           resultLabel={`${filteredSections.length} セクション / ${visibleItems} 項目`}
-        />
-
-        {/* 検索欄は紙面では消えるので、絞り込んだまま印刷したときに
-            「これは抜粋である」と分かる手がかりを残す。 */}
-        <PrintFilterNote
-          query={query}
-          detail={`${filteredSections.length} セクション・${visibleItems} 項目`}
         />
       </header>
 

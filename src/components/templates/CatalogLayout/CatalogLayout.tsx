@@ -6,7 +6,6 @@
  */
 import { useMemo, useRef, useState } from "react";
 import type { CheatSheetSummary } from "@/src/cheatsheets/types";
-import { PrintFilterNote } from "@/src/components/molecules/PrintFilterNote/PrintFilterNote";
 import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetCard } from "@/src/components/organisms/CheatSheetCard/CheatSheetCard";
 import { useSearchShortcuts } from "@/src/features/cheat-sheet-search/useSearchShortcuts";
@@ -78,13 +77,6 @@ export function CatalogLayout({ sheets }: CatalogLayoutProps) {
           onChange={setQuery}
           placeholder="HTML、Git、コマンドを検索"
           resultLabel={`${visibleSheets.length} 件のチートシート`}
-        />
-
-        {/* 上の収録数は絞り込みに関わらず総数を出しているので、絞り込んだまま
-            印刷すると「一部だけ」と分からない。 */}
-        <PrintFilterNote
-          query={query}
-          detail={`${visibleSheets.length} 件 / ${sheets.length} 件中`}
         />
       </section>
 

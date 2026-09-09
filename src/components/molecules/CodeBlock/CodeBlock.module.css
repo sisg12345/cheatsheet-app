@@ -11,7 +11,7 @@
   padding: 14px 92px 14px 15px;
   overflow-x: auto;
   border: 1px solid color-mix(in srgb, var(--color-code-ink) 12%, transparent);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--color-code);
   color: var(--color-code-ink);
 }
@@ -45,18 +45,4 @@
 /* 項目一覧に並べるときの詰めた表示。左右の padding は基本形のまま使う。 */
 .compact {
   padding-block: 10px;
-}
-
-/* 印刷時はコピーボタンを出さない。紙の上では押せないうえ、白系をハードコード
-   しているため、白背景に差し替わった紙面では文字が見えなくなる。 */
-@media print {
-  .copy {
-    display: none;
-  }
-
-  /* ボタンを出さないので、その逃げに取ってあった右パディングも戻す。
-     残したままだと、紙面の狭いコード列で余白ぶん余計に折り返す。 */
-  .wrapper {
-    padding-right: 15px;
-  }
 }

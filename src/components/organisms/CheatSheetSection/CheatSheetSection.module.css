@@ -1,11 +1,11 @@
 /* CheatSheetSection のスタイル。見出し（.header）と項目一覧（.items）を
    1枚のカードにまとめる。 */
 
-/* セクションの外枠。overflow: hidden で、角丸から項目の境界線がはみ出さないようにする。 */
+/* セクションの外枠。項目は内側に角丸の面として並べるので、外枠の overflow は不要。 */
 .section {
-  overflow: hidden;
+  padding: 10px;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
 }
@@ -17,8 +17,7 @@
   grid-template-columns: 42px minmax(0, 1fr) auto;
   gap: 13px;
   align-items: start;
-  padding: 20px 22px 16px;
-  border-bottom: 1px solid var(--color-line);
+  padding: 16px 14px 18px;
 }
 
 /* 通し番号のバッジ。 */
@@ -27,7 +26,7 @@
   width: 38px;
   height: 38px;
   place-items: center;
-  border-radius: 11px;
+  border-radius: var(--radius-pill);
   background: var(--color-accent-soft);
   color: var(--color-accent-strong);
   font-family: var(--font-mono);
@@ -55,9 +54,11 @@
   letter-spacing: 0.08em;
 }
 
-/* 項目一覧。 */
+/* 項目一覧。行を罫線で仕切らず、角丸の面を隙間なく積む。
+   区切りは面の色と余白が担うので、表組みらしさが出ない。 */
 .items {
   display: grid;
+  gap: 4px;
 }
 
 /* 項目1行。見出し・説明・コードの3カラム。minmax の下限で、
@@ -67,17 +68,14 @@
   grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1.15fr) minmax(280px, 1.5fr);
   gap: 16px;
   align-items: center;
-  padding: 13px 18px;
-  border-bottom: 1px solid var(--color-line);
-}
-
-/* 最終行の境界線はカード下端と重なるので消す。 */
-.item:last-child {
-  border-bottom: 0;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-canvas);
+  transition: background 140ms ease;
 }
 
 .item:hover {
-  background: color-mix(in srgb, var(--color-accent-soft) 42%, transparent);
+  background: color-mix(in srgb, var(--color-accent-soft) 60%, var(--color-canvas));
 }
 
 /* 見出しとバッジ。入りきらないときは折り返す。 */
@@ -131,18 +129,5 @@
 
   .count {
     display: none;
-  }
-}
-
-/* 印刷時はセクションをページ跨ぎさせず、影を消して3カラムのまま詰める。 */
-@media print {
-  .section {
-    break-inside: avoid;
-    box-shadow: none;
-  }
-
-  .item {
-    grid-template-columns: 1fr 1.2fr 1.5fr;
-    padding: 8px;
   }
 }

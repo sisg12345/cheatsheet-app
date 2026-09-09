@@ -13,11 +13,7 @@ import { expect, test } from "@playwright/test";
 
 const SHEET = "/cheatsheets/html";
 
-/**
- * 検索欄の右に出る件数表示。絞り込みが実際に効いたかはこの文言で見る。
- * 印刷用の断り書き（CheatSheetLayout の printFilterNote）とは表記を分けてあるので、
- * このパターンは1要素だけに一致する。
- */
+/** 検索欄の右に出る件数表示。絞り込みが実際に効いたかはこの文言で見る。 */
 function resultLabel(page: import("@playwright/test").Page) {
   return page.getByText(/\d+ セクション \/ \d+ 項目/);
 }
@@ -299,22 +295,6 @@ test("履歴の書き込みが拒否されても、打った文字が巻き戻�
 
   await expect(page.getByRole("searchbox")).toHaveValue("format");
   await expect(page).toHaveURL(/\?q=for$/);
-});
-
-test("印刷時は検索欄が消え、絞り込み中だけ断り書きが出る", async ({ page }) => {
-  const note = page.getByText(/絞り込んだ抜粋です/);
-
-  await page.goto(SHEET);
-  await page.emulateMedia({ media: "print" });
-  await expect(page.getByRole("searchbox")).toBeHidden();
-  await expect(note).toHaveCount(0);
-
-  await page.emulateMedia({ media: "screen" });
-  await page.getByRole("searchbox").fill("form");
-  await page.emulateMedia({ media: "print" });
-  await expect(note).toBeVisible();
-  await expect(note).toContainText("「form」で絞り込んだ抜粋です");
-  await expect(note).toContainText("2 セクション");
 });
 
 for (const inputBeforeEnd of [true, false]) {

@@ -21,11 +21,17 @@
   --color-safe: #067552;
   --color-warning: #9b5a00;
   --color-danger: #b42318;
-  --shadow-sm: 0 8px 24px rgb(20 40 63 / 8%);
-  --shadow-lg: 0 24px 70px rgb(20 40 63 / 14%);
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 26px;
+
+  /* 影は淡く広く。輪郭ではなく「浮き」だけを担わせ、面の区切りは角丸と罫線で作る。 */
+  --shadow-sm: 0 2px 6px rgb(20 40 63 / 4%), 0 10px 30px rgb(20 40 63 / 6%);
+  --shadow-lg: 0 4px 12px rgb(20 40 63 / 5%), 0 28px 64px rgb(20 40 63 / 12%);
+
+  /* 角丸。小さい面ほど相対的に丸く見えるよう、下の段ほど比率を強めている。
+     pill は高さの半分以上を指定して、両端を完全な半円にするためのもの。 */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
   --font-sans: inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", meiryo, sans-serif;
   --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
 
@@ -60,8 +66,8 @@
   --color-accent-soft: #3a241f;
   --color-navy: #dbe9ff;
   --color-code: #091015;
-  --shadow-sm: 0 8px 24px rgb(0 0 0 / 22%);
-  --shadow-lg: 0 24px 70px rgb(0 0 0 / 34%);
+  --shadow-sm: 0 2px 6px rgb(0 0 0 / 24%), 0 10px 30px rgb(0 0 0 / 28%);
+  --shadow-lg: 0 4px 12px rgb(0 0 0 / 26%), 0 28px 64px rgb(0 0 0 / 40%);
 }
 
 /* ここから素の要素への調整。 */
@@ -124,36 +130,4 @@ kbd {
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
-}
-
-/* 印刷・PDF保存時は面と文字のトークンを白黒に差し替える。各コンポーネント側は
-   var(--color-*) を参照しているだけなので、ここの上書きが紙面全体に伝わる。
-
-   コード欄も必ず上書きすること。既定は濃い背景＋ほぼ白の文字で、ブラウザの印刷は
-   「背景グラフィックOFF」が既定のため、背景だけが落ちて白い紙に白い文字が残る。
-
-   アクセント色と状態色（accent / danger / warning / safe）はあえて残している。
-   白紙の上でも視認でき、カラー印刷では危険度の区別が保てるため。
-   scroll-padding-top も不要になるため0に戻す。 */
-@media print {
-  :root {
-    /* ダークテーマのまま印刷したとき、UAが描く部分（フォームのコントロールなど）が
-       暗いままにならないよう、配色スキームも明側に戻す。 */
-    color-scheme: light;
-
-    --color-canvas: #fff;
-    --color-surface: #fff;
-    --color-surface-raised: #fff;
-    --color-ink: #000;
-    --color-muted: #333;
-    --color-line: #bbb;
-    --color-code: #fff;
-    --color-code-ink: #000;
-    --shadow-sm: none;
-    --shadow-lg: none;
-  }
-
-  html {
-    scroll-padding-top: 0;
-  }
 }

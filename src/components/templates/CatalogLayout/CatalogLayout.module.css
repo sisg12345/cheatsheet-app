@@ -6,10 +6,10 @@
   min-height: calc(100vh - var(--header-height));
 }
 
-/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。 */
+/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。
+   下端の罫線は引かない。カード一覧側を別の面色にして、境目は色の変化で見せる。 */
 .hero {
-  padding: 5.5rem max(1.5rem, calc((100vw - 1180px) / 2));
-  border-bottom: 1px solid var(--color-line);
+  padding: 3.6rem max(1.5rem, calc((100vw - 1180px) / 2)) 2.8rem;
 }
 
 /* 装飾ラベル。等幅フォント＋広い字間で、見出しと区別する。 */
@@ -23,18 +23,19 @@
 /* キャッチコピーと収録数を左右に置く。下端を揃えるため align-items: end。 */
 .heroGrid {
   display: grid;
-  grid-template-columns: 1.7fr 1fr;
-  gap: 5rem;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 3rem;
   align-items: end;
-  margin: 1.5rem 0 3.5rem;
+  margin: 1.1rem 0 2rem;
 }
 
-/* 見出しは clamp で 3.2rem〜6.6rem。line-height を1未満まで詰めて塊として見せる。 */
+/* 見出しは clamp で 2.9rem〜5.4rem。line-height を1未満まで詰めて塊として見せる。 */
 .hero h1 {
   max-width: 800px;
-  font-size: clamp(3.2rem, 7vw, 6.6rem);
-  line-height: 0.94;
-  letter-spacing: -0.065em;
+  margin: 0;
+  font-size: clamp(2.9rem, 6vw, 5.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
 }
 
 .hero h1 em {
@@ -45,21 +46,20 @@
 
 .hero h1 + p {
   max-width: 580px;
-  margin-top: 1.75rem;
+  margin: 1.1rem 0 0;
   color: var(--color-muted);
   font-size: 1rem;
 }
 
-/* 収録数の3項目。 */
+/* 収録数の3項目。罫線で挟むのをやめ、角丸の面にまとめて他の要素と丸みを揃える。 */
 .overview {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--color-line);
-}
-
-.overview div {
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--color-line);
+  gap: 0.75rem;
+  padding: 1.15rem 1.35rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
 }
 
 .overview dt {
@@ -75,7 +75,7 @@
 
 /* カード一覧ブロック。 */
 .catalog {
-  padding: 3.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 7rem;
+  padding: 1.4rem max(1.5rem, calc((100vw - 1180px) / 2)) 5rem;
 }
 
 /* INDEX の見出し行。 */
@@ -133,6 +133,8 @@
   padding: 5rem 2rem;
   text-align: center;
   border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
 }
 
 .empty p {

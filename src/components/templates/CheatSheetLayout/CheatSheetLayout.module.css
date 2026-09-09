@@ -7,10 +7,10 @@
   --sheet-accent: var(--color-accent);
 }
 
-/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。 */
+/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。
+   下端の罫線は引かない。本文側を別の面色にして、境目は色の変化で見せる。 */
 .hero {
-  padding: 4.5rem max(1.5rem, calc((100vw - 1180px) / 2)) 3rem;
-  border-bottom: 1px solid var(--color-line);
+  padding: 3.2rem max(1.5rem, calc((100vw - 1180px) / 2)) 2.4rem;
 }
 
 /* カテゴリ表示の装飾ラベル。 */
@@ -20,54 +20,53 @@
   letter-spacing: 0.15em;
 }
 
-/* タイトル群と操作ボタンを左右に置く。 */
+/* タイトル群。短縮名を背景の意匠として重ねるので、位置の基準になる。
+   padding-top はその短縮名を置くぶんの逃げ。 */
 .heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 3rem;
-  align-items: end;
-  margin: 1.2rem 0 3rem;
-}
-
-.heading > div:first-child {
   position: relative;
+  margin: 0.6rem 0 1.8rem;
+  padding-top: 2.8rem;
 }
 
-/* 短縮名。シート色で目印にする。 */
+/* 短縮名。シート色の透かしとして見出しの背後に敷く。
+   流し込みから外して絶対配置にすることで、見出しの位置を負のマージンで
+   引き戻さずに済み、余白が読みやすくなる。 */
 .monogram {
-  display: block;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: -0.06em;
   color: var(--sheet-accent);
   font: 800 clamp(4rem, 9vw, 8rem)/0.8 var(--font-mono);
   letter-spacing: -0.08em;
-  opacity: 0.18;
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
 }
 
 .heading h1 {
-  margin-top: -1.5rem;
-  font-size: clamp(2.6rem, 5vw, 4.8rem);
-  letter-spacing: -0.055em;
+  margin: 0;
+  font-size: clamp(2.4rem, 4.4vw, 4.2rem);
+  letter-spacing: -0.045em;
+  line-height: 1.08;
 }
 
 .heading p {
   max-width: 650px;
-  margin-top: 1rem;
+  margin: 0.9rem 0 0;
   color: var(--color-muted);
 }
 
-/* 印刷ボタン。伸縮させず、タイトル側に幅を譲る。 */
-.actions {
-  flex: 0 0 auto;
-}
-
 /* 目次（固定230px）と本文の2カラム。本文側を minmax(0, 1fr) にして、
-   長いコード行があっても列が広がらないようにしている。 */
+   長いコード行があっても列が広がらないようにしている。
+   ヒーローとの境目は罫線ではなく、この面色の変化で見せる。 */
 .content {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
-  gap: 4rem;
+  gap: 2.5rem;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 3.5rem 1.5rem 6rem;
+  padding: 2.6rem 1.5rem 6rem;
 }
 
 /* grid の子として、はみ出すコードで列幅が押し広げられるのを防ぐ。 */
@@ -80,6 +79,8 @@
   padding: 5rem 2rem;
   text-align: center;
   border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
 }
 
 .empty p {
@@ -121,11 +122,6 @@
 
 /* 狭い画面では見出しも本文も縦積みにする。 */
 @media (width <= 820px) {
-  .heading {
-    align-items: start;
-    flex-direction: column;
-  }
-
   .content {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -133,25 +129,5 @@
 
   .footer {
     flex-direction: column;
-  }
-}
-
-/* 印刷時は操作ボタンを消し、2カラムをやめて1段組にする。
-   出典は本文の続きに紛れないよう改ページしてから出す。 */
-@media print {
-  .hero {
-    padding-top: 2rem;
-  }
-
-  .actions {
-    display: none;
-  }
-
-  .content {
-    display: block;
-  }
-
-  .footer {
-    break-before: page;
   }
 }

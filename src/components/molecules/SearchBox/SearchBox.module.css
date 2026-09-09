@@ -21,7 +21,7 @@
   min-height: 50px;
   padding: 11px 48px 11px 44px;
   border: 1px solid var(--color-line);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 
   /* 既定のフォーカスリングは消すが、下の :focus で枠線と影を付けて代替している。 */
   outline: none;
@@ -53,7 +53,7 @@
   right: 14px;
   padding: 2px 7px;
   border: 1px solid var(--color-line);
-  border-radius: 6px;
+  border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-muted);
   font-size: 0.72rem;
@@ -87,17 +87,5 @@
   .group {
     align-items: stretch;
     flex-direction: column;
-  }
-}
-
-/* 印刷時は検索欄ごと出さない。紙の上では入力できず、空の入力欄と `/` キーの表示、
-   および操作前提の件数表示だけが残ってしまうため。
-   このmoleculeは一覧ページとシートページの両方で使うので、ここでは共通の既定だけを
-   決める。絞り込んだ状態を紙面に残すのはページ側の役目で、どちらのページも
-   PrintFilterNote を置いて印刷専用の断り書きを出している。
-   .group の display 指定と詳細度が同じなので、このブロックは必ず末尾に置くこと。 */
-@media print {
-  .group {
-    display: none;
   }
 }
