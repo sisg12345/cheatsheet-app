@@ -1,6 +1,7 @@
 /**
  * 検索入力欄。入力値は持たず、value と onChange を親から受け取る制御コンポーネント。
- * 一覧ページとシートページで、状態の持ち方（useState / URLクエリ）を変えて使い回している。
+ * 一覧ページとシートページで使い回す。どちらも値はローカルstateで持ち、シートページは
+ * それをURLの `?q=` とも同期させている（CheatSheetLayout を参照）。
  */
 import { useId, type Ref } from "react";
 import styles from "./SearchBox.module.css";
@@ -8,8 +9,14 @@ import styles from "./SearchBox.module.css";
 interface SearchBoxProps {
   /** 現在の検索語。 */
   value: string;
-  /** 入力のたびに呼ばれる。入力値そのものが渡る。 */
-  onChange: (value: string) => void;
+  /**
+   * 入力のたびに呼ばれる。入力値そのものが渡る。
+   *
+   * `isComposing` は IME変換の未確定中かどうか。日本語入力では確定前のローマ字にも
+   * 入力イベントが飛ぶため、URLの書き換えのように回数が問題になる処理を親が
+   * 間引けるようにしている。表示に使う値は変換中でも常に渡す。
+   */
+  onChange: (value: string, isComposing: boolean) => void;
   /** 入力欄のプレースホルダ。 */
   placeholder?: string;
   /** 右側に出す件数表示。省略すると表示されない。 */
@@ -49,7 +56,16 @@ export function SearchBox({
           id={inputId}
           type="search"
           value={value}
-          onChange={(event) => onChange(event.target.value)}
+          onChange={(event) => {
+            // React の onChange は input イベントを束ねたもの。変換中かどうかは
+            // ネイティブイベント側にしか無いので、InputEvent へ絞って読む。
+            const native = event.nativeEvent;
+            onChange(event.target.value, native instanceof InputEvent && native.isComposing);
+          }}
+          // 確定時に必ず1回、変換中でない扱いで通知する。確定直前の input イベントに
+          // isComposing が立ったままの環境があり、それだけに頼ると確定後の値が
+          // 親へ「確定済み」として届かないため。
+          onCompositionEnd={(event) => onChange(event.currentTarget.value, false)}
           placeholder={placeholder}
           autoComplete="off"
         />

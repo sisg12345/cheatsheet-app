@@ -1,0 +1,15 @@
+/* 絞り込み中であることの断り書き。画面では検索欄が同じ情報を出しているので隠し、
+   検索欄が消える印刷時にだけ見せる。 */
+
+.note {
+  display: none;
+}
+
+@media print {
+  .note {
+    display: block;
+    margin: 0.75rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+}

@@ -31,8 +31,11 @@ export function useSearchShortcuts(
       // IME変換中のキーはショートカットとして扱わない。日本語入力ではEscapeが
       // 変換の取り消しに割り当てられており、ここで拾うと「変換を戻すつもりが
       // 検索語ごと消えてフォーカスも外れる」ことになる。
-      // keyCode 229 は isComposing を立てない環境向けの保険。
-      if (event.isComposing || event.keyCode === 229) return;
+      //
+      // keyCode 229 は見ない。Androidのソフトキーボードは変換中かどうかに関わらず
+      // すべての keydown を 229 で報告するため、それを弾くと外付けキーボードを
+      // 繋いだ環境で `/` と Escape が永久に効かなくなる。
+      if (event.isComposing) return;
 
       const target = event.target as HTMLElement | null;
       const isTyping = TYPING_TAGS.includes(target?.tagName ?? "");
