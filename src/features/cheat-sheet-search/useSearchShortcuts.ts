@@ -1,18 +1,11 @@
-/**
- * 検索欄のキーボードショートカットを提供するフック。
- * 一覧ページ（CatalogLayout）とシートページ（CheatSheetLayout）が共通で使う。
- */
 import { useEffect, useRef, type RefObject } from "react";
 
-/** この要素にフォーカスがあるときは入力中とみなし、`/` をショートカットに使わない。 */
+/** ここにフォーカスがあるときは入力中とみなし、`/` をショートカットに使わない。 */
 const TYPING_TAGS = ["INPUT", "TEXTAREA", "SELECT"];
 
 /**
  * `/` で検索欄へフォーカスし、Escape で検索語をクリアする。
- * 一覧ページと個別シートで共通のショートカット。
- *
- * onClear は毎レンダー新しい関数でも構わない。最新の関数をrefで保持し、
- * keydownリスナーの再登録が起きないようにしている。
+ * onClear は毎レンダー新しい関数でも構わない（refで保持しリスナーを張り直さない）。
  */
 export function useSearchShortcuts(
   inputRef: RefObject<HTMLInputElement | null>,
@@ -20,35 +13,27 @@ export function useSearchShortcuts(
 ) {
   const onClearRef = useRef(onClear);
 
-  // 毎レンダーで最新のonClearをrefへ移す。読み出しはリスナー内だけなので、
-  // ここでrefを更新してもリスナーの再登録は起きない。
   useEffect(() => {
     onClearRef.current = onClear;
   }, [onClear]);
 
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
-      // IME変換中のキーはショートカットとして扱わない。日本語入力ではEscapeが
-      // 変換の取り消しに割り当てられており、ここで拾うと「変換を戻すつもりが
-      // 検索語ごと消えてフォーカスも外れる」ことになる。
-      //
-      // keyCode 229 は見ない。Androidのソフトキーボードは変換中かどうかに関わらず
-      // すべての keydown を 229 で報告するため、それを弾くと外付けキーボードを
-      // 繋いだ環境で `/` と Escape が永久に効かなくなる。
+      // 日本語入力ではEscapeが変換の取り消しなので、ここで拾うと検索語ごと消えてしまう。
+      // keyCode 229 は見ない。Androidのソフトキーボードは変換中でなくても全keydownを
+      // 229 で報告するため、弾くと外付けキーボードで `/` と Escape が効かなくなる。
       if (event.isComposing) return;
 
       const target = event.target as HTMLElement | null;
       const isTyping = TYPING_TAGS.includes(target?.tagName ?? "");
 
-      // 入力中でなければ `/` を検索欄へのジャンプに使う。
-      // preventDefaultしないと、フォーカス後の入力欄に `/` が1文字入ってしまう。
+      // preventDefault しないと、フォーカス後の入力欄に `/` が1文字入る。
       if (event.key === "/" && !isTyping) {
         event.preventDefault();
         inputRef.current?.focus();
       }
 
-      // Escapeは入力中かどうかに関わらず受け付ける（IME変換中を除く。上のガード参照）。
-      // 検索語を消したうえでフォーカスも外し、ページ本文の閲覧に戻す。
+      // Escapeは入力中かどうかに関わらず受け付ける。
       if (event.key === "Escape") {
         onClearRef.current();
         inputRef.current?.blur();

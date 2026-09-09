@@ -1,58 +1,28 @@
-/**
- * ルーティングと画面の骨組み。
- *
- * ヘッダーは Routes の外側に置いてあるため、ページ遷移しても再マウントされない
- * （テーマ切り替えの状態が遷移のたびに初期化されるのを避けている）。
- */
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import { cheatSheetSummaries, getCheatSheet } from "@/src/cheatsheets/registry";
 import { AppHeader } from "@/src/components/organisms/AppHeader/AppHeader";
-import { CatalogLayout } from "@/src/components/templates/CatalogLayout/CatalogLayout";
-import { CheatSheetLayout } from "@/src/components/templates/CheatSheetLayout/CheatSheetLayout";
+import { CatalogPage } from "@/src/pages/CatalogPage/CatalogPage";
+import { CheatSheetPage } from "@/src/pages/CheatSheetPage/CheatSheetPage";
+import { NotFoundPage } from "@/src/pages/NotFoundPage/NotFoundPage";
 
-/**
- * URLの :slug からシートを解決する。
- * registry に無い slug は undefined が返るので、そのまま404表示に落とす。
- */
-function CheatSheetPage() {
+function CheatSheetRoute() {
   const { slug = "" } = useParams();
   const sheet = getCheatSheet(slug);
-  // key を付けることで、シートを切り替えたときに CheatSheetLayout を作り直す。
-  // 検索語はローカルstateで持ちつつURLから取り直すので、key が無くても表示自体は
-  // 追随する。それでも付けているのは、シートごとに持つ状態（検索語、取り込み済みの
-  // 値、入力欄への参照）をシートの切り替わりでまとめて捨てられるようにするため。
-  // 状態が増えたときに「前のシートの値が残っていないか」を都度考えずに済む。
-  return sheet ? <CheatSheetLayout key={sheet.slug} sheet={sheet} /> : <NotFound />;
-}
 
-/** 404表示。専用のCSS Modulesを持たないので、スタイルはインラインで完結させている。 */
-function NotFound() {
-  return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: "8rem 1.5rem" }}>
-      <p style={{ color: "var(--color-muted)", fontFamily: "var(--font-mono)" }}>404 / NOT FOUND</p>
-      <h1 style={{ marginTop: "1rem", fontSize: "clamp(2.5rem, 7vw, 5rem)" }}>
-        ページが見つかりません
-      </h1>
-      <p style={{ margin: "1.5rem 0", color: "var(--color-muted)" }}>
-        URLを確認するか、一覧からチートシートを選択してください。
-      </p>
-      <Link to="/" style={{ color: "var(--color-accent)", fontWeight: 700 }}>
-        ← チートシート一覧へ
-      </Link>
-    </main>
-  );
+  // key でシートごとに作り直す。検索語はURLからも取り直すので表示自体は key なしでも
+  // 追随するが、シート固有の状態をまとめて捨てられるほうが後から状態を足しやすい。
+  return sheet ? <CheatSheetPage key={sheet.slug} sheet={sheet} /> : <NotFoundPage />;
 }
 
 export default function App() {
-  // シートごとのルートは切らず、:slug ひとつで受けて registry に解決させる。
-  // シートを追加しても registry の配列に足すだけで済む。
+  // ヘッダーは Routes の外に置き、ページ遷移で再マウントさせない。
   return (
     <>
       <AppHeader />
       <Routes>
-        <Route path="/" element={<CatalogLayout sheets={cheatSheetSummaries} />} />
-        <Route path="/cheatsheets/:slug" element={<CheatSheetPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<CatalogPage sheets={cheatSheetSummaries} />} />
+        <Route path="/cheatsheets/:slug" element={<CheatSheetRoute />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

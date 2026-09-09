@@ -10,14 +10,14 @@ import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetCard } from "@/src/components/organisms/CheatSheetCard/CheatSheetCard";
 import { useSearchShortcuts } from "@/src/features/cheat-sheet-search/useSearchShortcuts";
 import { includesSearch } from "@/src/lib/normalizeSearch";
-import styles from "./CatalogLayout.module.css";
+import styles from "./CatalogPage.module.css";
 
 interface CatalogLayoutProps {
   /** 表示するシートの一覧。registry の cheatSheetSummaries がそのまま渡る。 */
   sheets: CheatSheetSummary[];
 }
 
-export function CatalogLayout({ sheets }: CatalogLayoutProps) {
+export function CatalogPage({ sheets }: CatalogLayoutProps) {
   // 一覧の検索語はURLに持たせていない。共有する価値が薄く、
   // シートを選べば結果に辿り着けるため（シート内検索は ?q= に持たせている）。
   const [query, setQuery] = useState("");

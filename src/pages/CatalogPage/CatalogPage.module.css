@@ -6,10 +6,8 @@
   min-height: calc(100vh - var(--header-height));
 }
 
-/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。
-   下端の罫線は引かない。カード一覧側を別の面色にして、境目は色の変化で見せる。 */
 .hero {
-  padding: 3.6rem max(1.5rem, calc((100vw - 1180px) / 2)) 2.8rem;
+  padding: var(--space-section) var(--page-padding-x) var(--space-block);
 }
 
 /* 装飾ラベル。等幅フォント＋広い字間で、見出しと区別する。 */
@@ -26,7 +24,7 @@
   grid-template-columns: 1.6fr 1fr;
   gap: 3rem;
   align-items: end;
-  margin: 1.1rem 0 2rem;
+  margin: var(--space-stack) 0 var(--space-block);
 }
 
 /* 見出しは clamp で 2.9rem〜5.4rem。line-height を1未満まで詰めて塊として見せる。 */
@@ -73,9 +71,8 @@
   font: 700 1.1rem var(--font-mono);
 }
 
-/* カード一覧ブロック。 */
 .catalog {
-  padding: 1.4rem max(1.5rem, calc((100vw - 1180px) / 2)) 5rem;
+  padding: 0 var(--page-padding-x) var(--space-section);
 }
 
 /* INDEX の見出し行。 */
@@ -83,7 +80,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 1.2rem;
+  margin-bottom: var(--space-stack);
 }
 
 .sectionTitle p {

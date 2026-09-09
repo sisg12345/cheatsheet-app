@@ -1,14 +1,8 @@
-/**
- * テーマ機能の共有定数。
- *
- * THEME_STORAGE_KEY は index.html の初期化スクリプトにも同じ値がリテラルで
- * 書かれている（描画前に走る必要があり、モジュールを import できないため）。
- * 両者がずれるとテーマの保存が無言で壊れるので、
- * tests/unit/themeBootstrap.test.ts が一致を検証している。
- */
-
-/** 対応するテーマ。`<html data-theme>` の値と一致する。 */
 export type Theme = "light" | "dark";
 
-/** localStorage に選択テーマを保存するキー。index.html と同じ値であること。 */
+/**
+ * index.html の初期化スクリプトにも同じ値がリテラルで書かれている（描画前に走る
+ * 必要がありモジュールをimportできないため）。ずれるとテーマの保存が無言で壊れるので、
+ * tests/unit/themeBootstrap.test.ts が一致を検証している。
+ */
 export const THEME_STORAGE_KEY = "cheatsheet-theme";

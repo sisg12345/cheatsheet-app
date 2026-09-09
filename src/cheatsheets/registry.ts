@@ -1,26 +1,20 @@
 /**
- * 収録シートの一覧と、そこから派生する参照用データ。
- *
- * シートを追加するときは、このファイルの `sheets` 配列に足す。
- * ルーティング（App.tsx）も一覧カードも、以下の派生データから自動的に組み立てられる。
- * ただしヘッダーの直リンクだけは AppHeader.tsx にべた書きなので、そちらも要追加。
+ * シートを追加するときは `sheets` 配列に足す。ルーティングも一覧カードも
+ * 以下の派生データから組み立てられるが、ヘッダーの直リンクだけは
+ * AppHeader.tsx にべた書きなので、そちらも要追加。
  */
 import { gitCheatSheet } from "./git/content";
 import { htmlCheatSheet } from "./html/content";
 import type { CheatSheet, CheatSheetSummary } from "./types";
 
-/** 収録シートの単一の情報源。配列順が一覧の表示順になる。 */
+/** 配列順が一覧の表示順になる。 */
 const sheets = [htmlCheatSheet, gitCheatSheet] as const;
 
-/** slug からシート本体を引くための辞書。ルーティングでの解決に使う。 */
 export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.fromEntries(
   sheets.map((sheet) => [sheet.slug, sheet]),
 );
 
-/**
- * 一覧画面に渡すサマリー。
- * セクション数・項目数はここで集計しておき、カード側では再計算しない。
- */
+/** 件数はここで集計しておき、カード側では再計算しない。 */
 export const cheatSheetSummaries: CheatSheetSummary[] = sheets.map((sheet) => ({
   slug: sheet.slug,
   title: sheet.title,
@@ -34,13 +28,10 @@ export const cheatSheetSummaries: CheatSheetSummary[] = sheets.map((sheet) => ({
 }));
 
 /**
- * slug に対応するシートを返す。未知の slug では `undefined` を返し、
- * 呼び出し側（App.tsx の CheatSheetPage）が 404 表示に落とす。
- *
- * `Object.hasOwn` で自前のキーに限定するのは、`Object.fromEntries` が作る辞書が
- * Object.prototype を継承しており、`constructor` や `toString` といった slug に対して
- * 継承メンバー（truthy）を返してしまうため。素通しすると 404 に落ちず、
- * sections を持たない値で CheatSheetLayout が描画されて白画面になる。
+ * `Object.hasOwn` で自前のキーに限定するのは、`Object.fromEntries` の辞書が
+ * Object.prototype を継承しており、`constructor` などの slug に対して継承メンバー
+ * （truthy）を返すため。素通しすると404に落ちず、sections を持たない値で
+ * 描画されて白画面になる。
  */
 export function getCheatSheet(slug: string): CheatSheet | undefined {
   return Object.hasOwn(cheatSheetRegistry, slug) ? cheatSheetRegistry[slug] : undefined;

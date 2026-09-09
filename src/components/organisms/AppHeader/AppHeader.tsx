@@ -1,7 +1,3 @@
-/**
- * 全ページ共通の固定ヘッダー。ブランドロゴ・主要リンク・テーマ切り替えを並べる。
- * App.tsx が Routes の外側に置いているため、ページ遷移しても再マウントされない。
- */
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/src/features/theme-switch/ThemeToggle";
 import styles from "./AppHeader.module.css";

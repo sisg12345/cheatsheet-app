@@ -1,14 +1,7 @@
-/**
- * ライト／ダークを切り替えるヘッダー内のボタン。
- *
- * 初期テーマの決定（保存値とOS設定の読み取り）は index.html の同期スクリプトが
- * 描画前に済ませている。このコンポーネントは切り替えだけを担当する。
- */
 import { useState } from "react";
 import { Button } from "@/src/components/atoms/Button/Button";
 import { THEME_STORAGE_KEY, type Theme } from "./theme";
 
-/** `<html data-theme>` を書き換えて即座に配色を切り替え、選択を保存する。 */
 function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
   try {
@@ -19,30 +12,24 @@ function applyTheme(theme: Theme) {
 }
 
 /**
- * 現在のテーマをDOMから読む。
- *
- * localStorageやOS設定を読み直さないのは、index.htmlの初期化スクリプトが
- * 既に同じ判定を済ませて data-theme に反映しているため。二重に判定すると
- * 両者がずれたときに表示と保存値が食い違う。
+ * localStorageやOS設定を読み直さないのは、index.html の初期化スクリプトが既に同じ判定を
+ * 済ませて data-theme に反映しているため。二重に判定すると表示と保存値が食い違う。
  */
 function getInitialTheme(): Theme {
   return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 export function ThemeToggle() {
-  // 初期値の計算は初回レンダーのみでよいので、関数を渡す遅延初期化を使う。
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   const toggle = () => {
     const next = theme === "light" ? "dark" : "light";
-    // stateはラベル表示用、applyThemeはDOMと保存用。両方を同じ値で更新する。
     setTheme(next);
     applyTheme(next);
   };
 
-  // aria-labelには「切り替え先」を入れる。表示中のテーマ名ではなく操作結果を読み上げるため。
-  // aria-label はボタン配下のテキストをすべて置き換えるので、読み上げられるのはこの文言だけ。
-  // アイコンの aria-hidden は、支援技術以外（読み上げ以外の抽出）で記号が拾われないための保険。
+  // aria-label には操作結果（切り替え先）を入れる。これがボタン配下のテキストを
+  // すべて置き換えるので、読み上げられるのはこの文言だけになる。
   return (
     <Button
       variant="ghost"

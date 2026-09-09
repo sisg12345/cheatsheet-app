@@ -1,14 +1,10 @@
-/**
- * チートシートページの目次。検索で絞り込まれた後のセクションを受け取るため、
- * 検索中は目次も一致したセクションだけに減る。
- */
 import { Link } from "react-router-dom";
 import type { CheatSheetSection } from "@/src/cheatsheets/types";
 import { formatIndex } from "@/src/lib/formatIndex";
 import styles from "./CheatSheetSidebar.module.css";
 
 interface CheatSheetSidebarProps {
-  /** 目次に並べるセクション。順序と番号は本文側と一致させる。 */
+  /** 順序と番号は本文側と一致させる。 */
   sections: CheatSheetSection[];
 }
 

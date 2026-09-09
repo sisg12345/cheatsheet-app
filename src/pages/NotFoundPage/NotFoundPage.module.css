@@ -1,0 +1,28 @@
+/* 自前で中央寄せするので --page-padding-x は使わない（二重に効いて左に寄る）。 */
+.main {
+  max-width: 44rem;
+  padding: var(--space-section) 1.5rem;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  color: var(--color-muted);
+  font: 700 0.72rem/1 var(--font-mono);
+  letter-spacing: 0.16em;
+}
+
+.main h1 {
+  margin: var(--space-stack) 0 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+}
+
+.main p {
+  margin: var(--space-stack) 0 var(--space-block);
+  color: var(--color-muted);
+}
+
+.back {
+  color: var(--color-accent);
+  font-weight: 700;
+}

@@ -7,10 +7,8 @@
   --sheet-accent: var(--color-accent);
 }
 
-/* 左右の padding は max() で「最低1.5rem、内容は最大1180px幅で中央」を1行で表現している。
-   下端の罫線は引かない。本文側を別の面色にして、境目は色の変化で見せる。 */
 .hero {
-  padding: 3.2rem max(1.5rem, calc((100vw - 1180px) / 2)) 2.4rem;
+  padding: var(--space-section) var(--page-padding-x) var(--space-block);
 }
 
 /* カテゴリ表示の装飾ラベル。 */
@@ -58,19 +56,18 @@
 }
 
 /* 目次（固定230px）と本文の2カラム。本文側を minmax(0, 1fr) にして、
-   長いコード行があっても列が広がらないようにしている。
-   ヒーローとの境目は罫線ではなく、この面色の変化で見せる。 */
+   長いコード行があっても列が広がらないようにする。 */
 .content {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
-  gap: 2.5rem;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 2.6rem 1.5rem 6rem;
+  gap: var(--space-block);
+  padding: 0 var(--page-padding-x) var(--space-section);
 }
 
 /* grid の子として、はみ出すコードで列幅が押し広げられるのを防ぐ。 */
 .sections {
+  display: grid;
+  gap: var(--space-block);
   min-width: 0;
 }
 
@@ -92,8 +89,8 @@
 .footer {
   display: flex;
   justify-content: space-between;
-  gap: 3rem;
-  padding: 2rem max(1.5rem, calc((100vw - 1180px) / 2));
+  gap: var(--space-block);
+  padding: var(--space-block) var(--page-padding-x);
   border-top: 1px solid var(--color-line);
   color: var(--color-muted);
 }

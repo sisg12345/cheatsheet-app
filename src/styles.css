@@ -1,44 +1,49 @@
 /* グローバルスタイル。デザイントークンの定義と、素の要素に対する最低限の調整だけを置く。
    コンポーネント固有のスタイルは各 *.module.css に書き、ここには足さない。 */
 
-/* ライトテーマのトークン。ダークテーマは下の [data-theme="dark"] で同じ名前を上書きするので、
-   使う側は常に var(--color-*) を参照するだけでよい。 */
+/* ダークテーマは [data-theme="dark"] で同じ名前を上書きするので、使う側は常に
+   var(--color-*) を参照するだけでよい。 */
 :root {
   color-scheme: light;
 
-  --color-canvas: #f3f0e9;
-  --color-surface: #fffdf7;
+  --color-canvas: #fff;
+  --color-surface: #fafafa;
   --color-surface-raised: #fff;
-  --color-ink: #17201d;
-  --color-muted: #66716d;
-  --color-line: #d8d4c9;
-  --color-accent: #ff5d35;
-  --color-accent-strong: #d93c18;
-  --color-accent-soft: #ffebe4;
-  --color-navy: #14283f;
-  --color-code: #121d27;
-  --color-code-ink: #eff7f4;
-  --color-safe: #067552;
+  --color-ink: #2f2f32;
+  --color-muted: #737373;
+  --color-line: #e4e4e7;
+  --color-accent: #6063ee;
+  --color-accent-strong: #4d53d9;
+  --color-accent-soft: #eef0ff;
+  --color-code: #1c1c1f;
+  --color-code-ink: #e8e8ea;
   --color-warning: #9b5a00;
   --color-danger: #b42318;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 5%);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 5%), 0 16px 40px rgb(0 0 0 / 9%);
 
-  /* 影は淡く広く。輪郭ではなく「浮き」だけを担わせ、面の区切りは角丸と罫線で作る。 */
-  --shadow-sm: 0 2px 6px rgb(20 40 63 / 4%), 0 10px 30px rgb(20 40 63 / 6%);
-  --shadow-lg: 0 4px 12px rgb(20 40 63 / 5%), 0 28px 64px rgb(20 40 63 / 12%);
-
-  /* 角丸。小さい面ほど相対的に丸く見えるよう、下の段ほど比率を強めている。
-     pill は高さの半分以上を指定して、両端を完全な半円にするためのもの。 */
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 32px;
+  /* 角丸は控えめに。面の区切りは罫線と余白で作り、丸みは輪郭をやわらげるだけに使う。 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
   --radius-pill: 999px;
+
+  /* 縦のリズム。セクション間の余白はこの3段だけを使い、値を散らさない。 */
+  --space-section: 5rem;
+  --space-block: 2.5rem;
+  --space-stack: 1rem;
+
+  /* 内容の最大幅と、それを画面中央に置くための左右 padding。
+     max() で「最低1.5rem、内容は最大 --content-width で中央」を1行で表す。 */
+  --content-width: 1120px;
+  --page-padding-x: max(1.5rem, calc((100vw - var(--content-width)) / 2));
   --font-sans: inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", meiryo, sans-serif;
   --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
 
   /* 固定ヘッダーの実高さ。AppHeader の .inner がこの値から自分の min-height を導き、
-     scroll-padding-top・サイドバーの追従位置・CatalogLayout の min-height も
-     すべてこれを基準に計算する。ヘッダーの高さを変えるときはここだけを直す。 */
-  --header-height: 71px;
+     scroll-padding-top・サイドバーの追従位置・各レイアウトの min-height も
+     すべてこれを基準に計算する。高さを変えるときはここだけを直す。 */
+  --header-height: 64px;
 }
 
 /* 狭い画面ではヘッダーが縮む（AppHeader の @media (width <= 640px) と同じ境界）。
@@ -50,24 +55,26 @@
   }
 }
 
-/* ダークテーマ。data-theme は index.html の初期化スクリプトと ThemeToggle が付け替える。
-   ここで上書きしないトークン（角丸・フォント・一部の色）はライトの値を引き継ぐ。 */
+/* data-theme は index.html の初期化スクリプトと ThemeToggle が付け替える。
+   ここで上書きしないトークン（角丸・余白・フォント）はライトの値を引き継ぐ。 */
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --color-canvas: #0f171c;
-  --color-surface: #151f25;
-  --color-surface-raised: #1a262d;
-  --color-ink: #f2f5f2;
-  --color-muted: #a7b1ad;
-  --color-line: #33434b;
-  --color-accent: #ff7957;
-  --color-accent-strong: #ff997f;
-  --color-accent-soft: #3a241f;
-  --color-navy: #dbe9ff;
-  --color-code: #091015;
-  --shadow-sm: 0 2px 6px rgb(0 0 0 / 24%), 0 10px 30px rgb(0 0 0 / 28%);
-  --shadow-lg: 0 4px 12px rgb(0 0 0 / 26%), 0 28px 64px rgb(0 0 0 / 40%);
+  --color-canvas: #181819;
+  --color-surface: #1d1d1f;
+  --color-surface-raised: #232326;
+  --color-ink: #f4f4f4;
+  --color-muted: #a1a1a6;
+  --color-line: #2e2e32;
+  --color-accent: #8494fa;
+  --color-accent-strong: #a5b0fc;
+  --color-accent-soft: #23253f;
+  --color-code: #0f0f11;
+  --color-code-ink: #e8e8ea;
+  --color-warning: #e0a34a;
+  --color-danger: #f0776a;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 30%);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 32%), 0 16px 40px rgb(0 0 0 / 44%);
 }
 
 /* ここから素の要素への調整。 */
