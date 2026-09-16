@@ -25,6 +25,21 @@
   overflow-wrap: anywhere;
 }
 
+/* 複数行のコードの1行。折り返した続きの行を、その行の字下げ＋2文字の位置から始める。
+   padding-left で続きの行を下げ、負の text-indent で1行目だけ行頭に戻す。
+   YAML などで、折り返しのせいで字下げ（構造）が崩れて見えないようにするため。
+   --indent は tsx 側が行頭の空白の数を渡す。 */
+.line {
+  display: block;
+  padding-left: calc((var(--indent) + 2) * 1ch);
+  text-indent: calc((var(--indent) + 2) * -1ch);
+}
+
+/* 空行も1行分の高さを保つ。生成内容なのでコピーには含まれない。 */
+.line:empty::before {
+  content: " ";
+}
+
 /* コピーボタンを右上に固定する。 */
 .copy {
   position: absolute;

@@ -1,17 +1,26 @@
 /**
  * シートを追加するときは `sheets` 配列に足す。ルーティングも一覧カードも
  * 以下の派生データから組み立てられるが、シート名をべた書きしている箇所
- * （AppHeader.tsx の直リンク、CatalogPage.tsx の検索欄プレースホルダー、
- * index.html の meta description）は手で追記する。
+ * （AppHeader.tsx の直リンクと AppHeader.module.css の表示切り替え幅、
+ * CatalogPage.tsx の予告カードの文言、index.html の meta description）は手で直す。
  */
 import { claudeCodeCheatSheet } from "./claude-code/content";
+import { dockerCheatSheet } from "./docker/content";
 import { gitCheatSheet } from "./git/content";
 import { htmlCheatSheet } from "./html/content";
+import { javascriptCheatSheet } from "./javascript/content";
 import type { CheatSheet, CheatSheetSummary } from "./types";
 import { vimCheatSheet } from "./vim/content";
 
 /** 配列順が一覧の表示順になる。 */
-const sheets = [htmlCheatSheet, gitCheatSheet, vimCheatSheet, claudeCodeCheatSheet] as const;
+const sheets = [
+  htmlCheatSheet,
+  gitCheatSheet,
+  vimCheatSheet,
+  claudeCodeCheatSheet,
+  javascriptCheatSheet,
+  dockerCheatSheet,
+] as const;
 
 export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.fromEntries(
   sheets.map((sheet) => [sheet.slug, sheet]),

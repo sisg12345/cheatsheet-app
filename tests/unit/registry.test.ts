@@ -12,9 +12,12 @@ function duplicates(values: string[]): string[] {
 }
 
 describe("cheatSheetRegistry", () => {
-  it.each(["html", "git", "vim", "claude-code"])("%s を slug で取得できる", (slug) => {
-    expect(getCheatSheet(slug)?.slug).toBe(slug);
-  });
+  it.each(["html", "git", "vim", "claude-code", "javascript", "docker"])(
+    "%s を slug で取得できる",
+    (slug) => {
+      expect(getCheatSheet(slug)?.slug).toBe(slug);
+    },
+  );
 
   // 辞書は slug をキーにしているため、重複すると後勝ちで消える。配列側のサマリーで数える。
   it("slug が重複していない", () => {

@@ -76,7 +76,7 @@ export function CatalogPage({ sheets }: CatalogLayoutProps) {
           ref={searchRef}
           value={query}
           onChange={setQuery}
-          placeholder="HTML、Git、Vim、Claude Codeを検索"
+          placeholder="シート名、キーワードを検索"
           resultLabel={`${visibleSheets.length} 件のチートシート`}
         />
       </section>
@@ -101,7 +101,7 @@ export function CatalogPage({ sheets }: CatalogLayoutProps) {
                 <span>{formatIndex(sheets.length)}+</span>
                 <div>
                   <strong>MORE SOON</strong>
-                  <p>CSS、JavaScript、Docker などを追加予定です。</p>
+                  <p>CSS などを追加予定です。</p>
                 </div>
               </article>
             ) : null}

@@ -23,6 +23,8 @@ export function AppHeader() {
           <Link to="/cheatsheets/git">Git</Link>
           <Link to="/cheatsheets/vim">Vim</Link>
           <Link to="/cheatsheets/claude-code">Claude Code</Link>
+          <Link to="/cheatsheets/javascript">JavaScript</Link>
+          <Link to="/cheatsheets/docker">Docker</Link>
           <ThemeToggle />
         </nav>
       </div>

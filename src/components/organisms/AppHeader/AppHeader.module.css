@@ -74,26 +74,30 @@
   color: var(--color-accent-strong);
 }
 
-/* 中くらいの画面では、シート直リンクを残すためにブランド名の文字だけを先に隠す。
-   全要素を1行に並べるにはおよそ660px要る（ブランド名を隠すと500px）ので、
-   フォント差を見込んで760pxを境にする。高さ（--header-height）は変えない。
+/* 表示切り替えの幅は、直リンク6件（HTML〜Docker）を1行に並べるのに要る幅から決めている。
+   全要素ではおよそ835px、ブランド名を隠すとおよそ675px要るので、フォント差を見込んで
+   それぞれ約100px広い幅を境にする。どちらも高さ（--header-height）は変えない。
    シートを増やして直リンクを足したら、この幅に収まるかを確認すること。 */
-@media (width <= 760px) {
+
+/* 中くらいの画面では、シート直リンクを残すためにブランド名の文字だけを先に隠す。 */
+@media (width <= 940px) {
   .brand > span:last-child {
     display: none;
   }
 }
 
-/* 狭い画面ではさらにシート直リンクも隠し、
-   ロゴ・一覧リンク・テーマ切り替えだけを残す。 */
+/* さらに狭い画面ではシート直リンクも隠し、ロゴ・一覧リンク・テーマ切り替えだけを残す。 */
+@media (width <= 780px) {
+  .nav a:not(:first-child) {
+    display: none;
+  }
+}
+
+/* スマホ幅ではバーの余白も詰める。 */
 @media (width <= 640px) {
   .inner {
     /* 高さは styles.css が --header-height をこの境界で 63px に差し替えるため、
        .inner 側の min-height 指定（--header-height - 1px）がそのまま追従する。 */
     padding: 8px 14px;
-  }
-
-  .nav a:not(:first-child) {
-    display: none;
   }
 }

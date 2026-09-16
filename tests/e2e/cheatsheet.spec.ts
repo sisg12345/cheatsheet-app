@@ -22,6 +22,18 @@ const addedSheets = [
     title: "Claude Code チートシート",
     path: "/cheatsheets/claude-code",
   },
+  {
+    query: "JavaScript",
+    navLabel: "JavaScript",
+    title: "JavaScript チートシート",
+    path: "/cheatsheets/javascript",
+  },
+  {
+    query: "Docker",
+    navLabel: "Docker",
+    title: "Docker チートシート",
+    path: "/cheatsheets/docker",
+  },
 ];
 
 for (const sheet of addedSheets) {
