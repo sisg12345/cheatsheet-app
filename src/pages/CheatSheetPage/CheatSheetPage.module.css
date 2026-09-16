@@ -42,11 +42,14 @@
   user-select: none;
 }
 
+/* auto-phrase は語の途中で折り返さないため。これが無いと狭い画面で「Claude Code チ／ートシート」
+   のように長音記号から行が始まる。未対応ブラウザでは無視され、従来どおりの折り返しになる。 */
 .heading h1 {
   margin: 0;
   font-size: clamp(2.4rem, 4.4vw, 4.2rem);
   letter-spacing: -0.045em;
   line-height: 1.08;
+  word-break: auto-phrase;
 }
 
 .heading p {

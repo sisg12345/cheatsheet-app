@@ -59,11 +59,14 @@
   letter-spacing: -0.085em;
 }
 
-/* タイトルと説明。 */
+/* タイトルと説明。auto-phrase は「チートシート」のような語を途中で折り返さないため
+   （狭い画面で「チートシー／ト」と1文字だけ残るのを防ぐ）。未対応ブラウザでは無視され、
+   従来どおりの折り返しになる。 */
 .card h2 {
   margin: 0;
   font-size: clamp(1.45rem, 3vw, 2rem);
   letter-spacing: -0.04em;
+  word-break: auto-phrase;
 }
 
 .card p {

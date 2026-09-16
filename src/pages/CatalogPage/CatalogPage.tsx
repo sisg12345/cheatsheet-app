@@ -9,6 +9,7 @@ import type { CheatSheetSummary } from "@/src/cheatsheets/types";
 import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetCard } from "@/src/components/organisms/CheatSheetCard/CheatSheetCard";
 import { useSearchShortcuts } from "@/src/features/cheat-sheet-search/useSearchShortcuts";
+import { formatIndex } from "@/src/lib/formatIndex";
 import { includesSearch } from "@/src/lib/normalizeSearch";
 import styles from "./CatalogPage.module.css";
 
@@ -75,7 +76,7 @@ export function CatalogPage({ sheets }: CatalogLayoutProps) {
           ref={searchRef}
           value={query}
           onChange={setQuery}
-          placeholder="HTML、Git、コマンドを検索"
+          placeholder="HTML、Git、Vim、Claude Codeを検索"
           resultLabel={`${visibleSheets.length} 件のチートシート`}
         />
       </section>
@@ -93,10 +94,11 @@ export function CatalogPage({ sheets }: CatalogLayoutProps) {
             ))}
 
             {/* 予告カードは検索中には出さない。検索結果に一致しない枠が混ざると、
-                絞り込みの件数表示と見た目が食い違うため。 */}
+                絞り込みの件数表示と見た目が食い違うため。
+                番号は収録数の次の通し番号（検索中は出さないので常に全件の続きになる）。 */}
             {!query.trim() ? (
               <article className={styles.comingSoon}>
-                <span>03+</span>
+                <span>{formatIndex(sheets.length)}+</span>
                 <div>
                   <strong>MORE SOON</strong>
                   <p>CSS、JavaScript、Docker などを追加予定です。</p>

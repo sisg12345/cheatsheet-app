@@ -1,6 +1,6 @@
 # CheatSheet Hub
 
-HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTMLとGitを収録しています。
+HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Codeを収録しています。
 
 ## 構成
 
@@ -69,7 +69,9 @@ cheatsheet-app/
 │   │   ├── helpers.ts              データ記述用の item() ヘルパー
 │   │   ├── registry.ts             収録シートの一覧と派生データ（辞書・サマリー）
 │   │   ├── html/content.ts         HTMLシートの中身
-│   │   └── git/content.ts          Gitシートの中身
+│   │   ├── git/content.ts          Gitシートの中身
+│   │   ├── vim/content.ts          Vimシートの中身
+│   │   └── claude-code/content.ts  Claude Codeシートの中身
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）
@@ -180,7 +182,7 @@ main.tsx
 
 1. `src/cheatsheets/<slug>/content.ts` に `CheatSheet` 型のデータを作成します（項目は `item()` 経由）。
 2. `src/cheatsheets/registry.ts` の `sheets` 配列へ追加します。
-3. ヘッダーの直リンクは `AppHeader.tsx` にべた書きなので、必要なら追記します。
+3. シート名をべた書きしている箇所に追記します：ヘッダーの直リンク（`AppHeader.tsx`）、一覧の検索欄プレースホルダー（`CatalogPage.tsx`）、`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
 4. `npm run typecheck && npm test && npm run build` で確認します。
 
 ルーティングと一覧カードはレジストリから自動的に生成されます。

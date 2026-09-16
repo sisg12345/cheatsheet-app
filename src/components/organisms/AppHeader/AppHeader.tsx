@@ -21,6 +21,8 @@ export function AppHeader() {
           <Link to="/">一覧</Link>
           <Link to="/cheatsheets/html">HTML</Link>
           <Link to="/cheatsheets/git">Git</Link>
+          <Link to="/cheatsheets/vim">Vim</Link>
+          <Link to="/cheatsheets/claude-code">Claude Code</Link>
           <ThemeToggle />
         </nav>
       </div>
