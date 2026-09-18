@@ -13,6 +13,21 @@ function countIndent(line: string): number {
   return line.length - line.trimStart().length;
 }
 
+/**
+ * 1行を、字下げ・最初の語・残りに分ける。最初の語だけを CSS で途中改行できるようにし、
+ * 長いキーなどが字下げの直後で丸ごと次の行へ送られて、1行目が空白だけになるのを防ぐ。
+ */
+function splitLine(line: string) {
+  const indent = countIndent(line);
+  const body = line.slice(indent);
+  const headEnd = body.search(/\s/);
+  return {
+    indent,
+    head: headEnd === -1 ? body : body.slice(0, headEnd),
+    tail: headEnd === -1 ? "" : body.slice(headEnd),
+  };
+}
+
 export function CodeBlock({ code, compact = false }: CodeBlockProps) {
   const lines = code.split("\n");
 
@@ -23,15 +38,20 @@ export function CodeBlock({ code, compact = false }: CodeBlockProps) {
       <code>
         {lines.length === 1
           ? code
-          : lines.map((line, index) => (
-              <span
-                key={index}
-                className={styles.line}
-                style={{ "--indent": countIndent(line) } as CSSProperties}
-              >
-                {line}
-              </span>
-            ))}
+          : lines.map((line, index) => {
+              const { indent, head, tail } = splitLine(line);
+              return (
+                <span
+                  key={index}
+                  className={styles.line}
+                  style={{ "--indent": indent } as CSSProperties}
+                >
+                  {line.slice(0, indent)}
+                  <span className={styles.lineHead}>{head}</span>
+                  {tail}
+                </span>
+              );
+            })}
       </code>
       <div className={styles.copy}>
         <CopyButton value={code} />

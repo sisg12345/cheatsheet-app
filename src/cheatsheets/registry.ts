@@ -10,6 +10,7 @@ import { gitCheatSheet } from "./git/content";
 import { htmlCheatSheet } from "./html/content";
 import { javascriptCheatSheet } from "./javascript/content";
 import type { CheatSheet, CheatSheetSummary } from "./types";
+import { typescriptCheatSheet } from "./typescript/content";
 import { vimCheatSheet } from "./vim/content";
 
 /** 配列順が一覧の表示順になる。 */
@@ -20,6 +21,7 @@ const sheets = [
   claudeCodeCheatSheet,
   javascriptCheatSheet,
   dockerCheatSheet,
+  typescriptCheatSheet,
 ] as const;
 
 export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.fromEntries(

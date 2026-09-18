@@ -34,6 +34,12 @@ const addedSheets = [
     title: "Docker チートシート",
     path: "/cheatsheets/docker",
   },
+  {
+    query: "TypeScript",
+    navLabel: "TypeScript",
+    title: "TypeScript チートシート",
+    path: "/cheatsheets/typescript",
+  },
 ];
 
 for (const sheet of addedSheets) {

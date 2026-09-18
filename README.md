@@ -1,6 +1,6 @@
 # CheatSheet Hub
 
-HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Dockerを収録しています。
+HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Docker・TypeScriptを収録しています。
 
 ## 構成
 
@@ -73,7 +73,8 @@ cheatsheet-app/
 │   │   ├── vim/content.ts          Vimシートの中身
 │   │   ├── claude-code/content.ts  Claude Codeシートの中身
 │   │   ├── javascript/content.ts   JavaScriptシートの中身
-│   │   └── docker/content.ts       Dockerシートの中身
+│   │   ├── docker/content.ts       Dockerシートの中身
+│   │   └── typescript/content.ts   TypeScriptシートの中身
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）

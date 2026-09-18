@@ -12,7 +12,7 @@ function duplicates(values: string[]): string[] {
 }
 
 describe("cheatSheetRegistry", () => {
-  it.each(["html", "git", "vim", "claude-code", "javascript", "docker"])(
+  it.each(["html", "git", "vim", "claude-code", "javascript", "docker", "typescript"])(
     "%s を slug で取得できる",
     (slug) => {
       expect(getCheatSheet(slug)?.slug).toBe(slug);

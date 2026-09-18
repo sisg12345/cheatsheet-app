@@ -25,6 +25,7 @@ export function AppHeader() {
           <Link to="/cheatsheets/claude-code">Claude Code</Link>
           <Link to="/cheatsheets/javascript">JavaScript</Link>
           <Link to="/cheatsheets/docker">Docker</Link>
+          <Link to="/cheatsheets/typescript">TypeScript</Link>
           <ThemeToggle />
         </nav>
       </div>
