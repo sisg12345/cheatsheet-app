@@ -55,14 +55,19 @@
 }
 
 /* 項目一覧。行を罫線で仕切らず、角丸の面を隙間なく積む。
-   区切りは面の色と余白が担うので、表組みらしさが出ない。 */
+   区切りは面の色と余白が担うので、表組みらしさが出ない。
+   container-type で下の @container の問い合わせ先にし、項目行の段組みを
+   この一覧に実際に使える幅で決める。インラインサイズの封じ込めにより、
+   3カラムの下限合計でセクションが本文列より広がることもなくなる。 */
 .items {
   display: grid;
   gap: 4px;
+  container-type: inline-size;
 }
 
 /* 項目1行。見出し・説明・コードの3カラム。minmax の下限で、
-   狭いときも各列が潰れきらないようにしている。 */
+   狭いときも各列が潰れきらないようにしている。
+   下限・gap・padding を変えたら、下の @container の 710px も計算し直すこと。 */
 .item {
   display: grid;
   grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1.15fr) minmax(280px, 1.5fr);
@@ -112,7 +117,19 @@
   min-width: 0;
 }
 
-/* 狭い画面では3カラムをやめて縦積みにする。 */
+/* 3カラムが入りきらない一覧幅では縦積みにする。710px は列の下限の合計
+   150 + 220 + 280 に、列間 16px×2 と左右の padding 14px×2 を足した値。
+   画面幅の @media では目次の列やスクロールバーの幅を差し引けないため、一覧の幅で判定する。
+   これが無いと、目次と2カラムになる 821〜1049px で本文列より項目行が広がり、ページが横に溢れる。 */
+@container (width < 710px) {
+  .item {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+}
+
+/* 本文が1段組になる画面（CheatSheetPage の .content と同じ 820px 境界）では、
+   幅が足りても縦積みにそろえ、狭い画面の見た目を1通りに保つ。 */
 @media (width <= 820px) {
   .item {
     grid-template-columns: 1fr;
