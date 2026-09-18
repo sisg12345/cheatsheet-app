@@ -23,6 +23,7 @@ export const claudeCodeCheatSheet: CheatSheet = {
   id: "claude-code-reference",
   slug: "claude-code",
   title: "Claude Code チートシート",
+  name: "Claude Code",
   shortTitle: "CC",
   description:
     "起動・セッション操作、CLAUDE.md、権限、MCP、Skills・Subagents、Hooks、自動化までをまとめたClaude Codeリファレンス。",

@@ -20,6 +20,7 @@ export const gitCheatSheet: CheatSheet = {
   id: "git-reference",
   slug: "git",
   title: "Git チートシート",
+  name: "Git",
   shortTitle: "Git",
   description:
     "日常操作、ブランチ、リモート、履歴調査、安全な取り消しまでをまとめたGitリファレンス。",

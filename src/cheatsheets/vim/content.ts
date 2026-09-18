@@ -22,6 +22,7 @@ export const vimCheatSheet: CheatSheet = {
   id: "vim-reference",
   slug: "vim",
   title: "Vim チートシート",
+  name: "Vim",
   shortTitle: "Vim",
   description:
     "モード切替、移動、編集、検索・置換、保存、分割、マクロまでをまとめたVimリファレンス。",

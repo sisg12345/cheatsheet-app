@@ -18,7 +18,7 @@ export default function App() {
   // ヘッダーは Routes の外に置き、ページ遷移で再マウントさせない。
   return (
     <>
-      <AppHeader />
+      <AppHeader sheets={cheatSheetSummaries} />
       <Routes>
         <Route path="/" element={<CatalogPage sheets={cheatSheetSummaries} />} />
         <Route path="/cheatsheets/:slug" element={<CheatSheetRoute />} />

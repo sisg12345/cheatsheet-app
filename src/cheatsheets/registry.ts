@@ -1,17 +1,18 @@
 /**
- * シートを追加するときは `sheets` 配列に足す。ルーティングも一覧カードも
+ * シートを追加するときは `sheets` 配列に足す。ルーティングも一覧カードもヘッダーのメニューも
  * 以下の派生データから組み立てられるが、シート名をべた書きしている箇所
- * （AppHeader.tsx の直リンクと AppHeader.module.css の表示切り替え幅、
- * CatalogPage.tsx の予告カードの文言、index.html の meta description）は手で直す。
+ * （CatalogPage.tsx の予告カードの文言、index.html の meta description）は手で直す。
  */
 import { claudeCodeCheatSheet } from "./claude-code/content";
 import { dockerCheatSheet } from "./docker/content";
 import { gitCheatSheet } from "./git/content";
 import { htmlCheatSheet } from "./html/content";
 import { javascriptCheatSheet } from "./javascript/content";
+import { reactCheatSheet } from "./react/content";
 import type { CheatSheet, CheatSheetSummary } from "./types";
 import { typescriptCheatSheet } from "./typescript/content";
 import { vimCheatSheet } from "./vim/content";
+import { vueCheatSheet } from "./vue/content";
 
 /** 配列順が一覧の表示順になる。 */
 const sheets = [
@@ -22,6 +23,8 @@ const sheets = [
   javascriptCheatSheet,
   dockerCheatSheet,
   typescriptCheatSheet,
+  reactCheatSheet,
+  vueCheatSheet,
 ] as const;
 
 export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.fromEntries(
@@ -32,6 +35,7 @@ export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.f
 export const cheatSheetSummaries: CheatSheetSummary[] = sheets.map((sheet) => ({
   slug: sheet.slug,
   title: sheet.title,
+  name: sheet.name,
   shortTitle: sheet.shortTitle,
   description: sheet.description,
   eyebrow: sheet.eyebrow,

@@ -57,9 +57,8 @@
   align-items: center;
 }
 
-/* 「Claude Code」のような空白入りの文言も1行に保つ。幅が足りないときに折り返させず、
-   下の @media で表示する要素を減らして収める。 */
-.nav a {
+/* ナビ直下のリンク（「一覧」）。メニューの中のリンクには効かせないよう、直下に限定する。 */
+.nav > a {
   padding: 7px 11px;
   border-radius: var(--radius-pill);
   color: var(--color-muted);
@@ -69,35 +68,21 @@
   white-space: nowrap;
 }
 
-.nav a:hover {
+.nav > a:hover {
   background: var(--color-accent-soft);
   color: var(--color-accent-strong);
 }
 
-/* 表示切り替えの幅は、直リンク7件（HTML〜TypeScript）を1行に並べるのに要る幅から決めている。
-   全要素ではおよそ935px、ブランド名を隠すとおよそ775px要るので、フォント差を見込んで
-   それぞれ約100px広い幅を境にする。どちらも高さ（--header-height）は変えない。
-   シートを増やして直リンクを足したら、この幅に収まるかを確認すること。 */
-
-/* 中くらいの画面では、シート直リンクを残すためにブランド名の文字だけを先に隠す。 */
-@media (width <= 1040px) {
-  .brand > span:last-child {
-    display: none;
-  }
-}
-
-/* さらに狭い画面ではシート直リンクも隠し、ロゴ・一覧リンク・テーマ切り替えだけを残す。 */
-@media (width <= 880px) {
-  .nav a:not(:first-child) {
-    display: none;
-  }
-}
-
-/* スマホ幅ではバーの余白も詰める。 */
+/* 狭い画面ではブランド名の文字を隠し、ロゴ・一覧・メニュー・テーマ切り替えを残す。
+   ナビはシートの数によらず幅が一定（シートはメニューの中）なので、境界はこの1つで足りる。 */
 @media (width <= 640px) {
   .inner {
     /* 高さは styles.css が --header-height をこの境界で 63px に差し替えるため、
        .inner 側の min-height 指定（--header-height - 1px）がそのまま追従する。 */
     padding: 8px 14px;
+  }
+
+  .brand > span:last-child {
+    display: none;
   }
 }

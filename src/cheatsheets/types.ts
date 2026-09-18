@@ -39,6 +39,8 @@ export interface CheatSheet {
   /** URLに使う識別子。`/cheatsheets/<slug>` になる。 */
   slug: string;
   title: string;
+  /** ヘッダーのメニューなどに出す題材名（例: "Claude Code"）。title から「チートシート」を除いた呼び名。 */
+  name: string;
   /** カードのモノグラムに出る短縮名（例: "HTML"）。 */
   shortTitle: string;
   description: string;
@@ -61,6 +63,7 @@ export interface CheatSheet {
 export interface CheatSheetSummary {
   slug: string;
   title: string;
+  name: string;
   shortTitle: string;
   description: string;
   eyebrow: string;
