@@ -18,6 +18,7 @@ export const htmlCheatSheet: CheatSheet = {
   id: "html-reference",
   slug: "html",
   title: "HTMLタグ チートシート",
+  name: "HTML",
   shortTitle: "HTML",
   description:
     "文書構造、テキスト、メディア、フォーム、アクセシビリティまでをすばやく確認できるHTMLリファレンス。",

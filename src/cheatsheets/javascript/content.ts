@@ -23,6 +23,7 @@ export const javascriptCheatSheet: CheatSheet = {
   id: "javascript-reference",
   slug: "javascript",
   title: "JavaScript チートシート",
+  name: "JavaScript",
   shortTitle: "JS",
   description:
     "変数・関数・配列から非同期処理、モジュール、DOM操作、fetch までをまとめたJavaScriptリファレンス。",

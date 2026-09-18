@@ -24,6 +24,7 @@ export const typescriptCheatSheet: CheatSheet = {
   id: "typescript-reference",
   slug: "typescript",
   title: "TypeScript チートシート",
+  name: "TypeScript",
   shortTitle: "TS",
   description:
     "基本の型から、ユニオンと絞り込み、ジェネリクス、ユーティリティ型、型操作、tsconfig・tsc までをまとめたTypeScriptリファレンス。",

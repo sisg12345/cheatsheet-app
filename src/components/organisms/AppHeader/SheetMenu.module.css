@@ -1,0 +1,98 @@
+/* SheetMenu のスタイル。ヘッダーのナビに置く開閉ボタンと、その下に開くリンクの一覧。
+   --sheet-accent は tsx が各リンクにインラインで渡すシート固有色。 */
+
+/* 一覧の位置の基準。 */
+.root {
+  position: relative;
+}
+
+/* 開閉ボタン。見た目はナビの「一覧」リンク（AppHeader の .nav > a）にそろえる。 */
+.trigger {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 7px 11px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.trigger:hover,
+.trigger[aria-expanded="true"] {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.chevron {
+  font-size: 0.7em;
+  transition: transform 140ms ease;
+}
+
+/* 開いている間は矢印を上向きにする。 */
+.trigger[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+/* リンクの一覧。ボタンの右端にそろえて下に開く。
+   シートが増えても画面に収まるよう、高さの上限を超えたら中でスクロールさせる。 */
+.list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: grid;
+  gap: 2px;
+  min-width: 210px;
+  max-height: calc(100vh - var(--header-height) - 24px);
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+}
+
+/* display を指定しているため、hidden 属性の既定の非表示をここで明示し直す。 */
+.list[hidden] {
+  display: none;
+}
+
+.list a {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  font-size: 0.84rem;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.list a:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+/* 今開いているシート。 */
+.list a[aria-current="page"] {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+  font-weight: 800;
+}
+
+/* シートの色の目印。装飾なので読み上げからは外している（tsx 側で aria-hidden）。 */
+.dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--sheet-accent);
+}

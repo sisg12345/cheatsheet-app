@@ -10,6 +10,7 @@
  * 支援技術から見た名前が保たれているかも同時に検証できるため。
  */
 import { expect, test } from "@playwright/test";
+import { openSheetFromMenu } from "./sheetMenu";
 
 const SHEET = "/cheatsheets/html";
 
@@ -130,7 +131,7 @@ test("シートを切り替えると検索語が持ち越されない", async ({
   await page.getByRole("searchbox").fill("form");
   await expect(page).toHaveURL(/\?q=form/);
 
-  await page.getByRole("banner").getByRole("link", { name: "Git" }).click();
+  await openSheetFromMenu(page, "Git");
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
 });
@@ -169,7 +170,7 @@ test("同じシートのリンクを踏むと、q の消えたURLに合わせて
   await page.goto(`${SHEET}?q=form`);
   await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
 
-  await page.getByRole("banner").getByRole("link", { name: "HTML" }).click();
+  await openSheetFromMenu(page, "HTML");
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
   await expect(resultLabel(page)).toHaveText("10 セクション / 101 項目");
@@ -182,7 +183,12 @@ test("打った直後に同じシートのリンクを踏んでも、URLと表�
   await page.goto(SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("form", { delay: 20 });
-  await page.getByRole("banner").getByRole("link", { name: "HTML" }).click();
+  // メニューを開く操作を挟むと打鍵との間が空き、競合の窓を外してしまう。閉じたメニューの中の
+  // リンク（hidden で DOM には残っている）を直接クリックさせ、打鍵の直後にリンクを踏む状況を作る。
+  await page
+    .getByRole("banner")
+    .getByRole("link", { name: "HTML", exact: true, includeHidden: true })
+    .dispatchEvent("click");
 
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
@@ -227,7 +233,7 @@ test("リンクを押した直後に Escape を叩いても、離れようとし
   // navigate に pathname を渡さないと、ルーターの遅れた location からパスが補完され、
   // 移動前のパスでURLを書き直して遷移そのものを取り消してしまう。
   await page.goto(SHEET);
-  await page.getByRole("banner").getByRole("link", { name: "Git" }).click();
+  await openSheetFromMenu(page, "Git");
   await page.keyboard.press("Escape");
 
   await expect(page).toHaveURL(/\/cheatsheets\/git/);

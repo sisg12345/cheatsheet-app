@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import type { CheatSheetSummary } from "@/src/cheatsheets/types";
 import { ThemeToggle } from "@/src/features/theme-switch/ThemeToggle";
+import { SheetMenu } from "./SheetMenu";
 import styles from "./AppHeader.module.css";
 
-export function AppHeader() {
+interface AppHeaderProps {
+  /** メニューに並べるシート。registry の cheatSheetSummaries がそのまま渡る。 */
+  sheets: CheatSheetSummary[];
+}
+
+export function AppHeader({ sheets }: AppHeaderProps) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
@@ -15,17 +22,11 @@ export function AppHeader() {
           <span>CHEATSHEET HUB</span>
         </Link>
 
-        {/* シートへの直リンク。収録数が増えたら registry から生成する形に変える想定。
-            狭い画面ではCSS側で一覧以外のリンクを隠している。 */}
+        {/* シートへの移動はメニューにまとめ、中身は registry から作る。
+            シートを増やしてもヘッダーの幅は変わらず、どの画面幅でも全シートへ行ける。 */}
         <nav className={styles.nav} aria-label="メインナビゲーション">
           <Link to="/">一覧</Link>
-          <Link to="/cheatsheets/html">HTML</Link>
-          <Link to="/cheatsheets/git">Git</Link>
-          <Link to="/cheatsheets/vim">Vim</Link>
-          <Link to="/cheatsheets/claude-code">Claude Code</Link>
-          <Link to="/cheatsheets/javascript">JavaScript</Link>
-          <Link to="/cheatsheets/docker">Docker</Link>
-          <Link to="/cheatsheets/typescript">TypeScript</Link>
+          <SheetMenu sheets={sheets} />
           <ThemeToggle />
         </nav>
       </div>
