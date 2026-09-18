@@ -8,13 +8,18 @@ interface CheatSheetCardProps {
   sheet: CheatSheetSummary;
   /** 0始まり。左上の通し番号に使う。 */
   index: number;
+  /**
+   * 横に流すカルーセルに並べる小さい版。一覧のカードと同じ見た目のまま全体を詰め、
+   * 短縮名（"HTML" など）を題名として見せる。説明は1行に切り詰める。
+   */
+  compact?: boolean;
 }
 
-export function CheatSheetCard({ sheet, index }: CheatSheetCardProps) {
+export function CheatSheetCard({ sheet, index, compact = false }: CheatSheetCardProps) {
   // カスタムプロパティをインラインstyleに書くため、CSSProperties へのキャストが要る。
   return (
     <Link
-      className={styles.card}
+      className={`${styles.card} ${compact ? styles.compact : ""}`}
       to={`/cheatsheets/${sheet.slug}`}
       style={{ "--sheet-accent": sheet.accent } as CSSProperties}
     >
@@ -28,8 +33,14 @@ export function CheatSheetCard({ sheet, index }: CheatSheetCardProps) {
         {sheet.shortTitle}
       </div>
 
+      {/* 小さい版は短縮名を題名として見せ、正式な題名は読み上げ用にだけ残す。見出しにしないのは、
+          同じシートを一覧のカードが h2 で出しており、見出しでたどると同じ名前が2回ずつ並ぶため。 */}
       <div>
-        <h2>{sheet.title}</h2>
+        {compact ? (
+          <span className={styles.visuallyHidden}>{sheet.title}</span>
+        ) : (
+          <h2>{sheet.title}</h2>
+        )}
         <p>{sheet.description}</p>
       </div>
 
