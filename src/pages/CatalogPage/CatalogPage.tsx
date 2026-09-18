@@ -1,8 +1,8 @@
 /**
- * 一覧画面（`/`）のレイアウト。
+ * 一覧画面（`/`）。
  *
  * 検索語をローカルstateで持ち、シート単位で絞り込む。
- * 個別シート内の項目検索は CheatSheetLayout 側の担当で、ここでは扱わない。
+ * 個別シート内の項目検索は CheatSheetPage 側の担当で、ここでは扱わない。
  */
 import { useMemo, useRef, useState } from "react";
 import type { CheatSheetSummary } from "@/src/cheatsheets/types";
@@ -13,12 +13,12 @@ import { formatIndex } from "@/src/lib/formatIndex";
 import { includesSearch } from "@/src/lib/normalizeSearch";
 import styles from "./CatalogPage.module.css";
 
-interface CatalogLayoutProps {
+interface CatalogPageProps {
   /** 表示するシートの一覧。registry の cheatSheetSummaries がそのまま渡る。 */
   sheets: CheatSheetSummary[];
 }
 
-export function CatalogPage({ sheets }: CatalogLayoutProps) {
+export function CatalogPage({ sheets }: CatalogPageProps) {
   // 一覧の検索語はURLに持たせていない。共有する価値が薄く、
   // シートを選べば結果に辿り着けるため（シート内検索は ?q= に持たせている）。
   const [query, setQuery] = useState("");

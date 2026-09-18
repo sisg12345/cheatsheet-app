@@ -77,8 +77,7 @@ cheatsheet-app/
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）
-│   │   ├── organisms/              AppHeader・CheatSheetCard／Section／Sidebar（画面領域）
-│   │   └── templates/              CatalogLayout・CheatSheetLayout（画面全体と状態の束ね役）
+│   │   └── organisms/              AppHeader・CheatSheetCard／Section／Sidebar（画面領域）
 │   ├── features/                   機能層：画面をまたいで使う振る舞い
 │   │   ├── cheat-sheet-search/     検索の絞り込みロジックとキーボードショートカット
 │   │   ├── code-copy/              コード例のクリップボードコピー
@@ -86,6 +85,10 @@ cheatsheet-app/
 │   ├── lib/                        汎用層：どの機能にも依存しない純関数
 │   │   ├── formatIndex.ts          0始まりindexを "01" 形式へ
 │   │   └── normalizeSearch.ts      検索語の正規化（NFKC＋小文字化）と一致判定
+│   ├── pages/                      画面層：ルートごとの画面と状態の束ね役
+│   │   ├── CatalogPage/            一覧（/）
+│   │   ├── CheatSheetPage/         シート詳細（/cheatsheets/:slug）
+│   │   └── NotFoundPage/           404（未知のURL・未登録のslug）
 │   ├── App.tsx                     ルーティングと404、ヘッダーの配置
 │   ├── main.tsx                    エントリーポイント（Router／グローバルCSSの取り付け）
 │   ├── styles.css                  デザイントークンと素の要素への最低限の調整
@@ -116,16 +119,15 @@ cheatsheet-app/
 
 ### `src/components/` — 表示
 
-受け取ったデータを画面に出すことだけを担当します。Atomic Designで4階層に分かれ、**依存は下位方向のみ**（atoms ← molecules ← organisms ← templates）です。
+受け取ったデータを画面に出すことだけを担当します。Atomic Designで3階層に分かれ、**依存は下位方向のみ**（atoms ← molecules ← organisms）です。画面全体の組み立ては `src/pages/` の担当で、`components/` には置きません。
 
-| 階層        | 責務                                                     | 例                                                                      |
-| ----------- | -------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `atoms`     | 見た目の最小単位。ドメインにも機能にも依存しない         | `Button`、`Badge`                                                       |
-| `molecules` | atomsを組み合わせた部品。状態は持たず親から受け取る      | `SearchBox`、`CodeBlock`                                                |
-| `organisms` | 意味のある画面領域。表示ロジックはここに置く             | `AppHeader`、`CheatSheetCard`、`CheatSheetSection`、`CheatSheetSidebar` |
-| `templates` | 画面全体のレイアウトと状態の束ね役。ルーティングの受け口 | `CatalogLayout`（`/`）、`CheatSheetLayout`（`/cheatsheets/:slug`）      |
+| 階層        | 責務                                                | 例                                                                      |
+| ----------- | --------------------------------------------------- | ----------------------------------------------------------------------- |
+| `atoms`     | 見た目の最小単位。ドメインにも機能にも依存しない    | `Button`、`Badge`                                                       |
+| `molecules` | atomsを組み合わせた部品。状態は持たず親から受け取る | `SearchBox`、`CodeBlock`                                                |
+| `organisms` | 意味のある画面領域。表示ロジックはここに置く        | `AppHeader`、`CheatSheetCard`、`CheatSheetSection`、`CheatSheetSidebar` |
 
-- 検索語などの状態を持つのは `templates` だけです。一覧はローカルstate、シートページはURLの `?q=` に持たせ、絞り込んだ状態のURLをそのまま共有できるようにしています。
+- 検索語などの状態は持たず、`pages/` から props で受け取ります。
 - スタイルは1コンポーネント1ファイルの `Xxx.module.css` を同じディレクトリに置きます。色・角丸・影・フォントは `src/styles.css` のトークン（`--color-*` など）を通します。
 - `Xxx.stories.tsx` も同じディレクトリに置き、見た目と状態のバリエーションはStorybookで確認します。
 
@@ -144,6 +146,19 @@ cheatsheet-app/
 
 - `normalizeSearch.ts` — 一覧検索とシート内検索が共通で使う正規化と一致判定。全角／半角・大文字小文字の差を吸収します。
 - `formatIndex.ts` — カード・セクション見出し・目次で共通の採番表記。
+
+### `src/pages/` — 画面
+
+ルートごとの画面を置く層です。`App.tsx` のルーティングから描画され、`components/` と `features/` を組み合わせて画面全体を組み立てます。
+
+| 画面             | ルート                      | 内容                                                |
+| ---------------- | --------------------------- | --------------------------------------------------- |
+| `CatalogPage`    | `/`                         | シート一覧と一覧検索。シート単位で絞り込む          |
+| `CheatSheetPage` | `/cheatsheets/:slug`        | 1枚のシート（目次＋セクション）とシート内の項目検索 |
+| `NotFoundPage`   | 未知のURL・未登録の `:slug` | 404表示と一覧への導線                               |
+
+- 検索語などの状態を持つのは `pages/` だけです。一覧はローカルstate、シートページはURLの `?q=` に持たせ、絞り込んだ状態のURLをそのまま共有できるようにしています。
+- スタイルは `components/` と同じく、1画面1ファイルの `Xxx.module.css` を同じディレクトリに置きます。
 
 ### ルート直下のファイル
 
@@ -166,16 +181,16 @@ Vitestの対象は `tests/unit/**` のみで、`src/` 配下に `*.test.ts` を�
 ```text
 main.tsx
   └─▶ App.tsx（ルーティング）
-        └─▶ templates ──▶ organisms ──▶ molecules ──▶ atoms   ← components/ 内は下位方向のみ
-              │              │              │
-              └──────────────┴──────────────┴──▶ features/ ──▶ components/（atomsを除く）
+        └─▶ pages/ ──▶ organisms ──▶ molecules ──▶ atoms   ← components/ 内は下位方向のみ
+              │           │              │
+              └───────────┴──────────────┴──▶ features/ ──▶ components/（atomsを除く）
 
 依存の末端（他のどの層にも依存しない）
   cheatsheets/   型とデータ。すべての層がここの型を参照する
   lib/           純関数。すべての層から呼ばれる
 ```
 
-- `components/` の各階層は上位階層をimportしません。
+- `components/` の各階層は上位階層も `pages/` もimportしません。
 - `features/` から `components/` を使うのは可、`components/` が `features/` のウィジェットを使うのも既存パターンです。ただし**atomsは `features/` に依存しません**。
 - `lib/` はどこからも使われる末端で、他のどこにも依存しません。
 - 他ディレクトリからのimportは `@/src/...` エイリアス（定義元は `vite.config.ts` と `tsconfig.app.json`）。相対パスは同一ディレクトリと同一ドメイン内1階層までとし、`../../` は書きません。
