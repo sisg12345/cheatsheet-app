@@ -113,3 +113,66 @@
   color: var(--sheet-accent);
   font-size: 1.4rem;
 }
+
+/* 横に流すカルーセル用の小さい版。面・枠線・色・文字の組み方は基本形のまま使い、
+   幅を固定して余白とモノグラムを詰める。幅を固定するのは、中身の長さで1枚ずつ幅が
+   変わると流れがちぐはぐに見えるため。 */
+.compact {
+  width: 300px;
+  min-height: 0;
+  padding: 20px;
+}
+
+/* 題名として見せるので、基本形（4.2rem〜）より小さくても読める大きさに固定する。 */
+.compact .monogram {
+  margin: 14px 0 4px;
+  font-size: 3.2rem;
+}
+
+/* 説明は1行に切り詰め、どのシートでもカードの高さをそろえる。 */
+.compact p {
+  margin-top: 0;
+  overflow: hidden;
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compact .stats {
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+/* スマホ幅では1枚をさらに詰め、次のカードが半分ほど覗くようにする。1枚で画面が
+   埋まると流れていることが伝わりにくく、読む前に端へ消えていくように見えるため。
+   256px は、いちばん長いカテゴリ名（PROGRAMMING LANGUAGE）が通し番号と1行に収まる幅。 */
+@media (width <= 640px) {
+  .compact {
+    width: 256px;
+    padding: 16px;
+  }
+
+  .compact .monogram {
+    margin-top: 10px;
+    font-size: 2.6rem;
+  }
+
+  .compact .stats {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+}
+
+/* 視覚的に隠しつつ、支援技術には読ませるための定型（SearchBox と同じ）。
+   display: none や visibility: hidden では読み上げからも消えてしまう。 */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

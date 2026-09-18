@@ -1,4 +1,4 @@
-/* CatalogPage のスタイル。ヒーロー（.hero）とカード一覧（.catalog）の2ブロック構成。 */
+/* CatalogPage のスタイル。ヒーロー（.hero）、注目のチートシート（.featured）、カード一覧（.catalog）の3ブロック構成。 */
 
 /* 固定ヘッダー（--header-height）を引いた高さを最低限確保し、
    内容が短くてもフッター位置が浮かないようにする。 */
@@ -71,11 +71,16 @@
   font: 700 1.1rem var(--font-mono);
 }
 
+/* 注目のチートシート（自動で流れるカルーセル）。ヒーローと一覧の間に置く。 */
+.featured {
+  padding: 0 var(--page-padding-x) var(--space-block);
+}
+
 .catalog {
   padding: 0 var(--page-padding-x) var(--space-section);
 }
 
-/* INDEX の見出し行。 */
+/* FEATURED・INDEX の見出し行。 */
 .sectionTitle {
   display: flex;
   justify-content: space-between;

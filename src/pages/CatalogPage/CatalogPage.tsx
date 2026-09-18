@@ -1,13 +1,15 @@
 /**
  * 一覧画面（`/`）。
  *
- * 検索語をローカルstateで持ち、シート単位で絞り込む。
+ * 検索語をローカルstateで持ち、シート単位で絞り込む。ヒーローと一覧の間には、
+ * シートを自動で流して見せる「注目のチートシート」を置く。
  * 個別シート内の項目検索は CheatSheetPage 側の担当で、ここでは扱わない。
  */
 import { useMemo, useRef, useState } from "react";
 import type { CheatSheetSummary } from "@/src/cheatsheets/types";
 import { SearchBox } from "@/src/components/molecules/SearchBox/SearchBox";
 import { CheatSheetCard } from "@/src/components/organisms/CheatSheetCard/CheatSheetCard";
+import { Marquee } from "@/src/components/organisms/Marquee/Marquee";
 import { useSearchShortcuts } from "@/src/features/cheat-sheet-search/useSearchShortcuts";
 import { formatIndex } from "@/src/lib/formatIndex";
 import { includesSearch } from "@/src/lib/normalizeSearch";
@@ -80,6 +82,23 @@ export function CatalogPage({ sheets }: CatalogPageProps) {
           resultLabel={`${visibleSheets.length} 件のチートシート`}
         />
       </section>
+
+      {/* featured: シートを自動で流すカルーセル。検索中は出さない。検索欄と結果の間に
+          挟まると、結果が画面の下へ押し出されて打った結果が見えなくなるため。
+          絞り込みとは無関係に全シートを流す（絞り込みの結果は下の一覧が担当する）。 */}
+      {!query.trim() ? (
+        <section className={styles.featured} aria-label="注目のチートシート">
+          <div className={styles.sectionTitle}>
+            <span>FEATURED</span>
+            <p>注目のチートシート</p>
+          </div>
+          <Marquee>
+            {sheets.map((sheet, index) => (
+              <CheatSheetCard key={sheet.slug} sheet={sheet} index={index} compact />
+            ))}
+          </Marquee>
+        </section>
+      ) : null}
 
       {/* catalog: シートカードの一覧、または空状態 */}
       <section className={styles.catalog} aria-label="チートシート一覧">

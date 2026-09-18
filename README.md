@@ -80,7 +80,7 @@ cheatsheet-app/
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）
-│   │   └── organisms/              AppHeader・CheatSheetCard／Section／Sidebar（画面領域）
+│   │   └── organisms/              AppHeader・CheatSheetCard／Section／Sidebar・Marquee（画面領域）
 │   ├── features/                   機能層：画面をまたいで使う振る舞い
 │   │   ├── cheat-sheet-search/     検索の絞り込みロジックとキーボードショートカット
 │   │   ├── code-copy/              コード例のクリップボードコピー
@@ -124,11 +124,11 @@ cheatsheet-app/
 
 受け取ったデータを画面に出すことだけを担当します。Atomic Designで3階層に分かれ、**依存は下位方向のみ**（atoms ← molecules ← organisms）です。画面全体の組み立ては `src/pages/` の担当で、`components/` には置きません。
 
-| 階層        | 責務                                                | 例                                                                      |
-| ----------- | --------------------------------------------------- | ----------------------------------------------------------------------- |
-| `atoms`     | 見た目の最小単位。ドメインにも機能にも依存しない    | `Button`、`Badge`                                                       |
-| `molecules` | atomsを組み合わせた部品。状態は持たず親から受け取る | `SearchBox`、`CodeBlock`                                                |
-| `organisms` | 意味のある画面領域。表示ロジックはここに置く        | `AppHeader`、`CheatSheetCard`、`CheatSheetSection`、`CheatSheetSidebar` |
+| 階層        | 責務                                                | 例                                                                                 |
+| ----------- | --------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `atoms`     | 見た目の最小単位。ドメインにも機能にも依存しない    | `Button`、`Badge`                                                                  |
+| `molecules` | atomsを組み合わせた部品。状態は持たず親から受け取る | `SearchBox`、`CodeBlock`                                                           |
+| `organisms` | 意味のある画面領域。表示ロジックはここに置く        | `AppHeader`、`CheatSheetCard`、`CheatSheetSection`、`CheatSheetSidebar`、`Marquee` |
 
 - 検索語などの状態は持たず、`pages/` から props で受け取ります。
 - スタイルは1コンポーネント1ファイルの `Xxx.module.css` を同じディレクトリに置きます。色・角丸・影・フォントは `src/styles.css` のトークン（`--color-*` など）を通します。
@@ -154,11 +154,11 @@ cheatsheet-app/
 
 ルートごとの画面を置く層です。`App.tsx` のルーティングから描画され、`components/` と `features/` を組み合わせて画面全体を組み立てます。
 
-| 画面             | ルート                      | 内容                                                |
-| ---------------- | --------------------------- | --------------------------------------------------- |
-| `CatalogPage`    | `/`                         | シート一覧と一覧検索。シート単位で絞り込む          |
-| `CheatSheetPage` | `/cheatsheets/:slug`        | 1枚のシート（目次＋セクション）とシート内の項目検索 |
-| `NotFoundPage`   | 未知のURL・未登録の `:slug` | 404表示と一覧への導線                               |
+| 画面             | ルート                      | 内容                                                                                     |
+| ---------------- | --------------------------- | ---------------------------------------------------------------------------------------- |
+| `CatalogPage`    | `/`                         | 注目のチートシート（自動で流れるカルーセル）、シート一覧と一覧検索。シート単位で絞り込む |
+| `CheatSheetPage` | `/cheatsheets/:slug`        | 1枚のシート（目次＋セクション）とシート内の項目検索                                      |
+| `NotFoundPage`   | 未知のURL・未登録の `:slug` | 404表示と一覧への導線                                                                    |
 
 - 検索語などの状態を持つのは `pages/` だけです。一覧はローカルstate、シートページはURLの `?q=` に持たせ、絞り込んだ状態のURLをそのまま共有できるようにしています。
 - スタイルは `components/` と同じく、1画面1ファイルの `Xxx.module.css` を同じディレクトリに置きます。
@@ -209,6 +209,7 @@ main.tsx
 
 ## 実装済み機能
 
+- 一覧の「注目のチートシート」を自動で流れるカルーセルで表示（ホバー・フォーカス・一時停止ボタンで停止、動きを減らす設定では横スクロール）
 - 一覧検索とチートシート内検索
 - `/` キーで検索欄へ移動、`Escape` キーで検索解除
 - コード例のコピー

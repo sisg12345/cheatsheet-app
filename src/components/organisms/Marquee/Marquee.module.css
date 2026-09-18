@@ -1,0 +1,107 @@
+/* Marquee のスタイル。同じ列（.track）を2本並べた枠（.viewport）と、その下の一時停止ボタン（.controls）。
+   --marquee-duration は tsx 側が枚数から計算して渡す、1周ぶんの秒数。 */
+
+.marquee {
+  --marquee-gap: 1rem;
+}
+
+/* 流れる列を切り取る枠。左右の端は mask で透明へ溶かし、列の出入りを目立たせない
+   （背景色を重ねる方式と違い、テーマを切り替えても色を合わせ直さずに済む）。
+   上下の padding は、ホバーで浮き上がるカードの影とフォーカスリングの逃げ。枠ははみ出しを
+   切り取るため、これが無いと影が途中で切れる。上は負の margin で打ち消して親から見た位置を
+   変えず、下は .controls を重ねて詰める。 */
+.viewport {
+  display: flex;
+  gap: var(--marquee-gap);
+  margin-top: calc(-1 * var(--space-stack));
+  padding-block: var(--space-stack) 3.5rem;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* 1本の列。min-width: 100% は、枚数が少なく枠より短いときも1本で枠を埋め、
+   2本目が枠の途中から現れないようにするため。 */
+.track {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--marquee-gap);
+  justify-content: space-around;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: marquee var(--marquee-duration) linear infinite;
+}
+
+/* 2本の列を一緒に「1列ぶん＋間隔」だけ左へ動かす。動き終わりで2本目がちょうど
+   1本目の最初の位置に来るので、最初へ戻っても見た目がつながる。 */
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-100% - var(--marquee-gap)));
+  }
+}
+
+/* 読んでいる間・操作している間・止めたままにしたときは止める。 */
+.viewport:hover .track,
+.viewport:focus-within .track,
+.paused .track {
+  animation-play-state: paused;
+}
+
+/* 一時停止ボタンの行。枠の下側の padding（影の逃げ）に重ねて詰める。
+   position: relative は、mask で重なり順の上がった枠より手前に描き、押せるようにするため。 */
+.controls {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -2.5rem;
+}
+
+.controls button {
+  color: var(--color-muted);
+}
+
+/* スマホ幅では枠を画面の端まで広げ（親が左右に --page-padding-x の padding を持っている前提）、
+   端を溶かす幅もその余白ぶんに収める。本文幅のまま左右12%を溶かすと、1枚ぶんほどしか
+   入らない幅ではカードの番号や短縮名まで薄れて読めなくなるため。 */
+@media (width <= 640px) {
+  .marquee {
+    --marquee-gap: 0.75rem;
+  }
+
+  .viewport {
+    margin-inline: calc(-1 * var(--page-padding-x));
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 var(--page-padding-x),
+      #000 calc(100% - var(--page-padding-x)),
+      transparent
+    );
+  }
+}
+
+/* 動きを減らす設定では流さない。複製と一時停止ボタンを外し、端を溶かすのもやめて、
+   ふつうの横スクロールとして全部見られるようにする。 */
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    overflow-x: auto;
+    mask-image: none;
+  }
+
+  .track {
+    animation: none;
+  }
+
+  .track[aria-hidden="true"],
+  .controls {
+    display: none;
+  }
+}
+
+/* 画面の端まで広げた枠をふつうの横スクロールにするときは、1枚目を本文の左端にそろえる。 */
+@media (width <= 640px) and (prefers-reduced-motion: reduce) {
+  .viewport {
+    padding-inline: var(--page-padding-x);
+  }
+}
