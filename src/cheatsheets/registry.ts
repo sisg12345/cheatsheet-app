@@ -3,15 +3,21 @@
  * 以下の派生データから組み立てられるが、シート名をべた書きしている箇所
  * （CatalogPage.tsx の予告カードの文言、index.html の meta description）は手で直す。
  */
+import { bashCheatSheet } from "./bash/content";
 import { claudeCodeCheatSheet } from "./claude-code/content";
 import { dockerCheatSheet } from "./docker/content";
 import { gitCheatSheet } from "./git/content";
 import { htmlCheatSheet } from "./html/content";
 import { javascriptCheatSheet } from "./javascript/content";
+import { linuxCheatSheet } from "./linux/content";
+import { nextjsCheatSheet } from "./nextjs/content";
+import { npmCheatSheet } from "./npm/content";
+import { nuxtCheatSheet } from "./nuxt/content";
 import { reactCheatSheet } from "./react/content";
 import type { CheatSheet, CheatSheetSummary } from "./types";
 import { typescriptCheatSheet } from "./typescript/content";
 import { vimCheatSheet } from "./vim/content";
+import { viteCheatSheet } from "./vite/content";
 import { vueCheatSheet } from "./vue/content";
 
 /** 配列順が一覧の表示順になる。 */
@@ -25,6 +31,12 @@ const sheets = [
   typescriptCheatSheet,
   reactCheatSheet,
   vueCheatSheet,
+  nextjsCheatSheet,
+  nuxtCheatSheet,
+  linuxCheatSheet,
+  bashCheatSheet,
+  viteCheatSheet,
+  npmCheatSheet,
 ] as const;
 
 export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.fromEntries(

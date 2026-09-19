@@ -48,7 +48,10 @@ export interface CheatSheet {
   description: string;
   /** タイトル上の小さなラベル（例: "Markup language"）。 */
   eyebrow: string;
-  /** シート固有の色。CSS変数 `--sheet-accent` に流し込まれる。 */
+  /**
+   * シート固有の色。CSS変数 `--sheet-accent` に流し込まれる。CSS の色の値なら何でもよく、
+   * 白黒のブランドでは `var(--color-ink)` のようにテーマのトークンを使うと、ライト／ダークで反転する。
+   */
   accent: string;
   keywords: string[];
   /** 配列順がそのまま表示順・採番順になる。 */

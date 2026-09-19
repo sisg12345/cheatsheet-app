@@ -1,6 +1,6 @@
 # CheatSheet Hub
 
-HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Docker・TypeScript・React.js・Vue.jsを収録しています。
+HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Docker・TypeScript・React.js・Vue.js・Next.js・Nuxt.js・Linux・Bash・Vite・npmを収録しています。
 
 ## 構成
 
@@ -76,7 +76,13 @@ cheatsheet-app/
 │   │   ├── docker/content.ts       Dockerシートの中身
 │   │   ├── typescript/content.ts   TypeScriptシートの中身
 │   │   ├── react/content.ts        React.jsシートの中身
-│   │   └── vue/content.ts          Vue.jsシートの中身
+│   │   ├── vue/content.ts          Vue.jsシートの中身
+│   │   ├── nextjs/content.ts       Next.jsシートの中身
+│   │   ├── nuxt/content.ts         Nuxt.jsシートの中身
+│   │   ├── linux/content.ts        Linuxシートの中身
+│   │   ├── bash/content.ts         Bashシートの中身
+│   │   ├── vite/content.ts         Viteシートの中身
+│   │   └── npm/content.ts          npmシートの中身
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）
