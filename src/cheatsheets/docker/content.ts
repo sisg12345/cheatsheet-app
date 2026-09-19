@@ -27,7 +27,6 @@ export const dockerCheatSheet: CheatSheet = {
   slug: "docker",
   title: "Docker チートシート",
   name: "Docker",
-  shortTitle: "Docker",
   description:
     "コンテナとイメージの操作、Dockerfile、ボリューム、ネットワーク、Compose、後片付けまでをまとめたDockerリファレンス。",
   eyebrow: "Container platform",

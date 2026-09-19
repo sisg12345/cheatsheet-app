@@ -1,11 +1,15 @@
-/* CheatSheetCard のスタイル。--sheet-accent は tsx 側がインラインで渡すシート固有色で、
-   ここではフォールバック値だけを定義している。 */
+/* CheatSheetCard のスタイル。--sheet-accent（シート固有色）と --monogram-length（題名の文字数）は
+   tsx 側がインラインで渡し、ここではフォールバック値だけを定義している。 */
 
 /* カード本体。上下の要素を離すため space-between で組み、
-   min-height で収録数に関わらず高さを揃えている。 */
+   min-height で収録数に関わらず高さを揃えている。
+   container-type は、題名の文字サイズをカード幅から決めるため。 */
 .card {
   --sheet-accent: var(--color-accent);
+  --monogram-length: 4;
+  --monogram-max: clamp(4.2rem, 10vw, 7.4rem);
 
+  container-type: inline-size;
   display: flex;
   min-height: 380px;
   padding: 26px;
@@ -50,23 +54,24 @@
   text-transform: uppercase;
 }
 
-/* 大きな短縮名。clamp で画面幅に応じて 4.2rem〜7.4rem の範囲で伸縮させる。 */
+/* 大きな題名（シートの正式名）。上限の --monogram-max までは画面幅に応じて伸縮し、
+   名前が長い（"Claude Code"・"JavaScript"）ときはカード幅 ÷ 文字数で縮める。
+   係数 136 は、1文字あたりの幅がいちばん広い "HTML"（大文字だけで約 0.71em）でも
+   カード幅の約96%に収まる値。字面で幅が変わるので、全シートがはみ出さないことは E2E で確かめている。
+   nowrap は、1語の名前を途中で折らないため。
+   行の高さは文字サイズの上限で固定し、文字は下へそろえる。名前の長さで文字が縮んでも
+   カードの高さと説明の位置が変わらず、並んだカード同士で題名の下端がそろう。 */
 .monogram {
+  display: flex;
+  align-items: flex-end;
+  height: var(--monogram-max);
+  margin: 0;
   color: var(--sheet-accent);
-  font-size: clamp(4.2rem, 10vw, 7.4rem);
+  font-size: min(var(--monogram-max), calc(136cqi / var(--monogram-length)));
   font-weight: 950;
   line-height: 1;
   letter-spacing: -0.085em;
-}
-
-/* タイトルと説明。auto-phrase は「チートシート」のような語を途中で折り返さないため
-   （狭い画面で「チートシー／ト」と1文字だけ残るのを防ぐ）。未対応ブラウザでは無視され、
-   従来どおりの折り返しになる。 */
-.card h2 {
-  margin: 0;
-  font-size: clamp(1.45rem, 3vw, 2rem);
-  letter-spacing: -0.04em;
-  word-break: auto-phrase;
+  white-space: nowrap;
 }
 
 .card p {
@@ -123,10 +128,10 @@
   padding: 20px;
 }
 
-/* 題名として見せるので、基本形（4.2rem〜）より小さくても読める大きさに固定する。 */
 .compact .monogram {
+  --monogram-max: 3.2rem;
+
   margin: 14px 0 4px;
-  font-size: 3.2rem;
 }
 
 /* 説明は1行に切り詰め、どのシートでもカードの高さをそろえる。 */
@@ -153,26 +158,13 @@
   }
 
   .compact .monogram {
+    --monogram-max: 2.6rem;
+
     margin-top: 10px;
-    font-size: 2.6rem;
   }
 
   .compact .stats {
     margin-top: 12px;
     padding-top: 10px;
   }
-}
-
-/* 視覚的に隠しつつ、支援技術には読ませるための定型（SearchBox と同じ）。
-   display: none や visibility: hidden では読み上げからも消えてしまう。 */
-.visuallyHidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }

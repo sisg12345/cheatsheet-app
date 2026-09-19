@@ -23,9 +23,8 @@ import type { CheatSheet } from "../types";
 export const vueCheatSheet: CheatSheet = {
   id: "vue-reference",
   slug: "vue",
-  title: "Vue チートシート",
-  name: "Vue",
-  shortTitle: "Vue",
+  title: "Vue.js チートシート",
+  name: "Vue.js",
   description:
     "テンプレート構文、ディレクティブ、ref と reactive、computed と watch、props と emit、スロットまでをまとめたVue 3リファレンス。",
   eyebrow: "UI framework",

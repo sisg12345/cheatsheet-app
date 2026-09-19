@@ -27,7 +27,6 @@ const meta = {
       slug: "git",
       title: "Git チートシート",
       name: "Git",
-      shortTitle: "Git",
       description: "日常操作、ブランチ、リモートまでをまとめたリファレンス。",
       eyebrow: "Version control",
       accent: "#f05033",
@@ -40,20 +39,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
-/** カルーセル用の小さい版。短縮名が題名になり、長い説明は1行で省略されること。 */
-export const Compact: Story = {
-  args: {
-    compact: true,
-    sheet: {
-      ...meta.args.sheet,
-      slug: "docker",
-      title: "Docker チートシート",
-      name: "Docker",
-      shortTitle: "Docker",
-      description:
-        "コンテナとイメージの操作、Dockerfile、ボリューム、ネットワーク、Compose、後片付けまでをまとめたリファレンス。",
-      eyebrow: "Container platform",
-      accent: "#2496ed",
-    },
-  },
+/** 長い名前。題名がカード幅に収まるまで縮むこと。 */
+const longName = {
+  ...meta.args.sheet,
+  slug: "claude-code",
+  title: "Claude Code チートシート",
+  name: "Claude Code",
+  description:
+    "起動・セッション操作、CLAUDE.md、権限、MCP、Skills・Subagents、Hooks、自動化までをまとめたリファレンス。",
+  eyebrow: "AI coding agent",
+  accent: "#d97757",
 };
+export const LongName: Story = { args: { sheet: longName } };
+/** カルーセル用の小さい版。長い名前も枠に収まり、長い説明は1行で省略されること。 */
+export const Compact: Story = { args: { compact: true, sheet: longName } };
