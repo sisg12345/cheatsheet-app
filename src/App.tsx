@@ -1,6 +1,7 @@
 import { Route, Routes, useParams } from "react-router-dom";
 import { cheatSheetSummaries, getCheatSheet } from "@/src/cheatsheets/registry";
 import { AppHeader } from "@/src/components/organisms/AppHeader/AppHeader";
+import { useScrollToTopOnNavigate } from "@/src/features/scroll-to-top/useScrollToTopOnNavigate";
 import { CatalogPage } from "@/src/pages/CatalogPage/CatalogPage";
 import { CheatSheetPage } from "@/src/pages/CheatSheetPage/CheatSheetPage";
 import { NotFoundPage } from "@/src/pages/NotFoundPage/NotFoundPage";
@@ -15,6 +16,9 @@ function CheatSheetRoute() {
 }
 
 export default function App() {
+  // 別のページへ移ったら先頭から見せる（戻る・進むではブラウザの復元に任せる）。
+  useScrollToTopOnNavigate();
+
   // ヘッダーは Routes の外に置き、ページ遷移で再マウントさせない。
   return (
     <>

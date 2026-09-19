@@ -1,11 +1,30 @@
 /* CheatSheetPage のスタイル。ヒーロー・本文（目次＋セクション）・フッターの3ブロック。
    --sheet-accent は tsx がインラインで渡すシート固有色で、ここでは既定値を置いている。 */
 
+/* isolation は、下の ::before（z-index: -1）をページの地より上・中身より下に収めるため。
+   これが無いと、重なりの基準がページ全体になり、地の背景の下に潜って見えなくなることがある。 */
 .main {
   min-height: calc(100vh - var(--header-height));
+  isolation: isolate;
 
   --sheet-accent: var(--color-accent);
-  --monogram-length: 4;
+}
+
+/* ページ全体に、一覧のカード（CheatSheetCard の .card）と同じくシート色を左上からうっすら差す。
+   ページは縦に長いので、グラデーションは画面に固定した層に描き、スクロールしても画面の
+   左上から同じ見え方にする。background-attachment: fixed ではなく position: fixed の
+   疑似要素にしているのは、iOS Safari が background-attachment: fixed を無視するため。 */
+.main::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--sheet-accent) 8%, transparent),
+    transparent 42%
+  );
+  content: "";
+  pointer-events: none;
 }
 
 .hero {
@@ -19,50 +38,29 @@
   letter-spacing: 0.15em;
 }
 
-/* タイトル群。正式名を背景の意匠として重ねるので、位置の基準になる。
-   padding-top はその透かしを置くぶんの逃げ。container-type は、透かしの文字サイズを
-   この幅から決めるため。 */
+/* タイトル群。container-type は、見出しの文字サイズをこの幅から決めるため。 */
 .heading {
-  position: relative;
   container-type: inline-size;
-  margin: 0.6rem 0 1.8rem;
-  padding-top: 2.8rem;
+  margin: 1rem 0 1.8rem;
 }
 
-/* 正式名。シート色の透かしとして見出しの背後に敷く。
-   流し込みから外して絶対配置にすることで、見出しの位置を負のマージンで
-   引き戻さずに済み、余白が読みやすくなる。
-   名前が長い（"Claude Code"）と画面幅の clamp のままではスマホ幅で画面からはみ出し、
-   ページが横にスクロールしてしまうので、見出し幅に収まるまで縮める。等幅書体で1文字の幅は
-   0.52em（0.6em − 字間 0.08em）なので、180cqi ÷ 文字数なら見出し幅の約94%に収まる。 */
-.monogram {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: -0.06em;
-  color: var(--sheet-accent);
-  font: 800 min(clamp(4rem, 9vw, 8rem), calc(180cqi / var(--monogram-length))) / 0.8
-    var(--font-mono);
-  letter-spacing: -0.08em;
-  white-space: nowrap;
-  opacity: 0.16;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* auto-phrase は語の途中で折り返さないため。これが無いと狭い画面で「Claude Code チ／ートシート」
-   のように長音記号から行が始まる。未対応ブラウザでは無視され、従来どおりの折り返しになる。 */
+/* 見出し（シートの正式名）。一覧のカードの題名と同じく、シート色の太字で字間は共通のトークン。
+   どのシートのページでも同じ大きさにそろえ、上限の clamp までは画面幅に応じて伸縮する。
+   狭い画面では、いちばん長い名前が見出し幅に収まる大きさ（共通のトークン）まで縮める。
+   nowrap は、1語の名前を途中で折らないため。 */
 .heading h1 {
   margin: 0;
-  font-size: clamp(2.4rem, 4.4vw, 4.2rem);
-  letter-spacing: -0.045em;
-  line-height: 1.08;
-  word-break: auto-phrase;
+  color: var(--sheet-accent);
+  font-size: min(clamp(3.5rem, 8vw, 6.5rem), var(--font-size-display-fit));
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-display);
+  white-space: nowrap;
 }
 
 .heading p {
   max-width: 650px;
-  margin: 0.9rem 0 0;
+  margin: 1rem 0 0;
   color: var(--color-muted);
 }
 

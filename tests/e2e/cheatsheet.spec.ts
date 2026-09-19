@@ -13,17 +13,23 @@ function catalogCardTitle(page: Page, name: string) {
     .getByRole("heading", { name, exact: true });
 }
 
+/** シートのページの見出し。カードの題名と同じく正式名だけ（「〇〇 チートシート」ではない）。 */
+function sheetHeading(page: Page, name: string) {
+  return page.getByRole("heading", { level: 1, name, exact: true });
+}
+
 test("一覧からHTMLチートシートを検索して開ける", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: /必要な構文へ/ })).toBeVisible();
   await page.getByRole("searchbox").fill("HTML");
   await catalogCardTitle(page, "HTML").click();
-  await expect(page.getByRole("heading", { name: "HTMLタグ チートシート" })).toBeVisible();
+  await expect(sheetHeading(page, "HTML")).toBeVisible();
 });
 
 /**
  * 後から追加したシート。一覧の検索とヘッダーのメニューの両方から辿れることを確認する。
- * navLabel はシートの正式名で、一覧のカードの題名とヘッダーのメニューの表示名を兼ねる。
+ * navLabel はシートの正式名で、一覧のカードの題名・ヘッダーのメニューの表示名・シートのページの
+ * 見出しを兼ねる。title はテスト名に使う呼び名。
  */
 const addedSheets = [
   { query: "Vim", navLabel: "Vim", title: "Vim チートシート", path: "/cheatsheets/vim" },
@@ -66,14 +72,14 @@ for (const sheet of addedSheets) {
     await page.getByRole("searchbox").fill(sheet.query);
     await catalogCardTitle(page, sheet.navLabel).click();
     await expect(page).toHaveURL(new RegExp(`${sheet.path}$`));
-    await expect(page.getByRole("heading", { name: sheet.title })).toBeVisible();
+    await expect(sheetHeading(page, sheet.navLabel)).toBeVisible();
   });
 
   test(`ヘッダーのメニューから${sheet.title}へ移動できる`, async ({ page }) => {
     await page.goto("/");
     await openSheetFromMenu(page, sheet.navLabel);
     await expect(page).toHaveURL(new RegExp(`${sheet.path}$`));
-    await expect(page.getByRole("heading", { name: sheet.title })).toBeVisible();
+    await expect(sheetHeading(page, sheet.navLabel)).toBeVisible();
   });
 }
 

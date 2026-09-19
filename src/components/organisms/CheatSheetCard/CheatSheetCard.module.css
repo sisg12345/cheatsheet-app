@@ -1,17 +1,20 @@
-/* CheatSheetCard のスタイル。--sheet-accent（シート固有色）と --monogram-length（題名の文字数）は
-   tsx 側がインラインで渡し、ここではフォールバック値だけを定義している。 */
+/* CheatSheetCard のスタイル。--sheet-accent（シート固有色）は tsx 側がインラインで渡し、
+   ここではフォールバック値だけを定義している。 */
 
-/* カード本体。上下の要素を離すため space-between で組み、
-   min-height で収録数に関わらず高さを揃えている。
-   container-type は、題名の文字サイズをカード幅から決めるため。 */
+/* カード本体。高さは中身で決め、固定の min-height は持たない（中身の少ないシートで
+   説明の下に空白が残るため）。
+   番号・題名・説明・収録数の4行を subgrid にし、一覧の grid の中では同じ行のカード同士で
+   それぞれの行の高さをそろえる（説明の行数が違っても、収録数の位置がそろうように）。
+   grid の外に置いたとき（Storybook など）は subgrid が効かず、4行を上から積むだけになる。
+   カード自体に container-type を付けないのは、レイアウトの封じ込めで subgrid が無効になるため
+   （題名の文字サイズの基準になる幅は、題名の要素 .monogram に持たせている）。 */
 .card {
   --sheet-accent: var(--color-accent);
-  --monogram-length: 4;
-  --monogram-max: clamp(4.2rem, 10vw, 7.4rem);
 
-  container-type: inline-size;
-  display: flex;
-  min-height: 380px;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 0;
   padding: 26px;
   overflow: hidden;
   border: 1px solid var(--color-line);
@@ -27,8 +30,6 @@
     var(--color-surface-raised);
   box-shadow: var(--shadow-sm);
   color: var(--color-ink);
-  flex-direction: column;
-  justify-content: space-between;
   text-decoration: none;
   transition:
     transform 180ms ease,
@@ -54,37 +55,37 @@
   text-transform: uppercase;
 }
 
-/* 大きな題名（シートの正式名）。上限の --monogram-max までは画面幅に応じて伸縮し、
-   名前が長い（"Claude Code"・"JavaScript"）ときはカード幅 ÷ 文字数で縮める。
-   係数 136 は、1文字あたりの幅がいちばん広い "HTML"（大文字だけで約 0.71em）でも
-   カード幅の約96%に収まる値。字面で幅が変わるので、全シートがはみ出さないことは E2E で確かめている。
-   nowrap は、1語の名前を途中で折らないため。
-   行の高さは文字サイズの上限で固定し、文字は下へそろえる。名前の長さで文字が縮んでも
-   カードの高さと説明の位置が変わらず、並んだカード同士で題名の下端がそろう。 */
+/* 大きな題名（シートの正式名）の枠。幅はカードの中身の幅いっぱいで、container-type で
+   その幅を文字サイズの基準にする。字間はシートのページの見出しと共通のトークン。 */
 .monogram {
-  display: flex;
-  align-items: flex-end;
-  height: var(--monogram-max);
-  margin: 0;
+  container-type: inline-size;
+  margin: 20px 0 0;
   color: var(--sheet-accent);
-  font-size: min(var(--monogram-max), calc(136cqi / var(--monogram-length)));
   font-weight: 950;
+  letter-spacing: var(--letter-spacing-display);
+}
+
+/* 題名の文字。どのシートでも同じ大きさにそろえ、カード幅に応じて伸縮する（上限 7.4rem）。
+   大きさはいちばん長い名前がカードに収まる値で、共通のトークンが決める（styles.css）。
+   nowrap は、1語の名前を途中で折らないため。 */
+.name {
+  display: block;
+  font-size: min(7.4rem, var(--font-size-display-fit));
   line-height: 1;
-  letter-spacing: -0.085em;
   white-space: nowrap;
 }
 
 .card p {
-  margin: 10px 0 0;
+  margin: 10px 0 22px;
   color: var(--color-muted);
   font-size: 0.88rem;
 }
 
-/* 収録数の3列。dl の子 div を1列として等幅に割る。 */
+/* 収録数の3列。dl の子 div を1列として等幅に割る。説明との間隔は p の margin-bottom で取る。 */
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin: 22px 0 0;
+  margin: 0;
   padding-top: 17px;
   border-top: 1px solid var(--color-line);
 }
@@ -120,23 +121,23 @@
 }
 
 /* 横に流すカルーセル用の小さい版。面・枠線・色・文字の組み方は基本形のまま使い、
-   幅を固定して余白とモノグラムを詰める。幅を固定するのは、中身の長さで1枚ずつ幅が
-   変わると流れがちぐはぐに見えるため。 */
+   幅を固定して余白を詰める。幅を固定するのは、中身の長さで1枚ずつ幅が変わると
+   流れがちぐはぐに見えるため。1枚ずつ流すので subgrid は使わない（題名は全シート同じ
+   大きさ、説明は1行なので、どのカードも同じ高さになる）。 */
 .compact {
+  grid-row: auto;
+  grid-template-rows: none;
   width: 300px;
-  min-height: 0;
   padding: 20px;
 }
 
 .compact .monogram {
-  --monogram-max: 3.2rem;
-
   margin: 14px 0 4px;
 }
 
 /* 説明は1行に切り詰め、どのシートでもカードの高さをそろえる。 */
 .compact p {
-  margin-top: 0;
+  margin: 0 0 14px;
   overflow: hidden;
   font-size: 0.8rem;
   text-overflow: ellipsis;
@@ -144,7 +145,6 @@
 }
 
 .compact .stats {
-  margin-top: 14px;
   padding-top: 12px;
 }
 
@@ -158,13 +158,14 @@
   }
 
   .compact .monogram {
-    --monogram-max: 2.6rem;
-
     margin-top: 10px;
   }
 
+  .compact p {
+    margin-bottom: 12px;
+  }
+
   .compact .stats {
-    margin-top: 12px;
     padding-top: 10px;
   }
 }

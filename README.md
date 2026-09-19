@@ -84,6 +84,7 @@ cheatsheet-app/
 │   ├── features/                   機能層：画面をまたいで使う振る舞い
 │   │   ├── cheat-sheet-search/     検索の絞り込みロジックとキーボードショートカット
 │   │   ├── code-copy/              コード例のクリップボードコピー
+│   │   ├── scroll-to-top/          ページを移ったときにスクロール位置を先頭へ戻す
 │   │   └── theme-switch/           ライト／ダークの切り替えと保存キー
 │   ├── lib/                        汎用層：どの機能にも依存しない純関数
 │   │   ├── formatIndex.ts          0始まりindexを "01" 形式へ
@@ -140,6 +141,7 @@ cheatsheet-app/
 
 - `cheat-sheet-search/` — 検索語に一致するセクション・項目だけを残す絞り込み（`filterCheatSheet.ts`）と、`/` でのフォーカス移動・`Escape` でのクリア（`useSearchShortcuts.ts`）。日本語入力を壊さないよう、IME変換中のキーは無視します。
 - `code-copy/` — コード例のクリップボードコピー。Clipboard APIが使えない環境向けのフォールバックもここに閉じています。
+- `scroll-to-top/` — 別のページへ移ったらスクロール位置を先頭へ戻す（`App.tsx` から呼ぶ）。`BrowserRouter` はスクロール位置を扱わないため。目次の `#アンカー` や `?q=` の書き換えのような同じページの中の移動と、戻る・進む（ブラウザの復元に任せる）では動かしません。
 - `theme-switch/` — テーマの切り替えと `localStorage` の保存キー。初期テーマの決定は `index.html` の同期スクリプトが描画前に済ませているため、この層は切り替えだけを担当します。
 - `components/` を使う側です（`CopyButton` が `Button` を使うなど）。ただしatomsが `features/` に依存することはありません。
 
@@ -167,7 +169,7 @@ cheatsheet-app/
 
 - `index.html` — HTMLの雛形に加えて、**Reactより前に `data-theme` を確定させる同期スクリプト**を持ちます。ライトテーマのちらつき（FOUC）を防ぐためで、保存キーは `src/features/theme-switch/theme.ts` と一致している必要があります（`tests/unit/themeBootstrap.test.ts` が検証）。
 - `src/main.tsx` — RouterとグローバルCSSを用意して `App` をマウントするだけで、画面の中身は持ちません。
-- `src/App.tsx` — ルーティングと404。シートごとのルートは切らず、`:slug` ひとつを registry に解決させます。
+- `src/App.tsx` — ルーティングと404、ページを移ったときのスクロール位置のリセット。シートごとのルートは切らず、`:slug` ひとつを registry に解決させます。
 
 ### `tests/`
 
@@ -200,7 +202,7 @@ main.tsx
 
 ## チートシートの追加
 
-1. `src/cheatsheets/<slug>/content.ts` に `CheatSheet` 型のデータを作成します（項目は `item()` 経由）。`name` はカードの題名・詳細ページの透かし・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
+1. `src/cheatsheets/<slug>/content.ts` に `CheatSheet` 型のデータを作成します（項目は `item()` 経由）。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
 2. `src/cheatsheets/registry.ts` の `sheets` 配列へ追加します。
 3. シート名をべた書きしている箇所を直します：一覧の予告カードの文言（`CatalogPage.tsx`）、`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
 4. `npm run typecheck && npm test && npm run build` で確認します。
@@ -211,6 +213,7 @@ main.tsx
 
 - 一覧の「注目のチートシート」を自動で流れるカルーセルで表示（ホバー・フォーカス・一時停止ボタンで停止、動きを減らす設定では横スクロール）
 - 一覧検索とチートシート内検索
+- ページを移ったときにスクロール位置を先頭へ戻す（戻る・進むでは読んでいた位置へ戻る）
 - `/` キーで検索欄へ移動、`Escape` キーで検索解除
 - コード例のコピー
 - ライト／ダークテーマ

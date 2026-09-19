@@ -40,6 +40,17 @@
   --font-sans: inter, "Noto Sans JP", "Hiragino Kaku Gothic ProN", meiryo, sans-serif;
   --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
 
+  /* シート名（カードの題名・シートのページの見出し）の字間。太字の大きな欧文は詰めすぎると
+     "HTML" の字どうしがつながって見えるので、わずかに詰める程度にとどめる。
+     カードとシートのページで同じ見え方にするため、両方ともこの値を使う。 */
+  --letter-spacing-display: -0.02em;
+
+  /* シート名の文字サイズ（枠の幅に対する割合。枠に container-type を付けて使う）。どのシートでも
+     同じ大きさで出すので、いちばん幅を取る名前 "Claude Code"（字間込みで約 6.6em）が枠の約93%に
+     収まる値にしている。もっと長い名前のシートを足すと、はみ出しを確かめる E2E
+     （tests/e2e/sheet-names.spec.ts）が落ちるので、そのときにこの値を見直す。 */
+  --font-size-display-fit: 14cqi;
+
   /* 固定ヘッダーの実高さ。AppHeader の .inner がこの値から自分の min-height を導き、
      scroll-padding-top・サイドバーの追従位置・各レイアウトの min-height も
      すべてこれを基準に計算する。高さを変えるときはここだけを直す。 */
