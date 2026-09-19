@@ -1,11 +1,30 @@
 /* CheatSheetPage のスタイル。ヒーロー・本文（目次＋セクション）・フッターの3ブロック。
    --sheet-accent は tsx がインラインで渡すシート固有色で、ここでは既定値を置いている。 */
 
+/* isolation は、下の ::before（z-index: -1）をページの地より上・中身より下に収めるため。
+   これが無いと、重なりの基準がページ全体になり、地の背景の下に潜って見えなくなることがある。 */
 .main {
   min-height: calc(100vh - var(--header-height));
+  isolation: isolate;
 
   --sheet-accent: var(--color-accent);
-  --monogram-length: 4;
+}
+
+/* ページ全体に、一覧のカード（CheatSheetCard の .card）と同じくシート色を左上からうっすら差す。
+   ページは縦に長いので、グラデーションは画面に固定した層に描き、スクロールしても画面の
+   左上から同じ見え方にする。background-attachment: fixed ではなく position: fixed の
+   疑似要素にしているのは、iOS Safari が background-attachment: fixed を無視するため。 */
+.main::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--sheet-accent) 8%, transparent),
+    transparent 42%
+  );
+  content: "";
+  pointer-events: none;
 }
 
 .hero {
@@ -26,13 +45,13 @@
 }
 
 /* 見出し（シートの正式名）。一覧のカードの題名と同じく、シート色の太字で字間は共通のトークン。
-   上限の clamp までは画面幅に応じて伸縮し、名前が長い（"Claude Code"）ときは見出し幅 ÷ 文字数で
-   縮める（係数 124 はカードと同じで、"HTML" でも幅の約96%に収まる）。nowrap は、1語の名前を
-   途中で折らないため。 */
+   どのシートのページでも同じ大きさにそろえ、上限の clamp までは画面幅に応じて伸縮する。
+   狭い画面では、いちばん長い名前が見出し幅に収まる大きさ（共通のトークン）まで縮める。
+   nowrap は、1語の名前を途中で折らないため。 */
 .heading h1 {
   margin: 0;
   color: var(--sheet-accent);
-  font-size: min(clamp(3.5rem, 8vw, 6.5rem), calc(124cqi / var(--monogram-length)));
+  font-size: min(clamp(3.5rem, 8vw, 6.5rem), var(--font-size-display-fit));
   font-weight: 950;
   line-height: 1;
   letter-spacing: var(--letter-spacing-display);

@@ -14,18 +14,12 @@ interface CheatSheetCardProps {
 
 export function CheatSheetCard({ sheet, index, compact = false }: CheatSheetCardProps) {
   // カスタムプロパティをインラインstyleに書くため、CSSProperties へのキャストが要る。
-  // --monogram-length は、題名の文字サイズを名前の長さ（"Git" と "Claude Code"）に合わせるため。
   const Title = compact ? "div" : "h2";
   return (
     <Link
       className={`${styles.card} ${compact ? styles.compact : ""}`}
       to={`/cheatsheets/${sheet.slug}`}
-      style={
-        {
-          "--sheet-accent": sheet.accent,
-          "--monogram-length": sheet.name.length,
-        } as CSSProperties
-      }
+      style={{ "--sheet-accent": sheet.accent } as CSSProperties}
     >
       <div className={styles.topline}>
         <span>{formatIndex(index)}</span>
