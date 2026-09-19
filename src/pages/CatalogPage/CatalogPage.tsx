@@ -26,14 +26,11 @@ export function CatalogPage({ sheets }: CatalogPageProps) {
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // タイトル・短縮名・説明・キーワードのいずれかに一致したシートを残す。
+  // タイトル・正式名・説明・キーワードのいずれかに一致したシートを残す。
   const visibleSheets = useMemo(
     () =>
       sheets.filter((sheet) =>
-        includesSearch(
-          [sheet.title, sheet.shortTitle, sheet.description, ...sheet.keywords],
-          query,
-        ),
+        includesSearch([sheet.title, sheet.name, sheet.description, ...sheet.keywords], query),
       ),
     [query, sheets],
   );

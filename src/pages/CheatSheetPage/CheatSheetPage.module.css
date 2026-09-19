@@ -5,6 +5,7 @@
   min-height: calc(100vh - var(--header-height));
 
   --sheet-accent: var(--color-accent);
+  --monogram-length: 4;
 }
 
 .hero {
@@ -18,25 +19,32 @@
   letter-spacing: 0.15em;
 }
 
-/* タイトル群。短縮名を背景の意匠として重ねるので、位置の基準になる。
-   padding-top はその短縮名を置くぶんの逃げ。 */
+/* タイトル群。正式名を背景の意匠として重ねるので、位置の基準になる。
+   padding-top はその透かしを置くぶんの逃げ。container-type は、透かしの文字サイズを
+   この幅から決めるため。 */
 .heading {
   position: relative;
+  container-type: inline-size;
   margin: 0.6rem 0 1.8rem;
   padding-top: 2.8rem;
 }
 
-/* 短縮名。シート色の透かしとして見出しの背後に敷く。
+/* 正式名。シート色の透かしとして見出しの背後に敷く。
    流し込みから外して絶対配置にすることで、見出しの位置を負のマージンで
-   引き戻さずに済み、余白が読みやすくなる。 */
+   引き戻さずに済み、余白が読みやすくなる。
+   名前が長い（"Claude Code"）と画面幅の clamp のままではスマホ幅で画面からはみ出し、
+   ページが横にスクロールしてしまうので、見出し幅に収まるまで縮める。等幅書体で1文字の幅は
+   0.52em（0.6em − 字間 0.08em）なので、180cqi ÷ 文字数なら見出し幅の約94%に収まる。 */
 .monogram {
   position: absolute;
   z-index: -1;
   top: 0;
   left: -0.06em;
   color: var(--sheet-accent);
-  font: 800 clamp(4rem, 9vw, 8rem)/0.8 var(--font-mono);
+  font: 800 min(clamp(4rem, 9vw, 8rem), calc(180cqi / var(--monogram-length))) / 0.8
+    var(--font-mono);
   letter-spacing: -0.08em;
+  white-space: nowrap;
   opacity: 0.16;
   pointer-events: none;
   user-select: none;

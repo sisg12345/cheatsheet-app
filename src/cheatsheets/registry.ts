@@ -36,7 +36,6 @@ export const cheatSheetSummaries: CheatSheetSummary[] = sheets.map((sheet) => ({
   slug: sheet.slug,
   title: sheet.title,
   name: sheet.name,
-  shortTitle: sheet.shortTitle,
   description: sheet.description,
   eyebrow: sheet.eyebrow,
   accent: sheet.accent,

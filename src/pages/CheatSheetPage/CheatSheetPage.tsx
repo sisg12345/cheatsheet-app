@@ -27,12 +27,18 @@ export function CheatSheetPage({ sheet }: CheatSheetPageProps) {
   useSearchShortcuts(searchRef, () => setQuery(""));
 
   return (
-    <main className={styles.main} style={{ "--sheet-accent": sheet.accent } as CSSProperties}>
+    // --monogram-length は、背景の透かし（正式名）の文字サイズを名前の長さに合わせるため。
+    <main
+      className={styles.main}
+      style={
+        { "--sheet-accent": sheet.accent, "--monogram-length": sheet.name.length } as CSSProperties
+      }
+    >
       {/* hero: シート名とシート内検索 */}
       <header className={styles.hero}>
         <div className={styles.eyebrow}>{sheet.eyebrow} / CHEAT SHEET</div>
         <div className={styles.heading}>
-          <span className={styles.monogram}>{sheet.shortTitle}</span>
+          <span className={styles.monogram}>{sheet.name}</span>
           <h1>{sheet.title}</h1>
           <p>{sheet.description}</p>
         </div>

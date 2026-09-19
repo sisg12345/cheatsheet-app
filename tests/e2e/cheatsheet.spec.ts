@@ -3,18 +3,28 @@
  * ロケータは getByRole を優先する。クラス名やDOM構造の変更で壊れず、
  * 支援技術から見た名前が保たれているかも同時に検証できるため。
  */
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { openSheetFromMenu, sheetMenuButton } from "./sheetMenu";
+
+/** 一覧のカードの題名（シートの正式名）。カードのリンクの中にあるので、押せばシートへ移る。 */
+function catalogCardTitle(page: Page, name: string) {
+  return page
+    .getByRole("region", { name: "チートシート一覧" })
+    .getByRole("heading", { name, exact: true });
+}
 
 test("一覧からHTMLチートシートを検索して開ける", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: /必要な構文へ/ })).toBeVisible();
   await page.getByRole("searchbox").fill("HTML");
-  await page.getByRole("link", { name: /HTMLタグ/ }).click();
+  await catalogCardTitle(page, "HTML").click();
   await expect(page.getByRole("heading", { name: "HTMLタグ チートシート" })).toBeVisible();
 });
 
-/** 後から追加したシート。一覧の検索とヘッダーのメニューの両方から辿れることを確認する。 */
+/**
+ * 後から追加したシート。一覧の検索とヘッダーのメニューの両方から辿れることを確認する。
+ * navLabel はシートの正式名で、一覧のカードの題名とヘッダーのメニューの表示名を兼ねる。
+ */
 const addedSheets = [
   { query: "Vim", navLabel: "Vim", title: "Vim チートシート", path: "/cheatsheets/vim" },
   {
@@ -41,15 +51,20 @@ const addedSheets = [
     title: "TypeScript チートシート",
     path: "/cheatsheets/typescript",
   },
-  { query: "React", navLabel: "React", title: "React チートシート", path: "/cheatsheets/react" },
-  { query: "Vue", navLabel: "Vue", title: "Vue チートシート", path: "/cheatsheets/vue" },
+  {
+    query: "React",
+    navLabel: "React.js",
+    title: "React.js チートシート",
+    path: "/cheatsheets/react",
+  },
+  { query: "Vue", navLabel: "Vue.js", title: "Vue.js チートシート", path: "/cheatsheets/vue" },
 ];
 
 for (const sheet of addedSheets) {
   test(`一覧から${sheet.title}を検索して開ける`, async ({ page }) => {
     await page.goto("/");
     await page.getByRole("searchbox").fill(sheet.query);
-    await page.getByRole("link", { name: new RegExp(sheet.title) }).click();
+    await catalogCardTitle(page, sheet.navLabel).click();
     await expect(page).toHaveURL(new RegExp(`${sheet.path}$`));
     await expect(page.getByRole("heading", { name: sheet.title })).toBeVisible();
   });

@@ -8,39 +8,34 @@ interface CheatSheetCardProps {
   sheet: CheatSheetSummary;
   /** 0始まり。左上の通し番号に使う。 */
   index: number;
-  /**
-   * 横に流すカルーセルに並べる小さい版。一覧のカードと同じ見た目のまま全体を詰め、
-   * 短縮名（"HTML" など）を題名として見せる。説明は1行に切り詰める。
-   */
+  /** 横に流すカルーセルに並べる小さい版。一覧のカードと同じ見た目のまま全体を詰め、説明は1行に切り詰める。 */
   compact?: boolean;
 }
 
 export function CheatSheetCard({ sheet, index, compact = false }: CheatSheetCardProps) {
   // カスタムプロパティをインラインstyleに書くため、CSSProperties へのキャストが要る。
+  // --monogram-length は、題名の文字サイズを名前の長さ（"Git" と "Claude Code"）に合わせるため。
+  const Title = compact ? "div" : "h2";
   return (
     <Link
       className={`${styles.card} ${compact ? styles.compact : ""}`}
       to={`/cheatsheets/${sheet.slug}`}
-      style={{ "--sheet-accent": sheet.accent } as CSSProperties}
+      style={
+        {
+          "--sheet-accent": sheet.accent,
+          "--monogram-length": sheet.name.length,
+        } as CSSProperties
+      }
     >
       <div className={styles.topline}>
         <span>{formatIndex(index)}</span>
         <span>{sheet.eyebrow}</span>
       </div>
 
-      {/* タイトルと重複する装飾なので読み上げからは外す。 */}
-      <div className={styles.monogram} aria-hidden="true">
-        {sheet.shortTitle}
-      </div>
-
-      {/* 小さい版は短縮名を題名として見せ、正式な題名は読み上げ用にだけ残す。見出しにしないのは、
-          同じシートを一覧のカードが h2 で出しており、見出しでたどると同じ名前が2回ずつ並ぶため。 */}
+      {/* 題名はシートの正式名。小さい版で見出しにしないのは、同じシートを一覧のカードが
+          h2 で出しており、見出しでたどると同じ名前が2回ずつ並ぶため。 */}
       <div>
-        {compact ? (
-          <span className={styles.visuallyHidden}>{sheet.title}</span>
-        ) : (
-          <h2>{sheet.title}</h2>
-        )}
+        <Title className={styles.monogram}>{sheet.name}</Title>
         <p>{sheet.description}</p>
       </div>
 

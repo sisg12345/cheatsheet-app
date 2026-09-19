@@ -49,9 +49,9 @@ test("一時停止ボタンで止めたままにでき、再生で再開する",
 test("止めてからカードを押すと、そのシートへ移動できる", async ({ page }) => {
   await page.goto("/");
   await featured(page).getByRole("button", { name: "一時停止" }).click();
-  await featured(page)
-    .getByRole("link", { name: /Git チートシート/ })
-    .click();
+  // 小さいカードの題名は見出しにしていない（一覧のカードと見出しが重なるため）ので、リンク先で特定する。
+  // role で拾うのは、aria-hidden の複製の列を除くため。
+  await featured(page).getByRole("link").and(page.locator('[href="/cheatsheets/git"]')).click();
   await expect(page).toHaveURL(/\/cheatsheets\/git$/);
 });
 

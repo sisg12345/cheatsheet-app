@@ -24,12 +24,11 @@ export const claudeCodeCheatSheet: CheatSheet = {
   slug: "claude-code",
   title: "Claude Code チートシート",
   name: "Claude Code",
-  shortTitle: "CC",
   description:
     "起動・セッション操作、CLAUDE.md、権限、MCP、Skills・Subagents、Hooks、自動化までをまとめたClaude Codeリファレンス。",
   eyebrow: "AI coding agent",
   accent: "#d97757",
-  keywords: ["claude", "claude code", "ai", "エージェント", "cli", "mcp"],
+  keywords: ["claude", "claude code", "cc", "ai", "エージェント", "cli", "mcp"],
   updatedAt: "2026-09-16",
   sources: [
     { label: "Claude Code公式ドキュメント", url: "https://code.claude.com/docs/en/overview" },

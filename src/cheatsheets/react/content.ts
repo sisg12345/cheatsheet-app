@@ -23,9 +23,8 @@ import type { CheatSheet } from "../types";
 export const reactCheatSheet: CheatSheet = {
   id: "react-reference",
   slug: "react",
-  title: "React チートシート",
-  name: "React",
-  shortTitle: "React",
+  title: "React.js チートシート",
+  name: "React.js",
   description:
     "JSX、props、state、Effect、ref、フォーム、Context、Suspense、メモ化、TypeScript での型付けまでをまとめたReactリファレンス。",
   eyebrow: "UI library",
