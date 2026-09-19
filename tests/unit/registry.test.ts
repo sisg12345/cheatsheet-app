@@ -22,6 +22,12 @@ describe("cheatSheetRegistry", () => {
     "typescript",
     "react",
     "vue",
+    "nextjs",
+    "nuxt",
+    "linux",
+    "bash",
+    "vite",
+    "npm",
   ])("%s を slug で取得できる", (slug) => {
     expect(getCheatSheet(slug)?.slug).toBe(slug);
   });

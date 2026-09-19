@@ -64,6 +64,22 @@ const addedSheets = [
     path: "/cheatsheets/react",
   },
   { query: "Vue", navLabel: "Vue.js", title: "Vue.js チートシート", path: "/cheatsheets/vue" },
+  {
+    query: "Next.js",
+    navLabel: "Next.js",
+    title: "Next.js チートシート",
+    path: "/cheatsheets/nextjs",
+  },
+  {
+    query: "Nuxt",
+    navLabel: "Nuxt.js",
+    title: "Nuxt.js チートシート",
+    path: "/cheatsheets/nuxt",
+  },
+  { query: "Linux", navLabel: "Linux", title: "Linux チートシート", path: "/cheatsheets/linux" },
+  { query: "Bash", navLabel: "Bash", title: "Bash チートシート", path: "/cheatsheets/bash" },
+  { query: "Vite", navLabel: "Vite", title: "Vite チートシート", path: "/cheatsheets/vite" },
+  { query: "npm", navLabel: "npm", title: "npm チートシート", path: "/cheatsheets/npm" },
 ];
 
 for (const sheet of addedSheets) {
