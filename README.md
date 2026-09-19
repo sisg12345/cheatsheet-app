@@ -200,7 +200,7 @@ main.tsx
 
 ## チートシートの追加
 
-1. `src/cheatsheets/<slug>/content.ts` に `CheatSheet` 型のデータを作成します（項目は `item()` 経由）。`name` はカードの題名・詳細ページの透かし・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
+1. `src/cheatsheets/<slug>/content.ts` に `CheatSheet` 型のデータを作成します（項目は `item()` 経由）。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
 2. `src/cheatsheets/registry.ts` の `sheets` 配列へ追加します。
 3. シート名をべた書きしている箇所を直します：一覧の予告カードの文言（`CatalogPage.tsx`）、`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
 4. `npm run typecheck && npm test && npm run build` で確認します。

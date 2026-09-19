@@ -93,17 +93,20 @@
   font-size: 0.78rem;
 }
 
-/* カードを2列に並べる。枠線はグリッド側では引かず、各カードが自分で四辺の枠線と
-   角丸を持つ（CheatSheetCard.module.css の .card）。カードはホバーで浮き上がるため、
-   隣接カードとは gap で間を取る。 */
+/* カードを3列に並べる（狭くなるにつれて2列・1列）。枠線はグリッド側では引かず、各カードが
+   自分で四辺の枠線と角丸を持つ（CheatSheetCard.module.css の .card）。カードはホバーで
+   浮き上がるため、隣接カードとは gap で間を取る。 */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
-/* 追加予定を示すダミー枠。枠線と角丸はカードと同じ引き方に揃える。 */
+/* 追加予定を示すダミー枠。枠線と角丸はカードと同じ引き方に揃える。
+   カードは4行（番号・題名・説明・収録数）にまたがる subgrid なので、この枠も同じ4行を占め、
+   次の行のカードと食い違わないようにする。 */
 .comingSoon {
+  grid-row: span 4;
   min-height: 250px;
   padding: 2rem;
   display: flex;
@@ -142,6 +145,13 @@
 .empty p {
   margin-top: 0.5rem;
   color: var(--color-muted);
+}
+
+/* 3列では1枚が細くなりすぎる幅から2列にする。 */
+@media (width <= 960px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* 狭い画面ではヒーローもカードも1列に落とす。 */

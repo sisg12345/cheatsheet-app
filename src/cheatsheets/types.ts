@@ -38,9 +38,10 @@ export interface CheatSheet {
   id: string;
   /** URLに使う識別子。`/cheatsheets/<slug>` になる。 */
   slug: string;
+  /** シートの呼び名（例: "HTMLタグ チートシート"）。画面には出さず、一覧の検索に使う。 */
   title: string;
   /**
-   * 題材の正式名（例: "Claude Code"、"React.js"）。カードの題名・詳細ページの透かし・
+   * 題材の正式名（例: "Claude Code"、"React.js"）。カードの題名・シートのページの見出し・
    * ヘッダーのメニューに出す。"CC" や "JS" のような省略形にはしない。
    */
   name: string;

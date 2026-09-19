@@ -27,19 +27,19 @@ export function CheatSheetPage({ sheet }: CheatSheetPageProps) {
   useSearchShortcuts(searchRef, () => setQuery(""));
 
   return (
-    // --monogram-length は、背景の透かし（正式名）の文字サイズを名前の長さに合わせるため。
+    // --monogram-length は、見出し（正式名）の文字サイズを名前の長さに合わせるため。
     <main
       className={styles.main}
       style={
         { "--sheet-accent": sheet.accent, "--monogram-length": sheet.name.length } as CSSProperties
       }
     >
-      {/* hero: シート名とシート内検索 */}
+      {/* hero: シート名とシート内検索。見出しは一覧のカードの題名と同じく、シート色の正式名だけにする
+          （「チートシート」であることは上の装飾ラベルが示す）。 */}
       <header className={styles.hero}>
         <div className={styles.eyebrow}>{sheet.eyebrow} / CHEAT SHEET</div>
         <div className={styles.heading}>
-          <span className={styles.monogram}>{sheet.name}</span>
-          <h1>{sheet.title}</h1>
+          <h1>{sheet.name}</h1>
           <p>{sheet.description}</p>
         </div>
         <SearchBox
