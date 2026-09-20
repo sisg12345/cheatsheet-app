@@ -1,6 +1,6 @@
 # CheatSheet Hub
 
-HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Docker・TypeScript・React.js・Vue.js・Next.js・Nuxt.js・Linux・Bash・Vite・npm・CSSを収録しています。
+HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・CSS・JavaScript・TypeScript・React.js・Next.js・Vue.js・Nuxt.js・npm・Vite・Git・Docker・Linux・Bash・Vim・Claude Codeを収録しています。
 
 ## 構成
 
@@ -69,21 +69,21 @@ cheatsheet-app/
 │   │   ├── helpers.ts              データ記述用の item() ヘルパー
 │   │   ├── registry.ts             収録シートの一覧、サマリー、中身の読み込み（loadCheatSheet）
 │   │   ├── html/                   HTMLシート（summary.ts：一覧に出す表書きと件数／content.ts：中身）
-│   │   ├── git/                    Gitシート
-│   │   ├── vim/                    Vimシート
-│   │   ├── claude-code/            Claude Codeシート
+│   │   ├── css/                    CSSシート
 │   │   ├── javascript/             JavaScriptシート
-│   │   ├── docker/                 Dockerシート
 │   │   ├── typescript/             TypeScriptシート
 │   │   ├── react/                  React.jsシート
-│   │   ├── vue/                    Vue.jsシート
 │   │   ├── nextjs/                 Next.jsシート
+│   │   ├── vue/                    Vue.jsシート
 │   │   ├── nuxt/                   Nuxt.jsシート
+│   │   ├── npm/                    npmシート
+│   │   ├── vite/                   Viteシート
+│   │   ├── git/                    Gitシート
+│   │   ├── docker/                 Dockerシート
 │   │   ├── linux/                  Linuxシート
 │   │   ├── bash/                   Bashシート
-│   │   ├── vite/                   Viteシート
-│   │   ├── npm/                    npmシート
-│   │   └── css/                    CSSシート
+│   │   ├── vim/                    Vimシート
+│   │   └── claude-code/            Claude Codeシート
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）

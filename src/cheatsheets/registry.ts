@@ -35,30 +35,30 @@ interface SheetEntry {
 /** 配列順が一覧の表示順になる。summary と load は同じシートのディレクトリを指す。 */
 const sheets: SheetEntry[] = [
   { summary: htmlSummary, load: () => import("./html/content").then((m) => m.htmlContent) },
-  { summary: gitSummary, load: () => import("./git/content").then((m) => m.gitContent) },
-  { summary: vimSummary, load: () => import("./vim/content").then((m) => m.vimContent) },
-  {
-    summary: claudeCodeSummary,
-    load: () => import("./claude-code/content").then((m) => m.claudeCodeContent),
-  },
+  { summary: cssSummary, load: () => import("./css/content").then((m) => m.cssContent) },
   {
     summary: javascriptSummary,
     load: () => import("./javascript/content").then((m) => m.javascriptContent),
   },
-  { summary: dockerSummary, load: () => import("./docker/content").then((m) => m.dockerContent) },
   {
     summary: typescriptSummary,
     load: () => import("./typescript/content").then((m) => m.typescriptContent),
   },
   { summary: reactSummary, load: () => import("./react/content").then((m) => m.reactContent) },
-  { summary: vueSummary, load: () => import("./vue/content").then((m) => m.vueContent) },
   { summary: nextjsSummary, load: () => import("./nextjs/content").then((m) => m.nextjsContent) },
+  { summary: vueSummary, load: () => import("./vue/content").then((m) => m.vueContent) },
   { summary: nuxtSummary, load: () => import("./nuxt/content").then((m) => m.nuxtContent) },
+  { summary: npmSummary, load: () => import("./npm/content").then((m) => m.npmContent) },
+  { summary: viteSummary, load: () => import("./vite/content").then((m) => m.viteContent) },
+  { summary: gitSummary, load: () => import("./git/content").then((m) => m.gitContent) },
+  { summary: dockerSummary, load: () => import("./docker/content").then((m) => m.dockerContent) },
   { summary: linuxSummary, load: () => import("./linux/content").then((m) => m.linuxContent) },
   { summary: bashSummary, load: () => import("./bash/content").then((m) => m.bashContent) },
-  { summary: viteSummary, load: () => import("./vite/content").then((m) => m.viteContent) },
-  { summary: npmSummary, load: () => import("./npm/content").then((m) => m.npmContent) },
-  { summary: cssSummary, load: () => import("./css/content").then((m) => m.cssContent) },
+  { summary: vimSummary, load: () => import("./vim/content").then((m) => m.vimContent) },
+  {
+    summary: claudeCodeSummary,
+    load: () => import("./claude-code/content").then((m) => m.claudeCodeContent),
+  },
 ];
 
 const sheetsBySlug: Readonly<Record<string, SheetEntry>> = Object.fromEntries(
