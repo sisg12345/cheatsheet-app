@@ -15,7 +15,7 @@
  *   パッケージ管理は Debian / Ubuntu（apt）と RHEL / Fedora（dnf）の両方を載せる
  * - <file> などの山括弧は置き換える値。例のサービス名は nginx にそろえる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -24,6 +24,7 @@ import type { CheatSheetContent } from "../types";
 export const linuxContent: CheatSheetContent = {
   id: "linux-reference",
   updatedAt: "2026-09-20",
+  target: "GNU coreutils・主要ディストリビューション",
   sources: [
     { label: "man ページ（man7.org）", url: "https://man7.org/linux/man-pages/" },
     { label: "GNU Coreutils マニュアル", url: "https://www.gnu.org/software/coreutils/manual/" },

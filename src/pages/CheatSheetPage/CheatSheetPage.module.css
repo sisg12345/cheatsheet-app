@@ -118,11 +118,13 @@
   color: var(--color-muted);
 }
 
-/* 更新日と出典リンク。 */
+/* 更新日、対象の版、出典リンク。3つ並ぶので、出典のリンクが増えて入りきらない幅では
+   折り返す（出典はリンクが1〜3本あり、いちばん幅が変わるので右端に置いている）。 */
 .footer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: var(--space-block);
+  gap: 1.5rem var(--space-block);
   padding: var(--space-block) var(--page-padding-x);
   border-top: 1px solid var(--color-line);
   color: var(--color-muted);
@@ -157,7 +159,9 @@
     gap: 2rem;
   }
 
+  /* 縦積みでは3段になるので、段の間は本文どうしの余白より詰める。 */
   .footer {
     flex-direction: column;
+    gap: 1.5rem;
   }
 }

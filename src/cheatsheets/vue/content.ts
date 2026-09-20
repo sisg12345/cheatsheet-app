@@ -12,10 +12,10 @@
  *   推奨の書き方には info を付ける。バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
  * - 範囲は Vue 本体だけで、Composition API と <script setup> の書き方にそろえる。
  *   Vue Router や Pinia などのライブラリは扱わない
- * - 対象は Vue 3.5（3.6 は 2026-09-18 時点で RC）。3.4 以降に入った機能は、使えるバージョンを
- *   note に書く。バージョンに依存する記述は公式ブログと GitHub のリリースで確認済み（2026-09-18）
+ * - 対象の版は target に持たせ、フッターに出す。3.4 以降に入った機能は、使える
+ *   バージョンを note に書く。版に依存する記述は公式ブログと GitHub のリリースで確かめる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -24,6 +24,7 @@ import type { CheatSheetContent } from "../types";
 export const vueContent: CheatSheetContent = {
   id: "vue-reference",
   updatedAt: "2026-09-20",
+  target: "Vue.js 3.5",
   sources: [
     { label: "Vue.js ガイド", url: "https://ja.vuejs.org/guide/introduction.html" },
     { label: "Vue.js API リファレンス", url: "https://ja.vuejs.org/api/" },

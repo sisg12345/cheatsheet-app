@@ -11,10 +11,11 @@
  * - XSS などセキュリティ事故につながる書き方には danger、元の配列を書き換えるなど
  *   気付きにくい落とし穴には warning、推奨の書き方には info を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
- * - 言語は ES2015 以降の書き方が前提。比較的新しい機能は、使えるようになった時期を note に書く
- * - 出典は MDN。対応状況（Baseline）が変わりうる記述は MDN で確認してから直す（2026-09-16確認）
+ * - 前提の版は target に持たせ、フッターに出す。比較的新しい機能は、使えるように
+ *   なった時期を note に書く
+ * - 出典は MDN。対応状況（Baseline）が変わりうる記述は MDN で確かめてから直す
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -23,6 +24,7 @@ import type { CheatSheetContent } from "../types";
 export const javascriptContent: CheatSheetContent = {
   id: "javascript-reference",
   updatedAt: "2026-09-20",
+  target: "ES2015 以降（MDN Baseline）",
   sources: [
     {
       label: "MDN JavaScript リファレンス",

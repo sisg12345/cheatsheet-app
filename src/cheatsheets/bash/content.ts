@@ -11,9 +11,10 @@
  * - ファイルを上書きして中身を失う書き方には warning、推奨の書き方には info を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
  * - 範囲はシェルの文法（スクリプト）と対話操作。個々のコマンドは Linux シートに任せる
- * - 対象は Bash 5 系。[[ ]] や配列など、sh（POSIX シェル）では使えない書き方も含む
+ * - 対象の版は target に持たせ、フッターに出す。[[ ]] や配列など、sh（POSIX シェル）では
+ *   使えない書き方も含む
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -22,6 +23,7 @@ import type { CheatSheetContent } from "../types";
 export const bashContent: CheatSheetContent = {
   id: "bash-reference",
   updatedAt: "2026-09-20",
+  target: "Bash 5 系",
   sources: [
     { label: "GNU Bash リファレンスマニュアル", url: "https://www.gnu.org/software/bash/manual/" },
     { label: "ShellCheck", url: "https://www.shellcheck.net/" },

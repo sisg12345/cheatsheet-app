@@ -13,8 +13,9 @@
  * - コマンドを持たない実践項目は syntax を undefined にする（コード欄は — になる）
  * - 複数行の設定例は syntax にそのまま書く。CodeBlock が改行を保ったまま表示・コピーする
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容は公式ドキュメントと手元の claude --help（2026-09-20確認）に基づく。Claude Code は
- *   更新が速いので、食い違いを見つけたら claude --help の実物に合わせて直し、updatedAt も更新する
+ * - 内容は公式ドキュメントと手元の claude --help に基づく（基準と確認日は target に持たせ、
+ *   フッターに出す）。Claude Code は更新が速いので、食い違いを見つけたら claude --help の
+ *   実物に合わせて直し、updatedAt と target.checkedAt も更新する
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -23,6 +24,7 @@ import type { CheatSheetContent } from "../types";
 export const claudeCodeContent: CheatSheetContent = {
   id: "claude-code-reference",
   updatedAt: "2026-09-20",
+  target: "Claude Code 最新版",
   sources: [
     { label: "Claude Code公式ドキュメント", url: "https://code.claude.com/docs/en/overview" },
   ],

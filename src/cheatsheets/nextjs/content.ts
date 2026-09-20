@@ -11,10 +11,10 @@
  * - 秘密情報の漏えいや、外から直接呼べる処理の検証漏れにつながる書き方には warning、
  *   推奨の書き方には info を付ける。バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
  * - 範囲は App Router だけ（Pages Router は扱わない）。例は TypeScript で書く
- * - 対象は Next.js 16（16.3、2026-08）。15・16 で変わった点（非同期の params、proxy.ts、
- *   Cache Components など）は note に書く。バージョンに依存する記述は公式ブログで確認済み（2026-09-19）
+ * - 対象の版は target に持たせ、フッターに出す。15・16 で変わった点（非同期の params、
+ *   proxy.ts、Cache Components など）は note に書く。版に依存する記述は公式ブログで確かめる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -23,6 +23,7 @@ import type { CheatSheetContent } from "../types";
 export const nextjsContent: CheatSheetContent = {
   id: "nextjs-reference",
   updatedAt: "2026-09-20",
+  target: "Next.js 16.3",
   sources: [
     { label: "Next.js ドキュメント（App Router）", url: "https://nextjs.org/docs/app" },
     { label: "Next.js 16 リリース記事", url: "https://nextjs.org/blog/next-16" },
