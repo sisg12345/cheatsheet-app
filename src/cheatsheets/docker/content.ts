@@ -18,20 +18,13 @@
  *   公式ドキュメントで確認済み（2026-09-16）。直すときも公式ドキュメントに合わせる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const dockerCheatSheet: CheatSheet = {
+export const dockerContent: CheatSheetContent = {
   id: "docker-reference",
-  slug: "docker",
-  title: "Docker チートシート",
-  name: "Docker",
-  description:
-    "コンテナとイメージの操作、Dockerfile、ボリューム、ネットワーク、Compose、後片付けまでをまとめたDockerリファレンス。",
-  eyebrow: "Container platform",
-  accent: "#2496ed",
-  keywords: ["docker", "コンテナ", "container", "dockerfile", "compose", "イメージ"],
   updatedAt: "2026-09-16",
   sources: [
     { label: "Docker CLI リファレンス", url: "https://docs.docker.com/reference/cli/docker/" },

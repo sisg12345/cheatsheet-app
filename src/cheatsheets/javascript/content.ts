@@ -15,20 +15,13 @@
  * - 出典は MDN。対応状況（Baseline）が変わりうる記述は MDN で確認してから直す（2026-09-16確認）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const javascriptCheatSheet: CheatSheet = {
+export const javascriptContent: CheatSheetContent = {
   id: "javascript-reference",
-  slug: "javascript",
-  title: "JavaScript チートシート",
-  name: "JavaScript",
-  description:
-    "変数・関数・配列から非同期処理、モジュール、DOM操作、fetch までをまとめたJavaScriptリファレンス。",
-  eyebrow: "Programming language",
-  accent: "#b58900",
-  keywords: ["javascript", "js", "ecmascript", "es6", "dom", "非同期", "fetch"],
   updatedAt: "2026-09-16",
   sources: [
     {

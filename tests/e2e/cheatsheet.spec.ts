@@ -5,6 +5,7 @@
  */
 import { expect, test, type Page } from "@playwright/test";
 import { openSheetFromMenu, sheetMenuButton } from "./sheetMenu";
+import { openSheet } from "./sheetPage";
 
 /** 一覧のカードの題名（シートの正式名）。カードのリンクの中にあるので、押せばシートへ移る。 */
 function catalogCardTitle(page: Page, name: string) {
@@ -99,7 +100,7 @@ test("メニューは今いるシートを示し、選ぶと閉じる", async ({
 test("メニューは Escape で閉じ、シート内の検索語は消さない", async ({ page }) => {
   // シート内検索は window の Escape でクリアする。メニューを閉じる Escape がそこまで届くと、
   // メニューを閉じただけで検索語まで消えてしまう。
-  await page.goto("/cheatsheets/html?q=form");
+  await openSheet(page, "/cheatsheets/html?q=form");
   await sheetMenuButton(page).click();
   await expect(
     page.getByRole("banner").getByRole("link", { name: "Git", exact: true }),

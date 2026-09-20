@@ -4,7 +4,11 @@
  * シートの見分けが付かなくなる形でしか表に出ないため、データを足した時点でここで落とす。
  */
 import { describe, expect, it } from "vitest";
-import { cheatSheetSummaries, getCheatSheet } from "@/src/cheatsheets/registry";
+import {
+  cheatSheetSummaries,
+  getCheatSheetSummary,
+  loadCheatSheet,
+} from "@/src/cheatsheets/registry";
 
 /** 2回目以降に現れた値を返す。重複がなければ空配列。 */
 function duplicates(values: string[]): string[] {
@@ -23,7 +27,21 @@ describe("cheatSheetRegistry", () => {
     "react",
     "vue",
   ])("%s を slug で取得できる", (slug) => {
-    expect(getCheatSheet(slug)?.slug).toBe(slug);
+    expect(getCheatSheetSummary(slug)?.slug).toBe(slug);
+  });
+
+  // 辞書が Object.prototype を継承しているため、素通しすると継承メンバーが返って404に落ちない。
+  it.each(["constructor", "toString", "hasOwnProperty", "__proto__", "unknown"])(
+    "未登録の %s はサマリーが無く、中身の読み込みは失敗する",
+    async (slug) => {
+      expect(getCheatSheetSummary(slug)).toBeUndefined();
+      await expect(loadCheatSheet(slug)).rejects.toThrow(slug);
+    },
+  );
+
+  // React の use は結果を Promise 自体に覚えさせるので、毎回別の Promise だと描画のたびにサスペンドする。
+  it("同じ slug の読み込みには同じ Promise を返す", () => {
+    expect(loadCheatSheet("html")).toBe(loadCheatSheet("html"));
   });
 
   // 辞書は slug をキーにしているため、重複すると後勝ちで消える。配列側のサマリーで数える。
@@ -41,14 +59,24 @@ describe("cheatSheetRegistry", () => {
   });
 });
 
-describe.each(cheatSheetSummaries.map((sheet) => sheet.slug))("%s シートのデータ", (slug) => {
-  it("セクション id がシート内で重複していない", () => {
-    const sections = getCheatSheet(slug)?.sections ?? [];
+describe.each(cheatSheetSummaries)("$slug シートのデータ", (summary) => {
+  // 件数は一覧に出すために summary.ts が手で持っている。中身を直して件数を直し忘れると、
+  // 一覧の件数とシートを開いたときの件数が食い違うので、ここで正しい値を示して落とす。
+  it("サマリーの件数が中身と一致する", async () => {
+    const { sections } = await loadCheatSheet(summary.slug);
+    expect({ sectionCount: summary.sectionCount, itemCount: summary.itemCount }).toEqual({
+      sectionCount: sections.length,
+      itemCount: sections.reduce((total, section) => total + section.items.length, 0),
+    });
+  });
+
+  it("セクション id がシート内で重複していない", async () => {
+    const { sections } = await loadCheatSheet(summary.slug);
     expect(duplicates(sections.map((section) => section.id))).toEqual([]);
   });
 
-  it("項目 id がシート内で重複していない", () => {
-    const sections = getCheatSheet(slug)?.sections ?? [];
+  it("項目 id がシート内で重複していない", async () => {
+    const { sections } = await loadCheatSheet(summary.slug);
     const ids = sections.flatMap((section) => section.items.map((entry) => entry.id));
     expect(duplicates(ids)).toEqual([]);
   });

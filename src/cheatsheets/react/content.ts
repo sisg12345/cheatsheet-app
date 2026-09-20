@@ -16,20 +16,13 @@
  *   バージョンに依存する記述は react.dev のリリース記事で確認済み（2026-09-18）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const reactCheatSheet: CheatSheet = {
+export const reactContent: CheatSheetContent = {
   id: "react-reference",
-  slug: "react",
-  title: "React.js チートシート",
-  name: "React.js",
-  description:
-    "JSX、props、state、Effect、ref、フォーム、Context、Suspense、メモ化、TypeScript での型付けまでをまとめたReactリファレンス。",
-  eyebrow: "UI library",
-  accent: "#149eca",
-  keywords: ["react", "jsx", "hooks", "フック", "コンポーネント", "usestate"],
   updatedAt: "2026-09-18",
   sources: [
     { label: "React リファレンス", url: "https://react.dev/reference/react" },

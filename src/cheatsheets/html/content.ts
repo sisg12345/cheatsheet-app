@@ -10,20 +10,13 @@
  * - status は normal / info / warning / danger。省略時は normal
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const htmlCheatSheet: CheatSheet = {
+export const htmlContent: CheatSheetContent = {
   id: "html-reference",
-  slug: "html",
-  title: "HTMLタグ チートシート",
-  name: "HTML",
-  description:
-    "文書構造、テキスト、メディア、フォーム、アクセシビリティまでをすばやく確認できるHTMLリファレンス。",
-  eyebrow: "Markup language",
-  accent: "#6f4cff",
-  keywords: ["html", "タグ", "マークアップ", "フォーム", "アクセシビリティ"],
   updatedAt: "2026-08-18",
   sources: [{ label: "HTML Living Standard", url: "https://html.spec.whatwg.org/multipage/" }],
   sections: [

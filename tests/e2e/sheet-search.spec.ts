@@ -11,6 +11,7 @@
  */
 import { expect, test } from "@playwright/test";
 import { openSheetFromMenu } from "./sheetMenu";
+import { openSheet } from "./sheetPage";
 
 const SHEET = "/cheatsheets/html";
 
@@ -71,7 +72,7 @@ async function typeWithIme(
 test("目次アンカーを挟んで戻ると、URLと入力欄・絞り込みが一致する", async ({ page }) => {
   // 目次は素の <a href="#id"> なので同一ルート上に履歴エントリが積まれる。
   // 初期値だけをURLから取る実装だと、ここで表示とURLが食い違った。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").fill("form");
   await expect(page).toHaveURL(/\?q=form/);
 
@@ -93,7 +94,7 @@ test("?q= 付きで開いて目次アンカーを挟んで戻っても、URLと�
   // 入力せずに `?q=` 付きで開くと、最初の履歴エントリは history.state に key を
   // 持たない（location.key が "default" 固定になる）。エントリの識別に頼る実装は
   // ここで同期を取りこぼすため、打ってから遷移するケースとは別に固定しておく。
-  await page.goto(`${SHEET}?q=form`);
+  await openSheet(page, `${SHEET}?q=form`);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
 
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
@@ -111,7 +112,7 @@ test("?q= 付きで開いて目次アンカーを挟んで戻っても、URLと�
 test("目次アンカーへ進むと、q の無いURLに合わせて絞り込みが解除される", async ({ page }) => {
   // replaceState は前方のエントリを切り詰めないので、アンカーのエントリは
   // 検索語を書いたあとも残る。進んだ先には `?q=` が無い。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
   await expect(page).toHaveURL(/#/);
 
@@ -127,7 +128,7 @@ test("目次アンカーへ進むと、q の無いURLに合わせて絞り込み
 });
 
 test("シートを切り替えると検索語が持ち越されない", async ({ page }) => {
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").fill("form");
   await expect(page).toHaveURL(/\?q=form/);
 
@@ -137,7 +138,7 @@ test("シートを切り替えると検索語が持ち越されない", async ({
 });
 
 test("検索語を書き換えても目次アンカーの hash が落ちない", async ({ page }) => {
-  await page.goto(`${SHEET}#semantic`);
+  await openSheet(page, `${SHEET}#semantic`);
   await page.getByRole("searchbox").fill("form");
   await expect(page).toHaveURL(/#semantic$/);
 });
@@ -146,7 +147,7 @@ test("目次アンカーを踏んだ直後に入力しても hash が落ちな�
   // react-router は location の更新を startTransition で流すので、アンカーを踏んだ
   // 直後はコミット済みの location.hash がまだ空。そこを見て書くと `#id` が落ちる。
   // 待ちを入れずに input を出して、その窓を踏みにいく。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
   await expect(page).toHaveURL(/#/);
 
@@ -167,7 +168,7 @@ test("同じシートのリンクを踏むと、q の消えたURLに合わせて
 }) => {
   // ルーターの push では popstate が飛ばず、slug が同じなので key による作り直しも
   // 起きない。URLだけ ?q= が消えて絞り込みが残る、という食い違いが起きやすい経路。
-  await page.goto(`${SHEET}?q=form`);
+  await openSheet(page, `${SHEET}?q=form`);
   await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
 
   await openSheetFromMenu(page, "HTML");
@@ -180,7 +181,7 @@ test("打った直後に同じシートのリンクを踏んでも、URLと表�
   // リンクの遷移と直前の書き込みが同じトランジションにまとめられ、ルーターの
   // location が変化しないまま終わることがある。ルーターの location ではなく
   // window.location を正として突き合わせることで解決している。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("form", { delay: 20 });
   // メニューを開く操作を挟むと打鍵との間が空き、競合の窓を外してしまう。閉じたメニューの中の
@@ -203,7 +204,7 @@ test("打った直後に同じシートのリンクを踏んでも、URLと表�
 test("打った直後に目次アンカーを踏んでも検索語が消えない", async ({ page }) => {
   // アンカーのクリックは popstate を起こし、そこでURLから取り直す。打鍵ごとに
   // URLへ書いているので、取り直しても直前に打った検索語がそのまま返ってくる。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("form", { delay: 20 });
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
@@ -215,7 +216,7 @@ test("打った直後に目次アンカーを踏んでも検索語が消えな�
 
 test("打った直後にページを離れても、戻れば検索語が復元される", async ({ page }) => {
   // 打鍵ごとにURLへ書いているので、離脱の直前まで打った内容がURLに載っている。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("form", { delay: 20 });
   await page.getByRole("complementary").getByRole("link", { name: /一覧/ }).click();
@@ -232,7 +233,7 @@ test("リンクを押した直後に Escape を叩いても、離れようとし
   // Escape は window の keydown で拾うので、遷移中でも離れる側のレイアウトが反応する。
   // navigate に pathname を渡さないと、ルーターの遅れた location からパスが補完され、
   // 移動前のパスでURLを書き直して遷移そのものを取り消してしまう。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await openSheetFromMenu(page, "Git");
   await page.keyboard.press("Escape");
 
@@ -243,7 +244,7 @@ test("リンクを押した直後に Escape を叩いても、離れようとし
 test("検索していない状態の Escape では履歴に書き込まない", async ({ page }) => {
   // 同じURLを書き直すだけの呼び出しは、ブラウザの履歴書き込み回数の上限を
   // 無駄に消費する。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.evaluate(() => {
     (window as unknown as { __writes: number }).__writes = 0;
     const original = history.replaceState.bind(history);
@@ -267,7 +268,7 @@ test("検索していない状態の Escape では履歴に書き込まない", 
 test("IME変換中は履歴に書き込まず、確定時に1回だけ書く", async ({ page }) => {
   // 日本語入力では確定前のローマ字1打ごとに input イベントが飛ぶ。そのまま書くと
   // 短い語をいくつか打つだけでブラウザの履歴書き込み上限に近づく。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.evaluate(() => {
     (window as unknown as { __writes: number }).__writes = 0;
     const original = history.replaceState.bind(history);
@@ -287,7 +288,7 @@ test("履歴の書き込みが拒否されても、打った文字が巻き戻�
   // Safari は replaceState を「30秒あたり約100回」で打ち切り SecurityError を投げる。
   // URLは進まなくなるが、入力欄はローカルstateなので打てるままであること。
   // 検出と値をどちらもURLの購読から取っているので、URLが動かない間は取り込みも起きない。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("for", { delay: 40 });
   await expect(page).toHaveURL(/\?q=for$/);
@@ -310,7 +311,7 @@ for (const inputBeforeEnd of [true, false]) {
   }) => {
     // 変換中に onChange を止める実装にしたところ、この順序の片方で確定文字が
     // 消え、変換を中断するとその後の入力もペーストも効かなくなった。
-    await page.goto(SHEET);
+    await openSheet(page, SHEET);
     await typeWithIme(page, ["ひ", "ひょ", "ひょう"], "表", inputBeforeEnd);
     await expect(page.getByRole("searchbox")).toHaveValue("表");
     await expect(page).toHaveURL(/\?q=%E8%A1%A8/);
@@ -320,7 +321,7 @@ for (const inputBeforeEnd of [true, false]) {
 
 test("変換を中断したあとも通常の入力とペーストができる", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
 
   // compositionstart だけ起きて compositionend が来ない状況を作る。
   await page.evaluate(() => {
@@ -342,7 +343,7 @@ test("変換を中断したあとも通常の入力とペーストができる",
 
 test("速く打っても文字が落ちない", async ({ page }) => {
   // 入力欄の value を非同期なURL往復で駆動していたときは "meta" が "a" になった。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("meta", { delay: 0 });
   await expect(page.getByRole("searchbox")).toHaveValue("meta");
@@ -351,7 +352,7 @@ test("速く打っても文字が落ちない", async ({ page }) => {
 
 test("空白のみの入力は消されず、絞り込みもかからない", async ({ page }) => {
   // 日本語入力はスペースを変換キーに使うため、打ったスペースが消えてはいけない。
-  await page.goto(SHEET);
+  await openSheet(page, SHEET);
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("  ");
   await expect(page.getByRole("searchbox")).toHaveValue("  ");
@@ -359,7 +360,7 @@ test("空白のみの入力は消されず、絞り込みもかからない", as
 });
 
 test("?q= 付きURLを直接開くと絞り込まれた状態で復元される", async ({ page }) => {
-  await page.goto(`${SHEET}?q=form`);
+  await openSheet(page, `${SHEET}?q=form`);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
   await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
 });

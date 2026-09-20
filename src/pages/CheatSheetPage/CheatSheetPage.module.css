@@ -64,6 +64,30 @@
   color: var(--color-muted);
 }
 
+/* 中身の読み込み中・失敗時に検索欄の位置へ出す案内。高さを検索欄の入力欄（min-height: 50px）に
+   そろえ、読み込み後に検索欄へ入れ替わっても見出しの下がずれないようにする。 */
+.notice {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 50px;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+/* 読み込み中の案内は少し待ってから出す。たいていはすぐ読み込めるので、そのたびに案内が
+   一瞬だけ出てちらつくのを防ぐ。 */
+.loading {
+  animation: notice-appear 0.2s ease 0.5s both;
+}
+
+@keyframes notice-appear {
+  from {
+    opacity: 0;
+  }
+}
+
 /* 目次（固定230px）と本文の2カラム。本文側を minmax(0, 1fr) にして、
    長いコード行があっても列が広がらないようにする。 */
 .content {

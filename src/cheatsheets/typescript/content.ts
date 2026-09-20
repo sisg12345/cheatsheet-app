@@ -16,20 +16,13 @@
  * - 比較的新しい機能は、使えるようになったバージョンを note に書く
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const typescriptCheatSheet: CheatSheet = {
+export const typescriptContent: CheatSheetContent = {
   id: "typescript-reference",
-  slug: "typescript",
-  title: "TypeScript チートシート",
-  name: "TypeScript",
-  description:
-    "基本の型から、ユニオンと絞り込み、ジェネリクス、ユーティリティ型、型操作、tsconfig・tsc までをまとめたTypeScriptリファレンス。",
-  eyebrow: "Typed language",
-  accent: "#3178c6",
-  keywords: ["typescript", "ts", "型", "ジェネリクス", "tsconfig", "tsc"],
   updatedAt: "2026-09-18",
   sources: [
     {

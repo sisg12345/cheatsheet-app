@@ -67,16 +67,16 @@ cheatsheet-app/
 │   ├── cheatsheets/                ドメイン層：チートシートの型・データ・レジストリ
 │   │   ├── types.ts                コンテンツ型の単一の定義元
 │   │   ├── helpers.ts              データ記述用の item() ヘルパー
-│   │   ├── registry.ts             収録シートの一覧と派生データ（辞書・サマリー）
-│   │   ├── html/content.ts         HTMLシートの中身
-│   │   ├── git/content.ts          Gitシートの中身
-│   │   ├── vim/content.ts          Vimシートの中身
-│   │   ├── claude-code/content.ts  Claude Codeシートの中身
-│   │   ├── javascript/content.ts   JavaScriptシートの中身
-│   │   ├── docker/content.ts       Dockerシートの中身
-│   │   ├── typescript/content.ts   TypeScriptシートの中身
-│   │   ├── react/content.ts        React.jsシートの中身
-│   │   └── vue/content.ts          Vue.jsシートの中身
+│   │   ├── registry.ts             収録シートの一覧、サマリー、中身の読み込み（loadCheatSheet）
+│   │   ├── html/                   HTMLシート（summary.ts：一覧に出す表書きと件数／content.ts：中身）
+│   │   ├── git/                    Gitシート
+│   │   ├── vim/                    Vimシート
+│   │   ├── claude-code/            Claude Codeシート
+│   │   ├── javascript/             JavaScriptシート
+│   │   ├── docker/                 Dockerシート
+│   │   ├── typescript/             TypeScriptシート
+│   │   ├── react/                  React.jsシート
+│   │   └── vue/                    Vue.jsシート
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）
@@ -117,7 +117,9 @@ cheatsheet-app/
 チートシートというコンテンツそのものを定義する層です。
 
 - `types.ts` がコンテンツ型の**単一の定義元**で、`components/` も `features/` もこの型だけを見ます。同じ形の型を各所で再定義しません。
-- `registry.ts` が収録シートの単一の情報源です。ルーティングも一覧カードも、ここから派生する辞書（`cheatSheetRegistry`）とサマリー（`cheatSheetSummaries`）から自動的に組み立てられます。
+- `registry.ts` が収録シートの単一の情報源です。ルーティングも一覧カードもヘッダーのメニューも、ここのサマリー（`cheatSheetSummaries`・`getCheatSheetSummary`）から自動的に組み立てられます。
+- 各シートは `summary.ts`（名前・説明・色・キーワードと件数）と `content.ts`（セクション・出典・更新日）に分けます。最初に読み込むバンドルに入るのは `summary.ts` だけで、`content.ts` はシートを開いたときに `loadCheatSheet(slug)` が動的 `import()` で読み込みます（シートごとに別のチャンクになります）。`content.ts` をどこかで静的にimportすると中身が最初のバンドルに戻るので、中身へは必ず `loadCheatSheet` を通します。
+- `summary.ts` の `sectionCount`／`itemCount` は手で持ちます。`content.ts` と食い違うと `tests/unit/registry.test.ts` が落ち、正しい値を示します。
 - 項目の生成は `helpers.ts` の `item()` を通します。`content.ts` にオブジェクトリテラルを直書きしません。
 - UIやReactには依存しません。逆に、シートの中身（文言・コード例）を `components/` に書くこともしません。
 
@@ -156,11 +158,11 @@ cheatsheet-app/
 
 ルートごとの画面を置く層です。`App.tsx` のルーティングから描画され、`components/` と `features/` を組み合わせて画面全体を組み立てます。
 
-| 画面             | ルート                      | 内容                                                                                     |
-| ---------------- | --------------------------- | ---------------------------------------------------------------------------------------- |
-| `CatalogPage`    | `/`                         | 注目のチートシート（自動で流れるカルーセル）、シート一覧と一覧検索。シート単位で絞り込む |
-| `CheatSheetPage` | `/cheatsheets/:slug`        | 1枚のシート（目次＋セクション）とシート内の項目検索                                      |
-| `NotFoundPage`   | 未知のURL・未登録の `:slug` | 404表示と一覧への導線                                                                    |
+| 画面             | ルート                      | 内容                                                                                                    |
+| ---------------- | --------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `CatalogPage`    | `/`                         | 注目のチートシート（自動で流れるカルーセル）、シート一覧と一覧検索。シート単位で絞り込む                |
+| `CheatSheetPage` | `/cheatsheets/:slug`        | 1枚のシート（目次＋セクション）とシート内の項目検索。中身は開いてから読み込み、その間は見出しを先に出す |
+| `NotFoundPage`   | 未知のURL・未登録の `:slug` | 404表示と一覧への導線                                                                                   |
 
 - 検索語などの状態を持つのは `pages/` だけです。一覧はローカルstate、シートページはURLの `?q=` に持たせ、絞り込んだ状態のURLをそのまま共有できるようにしています。
 - スタイルは `components/` と同じく、1画面1ファイルの `Xxx.module.css` を同じディレクトリに置きます。
@@ -202,10 +204,10 @@ main.tsx
 
 ## チートシートの追加
 
-1. `src/cheatsheets/<slug>/content.ts` に `CheatSheet` 型のデータを作成します（項目は `item()` 経由）。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
-2. `src/cheatsheets/registry.ts` の `sheets` 配列へ追加します。
+1. `src/cheatsheets/<slug>/summary.ts` に `CheatSheetSummary` 型の表書きと件数を、`content.ts` に `CheatSheetContent` 型の中身を作成します（項目は `item()` 経由）。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
+2. `src/cheatsheets/registry.ts` の `sheets` 配列へ、`summary` と `load`（`() => import("./<slug>/content").then((m) => m.xxxContent)`）の組を追加します。`import()` の引数は文字列のまま書きます（変数にするとシートごとのチャンクに分かれません）。
 3. シート名をべた書きしている箇所を直します：一覧の予告カードの文言（`CatalogPage.tsx`）、`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
-4. `npm run typecheck && npm test && npm run build` で確認します。
+4. `npm run typecheck && npm test && npm run build` で確認します。件数が中身と食い違っていれば `npm test` が正しい値を示します。
 
 ルーティング、一覧カード、ヘッダーの「チートシート」メニューはレジストリから自動的に生成されます。
 
@@ -213,6 +215,7 @@ main.tsx
 
 - 一覧の「注目のチートシート」を自動で流れるカルーセルで表示（ホバー・フォーカス・一時停止ボタンで停止、動きを減らす設定では横スクロール）
 - 一覧検索とチートシート内検索
+- シートの中身は開いたときに読み込む（最初のバンドルには一覧に出す情報だけを入れる。読み込み中は見出しを先に出し、失敗したら再読み込みを促す）
 - ページを移ったときにスクロール位置を先頭へ戻す（戻る・進むでは読んでいた位置へ戻る）
 - `/` キーで検索欄へ移動、`Escape` キーで検索解除
 - コード例のコピー

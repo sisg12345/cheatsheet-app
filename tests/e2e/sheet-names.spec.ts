@@ -7,6 +7,7 @@
  * カードがいちばん細くなる幅に近く、820px は2列になる幅）。
  */
 import { expect, test } from "@playwright/test";
+import { openSheet } from "./sheetPage";
 
 for (const width of [1280, 1000, 820, 375]) {
   test(`${width}px 幅で、一覧と注目のチートシートのカードの題名がはみ出さない`, async ({
@@ -41,7 +42,7 @@ for (const width of [1280, 1000, 820, 375]) {
       .evaluateAll((links) => links.map((link) => link.getAttribute("href")!));
 
     for (const path of paths) {
-      await page.goto(path);
+      await openSheet(page, path);
       const result = await page.evaluate(() => {
         // 見出しは nowrap なので、収まらないと中身の幅（scrollWidth）が枠の幅を超える。
         const heading = document.querySelector("main h1")!;
