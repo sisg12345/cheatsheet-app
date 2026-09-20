@@ -14,10 +14,10 @@
  * - 公開範囲や秘密情報の扱いなど、事故につながりやすい操作には warning を付ける
  * - コマンドは Docker Engine の CLI と Compose V2（docker compose）の書き方で統一する。
  *   例の名前は、コンテナ web、ネットワーク app-net、ボリューム db-data にそろえる
- * - prune の削除対象や Docker Desktop 専用の機能など、変わりやすい記述は
- *   公式ドキュメントで確認済み（2026-09-16）。直すときも公式ドキュメントに合わせる
+ * - 何を基準に書いたか（Docker Engine CLI・Compose V2）は target に持たせ、フッターに出す。
+ *   prune の削除対象や Docker Desktop 専用の機能など、変わりやすい記述は公式ドキュメントに合わせる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -26,6 +26,7 @@ import type { CheatSheetContent } from "../types";
 export const dockerContent: CheatSheetContent = {
   id: "docker-reference",
   updatedAt: "2026-09-20",
+  target: "Docker Engine CLI・Compose V2",
   sources: [
     { label: "Docker CLI リファレンス", url: "https://docs.docker.com/reference/cli/docker/" },
     { label: "Dockerfile リファレンス", url: "https://docs.docker.com/reference/dockerfile/" },

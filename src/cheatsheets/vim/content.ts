@@ -13,7 +13,7 @@
  * - キーの表記は「Ctrl+w h」＝押して離してから次のキー、「→」＝順に操作、
  *   「／」「 / 」＝対になる操作の併記、{文字} ＝置き換える値
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -22,6 +22,7 @@ import type { CheatSheetContent } from "../types";
 export const vimContent: CheatSheetContent = {
   id: "vim-reference",
   updatedAt: "2026-09-20",
+  target: "Vim 8・9 系",
   sources: [
     {
       label: "Vimリファレンスマニュアル（quickref）",

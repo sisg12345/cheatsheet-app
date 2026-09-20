@@ -9,7 +9,7 @@
  * - id はシート内で一意。目次のアンカー（#id）とReactのkeyに使われる
  * - status は normal / info / warning / danger。省略時は normal
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -18,6 +18,7 @@ import type { CheatSheetContent } from "../types";
 export const htmlContent: CheatSheetContent = {
   id: "html-reference",
   updatedAt: "2026-09-20",
+  target: "HTML Living Standard",
   sources: [{ label: "HTML Living Standard", url: "https://html.spec.whatwg.org/multipage/" }],
   sections: [
     // ページの外枠。ブラウザと検索エンジンが最初に読む部分から並べる。

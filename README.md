@@ -125,8 +125,9 @@ cheatsheet-app/
 
 - `types.ts` がコンテンツ型の**単一の定義元**で、`components/` も `features/` もこの型だけを見ます。同じ形の型を各所で再定義しません。
 - `registry.ts` が収録シートの単一の情報源です。ルーティングも一覧カードもヘッダーのメニューも、ここのサマリー（`cheatSheetSummaries`・`getCheatSheetSummary`）から自動的に組み立てられます。
-- 各シートは `summary.ts`（名前・説明・色・キーワードと件数）と `content.ts`（セクション・出典・更新日）に分けます。最初に読み込むバンドルに入るのは `summary.ts` だけで、`content.ts` はシートを開いたときに `loadCheatSheet(slug)` が動的 `import()` で読み込みます（シートごとに別のチャンクになります）。`content.ts` をどこかで静的にimportすると中身が最初のバンドルに戻るので、中身へは必ず `loadCheatSheet` を通します。
+- 各シートは `summary.ts`（名前・説明・色・キーワードと件数）と `content.ts`（セクション・出典・対象の版・更新日）に分けます。最初に読み込むバンドルに入るのは `summary.ts` だけで、`content.ts` はシートを開いたときに `loadCheatSheet(slug)` が動的 `import()` で読み込みます（シートごとに別のチャンクになります）。`content.ts` をどこかで静的にimportすると中身が最初のバンドルに戻るので、中身へは必ず `loadCheatSheet` を通します。
 - `summary.ts` の `sectionCount`／`itemCount` は手で持ちます。`content.ts` と食い違うと `tests/unit/registry.test.ts` が落ち、正しい値を示します。
+- `content.ts` の `target` は、シートのページのフッターに「TARGET」として出ます。題材の名前は `summary.ts` の `name` と同じ正式名で書きます（例: "React.js 19.3"）。特定の版を対象にしていないシートは、書かれている前提を書きます（例: CSSは「主要ブラウザの対応状況（Baseline）」、Linuxは「GNU coreutils・主要ディストリビューション」）。
 - 項目の生成は `helpers.ts` の `item()` を通します。`content.ts` にオブジェクトリテラルを直書きしません。
 - UIやReactには依存しません。逆に、シートの中身（文言・コード例）を `components/` に書くこともしません。
 
@@ -211,10 +212,10 @@ main.tsx
 
 ## チートシートの追加
 
-1. `src/cheatsheets/<slug>/summary.ts` に `CheatSheetSummary` 型の表書きと件数を、`content.ts` に `CheatSheetContent` 型の中身を作成します（項目は `item()` 経由）。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
+1. `src/cheatsheets/<slug>/summary.ts` に `CheatSheetSummary` 型の表書きと件数を、`content.ts` に `CheatSheetContent` 型の中身を作成します（項目は `item()` 経由）。`content.ts` には `target`（対象の版）も必ず入れます。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
 2. `src/cheatsheets/registry.ts` の `sheets` 配列へ、`summary` と `load`（`() => import("./<slug>/content").then((m) => m.xxxContent)`）の組を追加します。`import()` の引数は文字列のまま書きます（変数にするとシートごとのチャンクに分かれません）。
 3. シート名をべた書きしている箇所を直します：`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
-4. `npm run typecheck && npm test && npm run build` で確認します。件数が中身と食い違っていれば `npm test` が正しい値を示します。
+4. `npm run typecheck && npm test && npm run build` で確認します。`target` の書き忘れは `npm run typecheck`、件数の食い違いは `npm test` が正しい値を示します。
 
 ルーティング、一覧カード、ヘッダーの「チートシート」メニューはレジストリから自動的に生成されます。
 
@@ -226,6 +227,7 @@ main.tsx
 - ページを移ったときにスクロール位置を先頭へ戻す（戻る・進むでは読んでいた位置へ戻る）
 - `/` キーで検索欄へ移動、`Escape` キーで検索解除
 - コード例のコピー
+- シートごとの対象の版をフッターに表示
 - ライト／ダークテーマ
 - 印刷・PDF保存向けスタイル
 - 検索条件のURL同期

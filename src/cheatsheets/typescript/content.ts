@@ -11,11 +11,11 @@
  * - 型チェックを黙らせる書き方（any、as、!、@ts-ignore など）には warning、
  *   型を完全に偽る二重アサーション（as unknown as）には danger を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
- * - 対象は TypeScript 6.0 / 7.0。6.0 で tsconfig の既定値が変わり、6.0 で非推奨になった設定は
- *   7.0 で削除された。バージョンに依存する記述は公式のリリースノートで確認済み（2026-09-18）
+ * - 対象の版は target に持たせ、フッターに出す。6.0 で tsconfig の既定値が変わり、
+ *   6.0 で非推奨になった設定は 7.0 で削除された。版に依存する記述は公式のリリースノートで確かめる
  * - 比較的新しい機能は、使えるようになったバージョンを note に書く
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -24,6 +24,7 @@ import type { CheatSheetContent } from "../types";
 export const typescriptContent: CheatSheetContent = {
   id: "typescript-reference",
   updatedAt: "2026-09-20",
+  target: "TypeScript 6.0 / 7.0",
   sources: [
     {
       label: "TypeScript ハンドブック",

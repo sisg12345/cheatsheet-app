@@ -11,10 +11,10 @@
  * - 秘密情報の漏えいや、リクエスト間で状態が混ざる書き方には warning、推奨の書き方には info を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
  * - 範囲は Nuxt 本体。Vue 自体の書き方は Vue.js シートに任せ、Nuxt が足す仕組みだけを扱う
- * - 対象は Nuxt 4（4.5、2026-07）。ファイルの置き場所は Nuxt 4 の app/ ディレクトリ構成で書く。
- *   バージョンに依存する記述は公式ブログとドキュメントで確認済み（2026-09-19）
+ * - 対象の版は target に持たせ、フッターに出す。ファイルの置き場所は Nuxt 4 の app/
+ *   ディレクトリ構成で書く。版に依存する記述は公式ブログとドキュメントで確かめる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -23,6 +23,7 @@ import type { CheatSheetContent } from "../types";
 export const nuxtContent: CheatSheetContent = {
   id: "nuxt-reference",
   updatedAt: "2026-09-20",
+  target: "Nuxt.js 4.5",
   sources: [
     { label: "Nuxt ドキュメント", url: "https://nuxt.com/docs/4.x/getting-started/introduction" },
     { label: "Nuxt 4 リリース記事", url: "https://nuxt.com/blog/v4" },

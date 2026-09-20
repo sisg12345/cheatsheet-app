@@ -151,3 +151,10 @@ test("メニューの外を押すと閉じる", async ({ page }) => {
     page.getByRole("banner").getByRole("link", { name: "Git", exact: true }),
   ).toBeHidden();
 });
+
+test("シートのフッターに対象の版が出る", async ({ page }) => {
+  // 対象の版は中身（content.ts）と一緒に読み込むので、フッターは読み込み後にしか出ない。
+  // main の中の footer は contentinfo ロールにならないため、文字で特定する。
+  await openSheet(page, "/cheatsheets/nextjs");
+  await expect(page.getByText("Next.js 16.3", { exact: true })).toBeVisible();
+});

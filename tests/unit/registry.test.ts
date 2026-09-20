@@ -10,6 +10,9 @@ import {
   loadCheatSheet,
 } from "@/src/cheatsheets/registry";
 
+/** 更新日は YYYY-MM-DD で持つ。そのまま画面に出るので、形もテストで守る。 */
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
 /** 2回目以降に現れた値を返す。重複がなければ空配列。 */
 function duplicates(values: string[]): string[] {
   return values.filter((value, index) => values.indexOf(value) !== index);
@@ -75,6 +78,13 @@ describe.each(cheatSheetSummaries)("$slug シートのデータ", (summary) => {
       sectionCount: sections.length,
       itemCount: sections.reduce((total, section) => total + section.items.length, 0),
     });
+  });
+
+  // 対象の版はシートのページのフッターにそのまま出る。空だと TARGET の欄が空で表に出てしまう。
+  it("対象の版が入っている", async () => {
+    const { target, updatedAt } = await loadCheatSheet(summary.slug);
+    expect(target.trim()).not.toBe("");
+    expect(updatedAt).toMatch(ISO_DATE);
   });
 
   it("セクション id がシート内で重複していない", async () => {

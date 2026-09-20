@@ -11,11 +11,11 @@
  * - 公開済みのパッケージを消す操作には danger、依存関係の不整合を隠したり
  *   大きな変更を自動で入れたりする操作には warning、推奨の操作には info を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
- * - 対象は npm 12（latest。2026-07 リリース）。npm 11 から変わった点
+ * - 対象の版は target に持たせ、フッターに出す。npm 11 から変わった点
  *   （依存関係の install スクリプトが既定で止まる、adduser の削除など）は note に書く。
- *   バージョンに依存する記述は GitHub のリリースノートと公式ドキュメントで確認済み（2026-09-19）
+ *   版に依存する記述は GitHub のリリースノートと公式ドキュメントで確かめる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -24,6 +24,7 @@ import type { CheatSheetContent } from "../types";
 export const npmContent: CheatSheetContent = {
   id: "npm-reference",
   updatedAt: "2026-09-20",
+  target: "npm 12",
   sources: [
     { label: "npm CLI ドキュメント", url: "https://docs.npmjs.com/cli/" },
     { label: "npm CLI リリースノート", url: "https://github.com/npm/cli/releases" },

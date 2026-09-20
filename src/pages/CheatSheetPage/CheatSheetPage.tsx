@@ -109,11 +109,15 @@ function LoadedCheatSheet({ summary }: CheatSheetPageProps) {
         </div>
       </div>
 
-      {/* footer: 更新日と出典。外部リンクなので rel="noreferrer" を付ける。 */}
+      {/* footer: 更新日、対象の版、出典。外部リンクなので rel="noreferrer" を付ける。 */}
       <footer className={styles.footer}>
         <div>
           <span>UPDATED</span>
           <strong>{content.updatedAt}</strong>
+        </div>
+        <div>
+          <span>TARGET</span>
+          <strong>{content.target}</strong>
         </div>
         <div>
           <span>SOURCES</span>

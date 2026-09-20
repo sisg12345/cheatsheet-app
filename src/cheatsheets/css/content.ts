@@ -12,11 +12,12 @@
  *   後から上書きしにくくなる書き方には warning、推奨の書き方には info を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
  * - 範囲は CSS 本体だけ（Sass・Tailwind などは扱わない）
+ * - 何を基準に書いたか（主要ブラウザの対応状況）は target に持たせ、フッターに出す。
  * - 新しい機能は、主要ブラウザ（Chrome・Edge・Firefox・Safari）の対応状況を note に書く。
  *   「すべての主要ブラウザが対応」は Baseline に入ったもの。対応状況は webstatus.dev と
- *   MDN の互換性データで確認済み（2026-09-19）
+ *   MDN の互換性データで確かめる
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容を直したら updatedAt も更新する
+ * - 内容を直したら updatedAt も更新する。版が変わったら target も直す
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -25,6 +26,7 @@ import type { CheatSheetContent } from "../types";
 export const cssContent: CheatSheetContent = {
   id: "css-reference",
   updatedAt: "2026-09-20",
+  target: "主要ブラウザの対応状況（Baseline）",
   sources: [
     { label: "MDN CSS", url: "https://developer.mozilla.org/ja/docs/Web/CSS" },
     { label: "Web Platform Status（Baseline）", url: "https://webstatus.dev/" },

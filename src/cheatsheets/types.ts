@@ -77,4 +77,11 @@ export interface CheatSheetContent {
   sources: SourceLink[];
   /** YYYY-MM-DD。内容を直したら更新する。 */
   updatedAt: string;
+  /**
+   * シートが対象にしている版（例: "Next.js 16.3"）。シートのページのフッターに出す。
+   * 題材の名前は summary.ts の `name` と同じ正式名で書く（"React" ではなく "React.js"）。
+   * 特定の版を対象にしていないシートは、書かれている前提を書く
+   * （例: "HTML Living Standard"、"主要ブラウザの対応状況（Baseline）"）。
+   */
+  target: string;
 }
