@@ -158,3 +158,15 @@ test("シートのフッターに対象の版が出る", async ({ page }) => {
   await openSheet(page, "/cheatsheets/nextjs");
   await expect(page.getByText("Next.js 16.3", { exact: true })).toBeVisible();
 });
+
+test("フッターの3つのラベルは、出典のリンクが多いシートでも同じ行に並ぶ", async ({ page }) => {
+  // 出典のリンクがいちばん多い Docker で確かめる。リンクの数で列が折り返すと、
+  // 更新日・対象の版と出典が段違いになり、ほかのシートと見た目が変わってしまう。
+  await openSheet(page, "/cheatsheets/docker");
+  const tops = await Promise.all(
+    ["UPDATED", "TARGET", "SOURCES"].map(
+      async (label) => (await page.getByText(label, { exact: true }).boundingBox())?.y,
+    ),
+  );
+  expect(new Set(tops).size).toBe(1);
+});
