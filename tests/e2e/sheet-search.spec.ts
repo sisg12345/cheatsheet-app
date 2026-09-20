@@ -10,6 +10,9 @@
  * 支援技術から見た名前が保たれているかも同時に検証できるため。
  */
 import { expect, test } from "@playwright/test";
+import { htmlContent } from "@/src/cheatsheets/html/content";
+import { htmlSummary } from "@/src/cheatsheets/html/summary";
+import { filterCheatSheetSections } from "@/src/features/cheat-sheet-search/filterCheatSheet";
 import { openSheetFromMenu } from "./sheetMenu";
 import { openSheet } from "./sheetPage";
 
@@ -19,6 +22,38 @@ const SHEET = "/cheatsheets/html";
 function resultLabel(page: import("@playwright/test").Page) {
   return page.getByText(/\d+ セクション \/ \d+ 項目/);
 }
+
+/**
+ * 件数表示の期待値を実データから組み立てる。
+ *
+ * ここで見たいのは件数そのものではなく「URLの `?q=` と入力欄・絞り込みが食い違わないこと」
+ * なので、文言をべた書きすると content.ts に項目を足すたびに無関係に落ちる。
+ * 表示側（CheatSheetPage）と同じ `filterCheatSheetSections` の結果から作り、中身の増減に追随させる。
+ */
+function labelFor(query: string) {
+  const sections = filterCheatSheetSections(htmlContent.sections, query);
+  const items = sections.reduce((sum, section) => sum + section.items.length, 0);
+  return `${sections.length} セクション / ${items} 項目`;
+}
+
+/**
+ * 絞り込み無しの表示。こちらは summary.ts の件数から作る。
+ * content.ts の総数と一致していることは tests/unit/registry.test.ts が守っているので、
+ * 両者がずれたときはこの経路でも落ちる。
+ */
+const ALL_LABEL = `${htmlSummary.sectionCount} セクション / ${htmlSummary.itemCount} 項目`;
+
+/** 各ケースで打つ検索語（"form"）での表示。 */
+const FORM_LABEL = labelFor("form");
+
+test("各ケースが前提にしている絞り込みが、いまの中身でも成立している", () => {
+  // 期待値を実データから作っているぶん、検索語が何にも当たらなくなったり
+  // 逆に全件に当たるようになると、「絞り込めていること」を見ているケースが
+  // 素通りしてしまう。前提が崩れたらここだけが落ちるようにしておく。
+  expect(labelFor("")).toBe(ALL_LABEL); // summary.ts の件数と content.ts の総数が一致している
+  expect(FORM_LABEL).not.toBe(ALL_LABEL); // "form" で件数が実際に減る
+  expect(labelFor("表")).not.toBe(ALL_LABEL); // IME のケースで使う「表」も同様
+});
 
 /**
  * IMEでの変換をブラウザ上で再現する。
@@ -87,7 +122,7 @@ test("目次アンカーを挟んで戻ると、URLと入力欄・絞り込み�
   await page.goBack();
   await expect(page).toHaveURL(/\?q=form/);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
+  await expect(resultLabel(page)).toHaveText(FORM_LABEL);
 });
 
 test("?q= 付きで開いて目次アンカーを挟んで戻っても、URLと表示が一致する", async ({ page }) => {
@@ -106,7 +141,7 @@ test("?q= 付きで開いて目次アンカーを挟んで戻っても、URLと�
   await page.goBack();
   await expect(page).toHaveURL(/\?q=form/);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
+  await expect(resultLabel(page)).toHaveText(FORM_LABEL);
 });
 
 test("目次アンカーへ進むと、q の無いURLに合わせて絞り込みが解除される", async ({ page }) => {
@@ -119,12 +154,12 @@ test("目次アンカーへ進むと、q の無いURLに合わせて絞り込み
   await page.goBack();
   await page.getByRole("searchbox").fill("form");
   await expect(page).toHaveURL(/\?q=form/);
-  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
+  await expect(resultLabel(page)).toHaveText(FORM_LABEL);
 
   await page.goForward();
   await expect(page).not.toHaveURL(/q=form/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
+  await expect(resultLabel(page)).toHaveText(ALL_LABEL);
 });
 
 test("シートを切り替えると検索語が持ち越されない", async ({ page }) => {
@@ -169,12 +204,12 @@ test("同じシートのリンクを踏むと、q の消えたURLに合わせて
   // ルーターの push では popstate が飛ばず、slug が同じなので key による作り直しも
   // 起きない。URLだけ ?q= が消えて絞り込みが残る、という食い違いが起きやすい経路。
   await openSheet(page, `${SHEET}?q=form`);
-  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
+  await expect(resultLabel(page)).toHaveText(FORM_LABEL);
 
   await openSheetFromMenu(page, "HTML");
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
+  await expect(resultLabel(page)).toHaveText(ALL_LABEL);
 });
 
 test("打った直後に同じシートのリンクを踏んでも、URLと表示が食い違わない", async ({ page }) => {
@@ -193,12 +228,12 @@ test("打った直後に同じシートのリンクを踏んでも、URLと表�
 
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
+  await expect(resultLabel(page)).toHaveText(ALL_LABEL);
 
   // 続けて目次アンカーを踏んでも、消えた検索語が戻ってこないこと。
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
+  await expect(resultLabel(page)).toHaveText(ALL_LABEL);
 });
 
 test("打った直後に目次アンカーを踏んでも検索語が消えない", async ({ page }) => {
@@ -210,7 +245,7 @@ test("打った直後に目次アンカーを踏んでも検索語が消えな�
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
 
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
+  await expect(resultLabel(page)).toHaveText(FORM_LABEL);
   await expect(page).toHaveURL(/\?q=form#/);
 });
 
@@ -315,7 +350,7 @@ for (const inputBeforeEnd of [true, false]) {
     await typeWithIme(page, ["ひ", "ひょ", "ひょう"], "表", inputBeforeEnd);
     await expect(page.getByRole("searchbox")).toHaveValue("表");
     await expect(page).toHaveURL(/\?q=%E8%A1%A8/);
-    await expect(resultLabel(page)).not.toHaveText("10 セクション / 109 項目");
+    await expect(resultLabel(page)).not.toHaveText(ALL_LABEL);
   });
 }
 
@@ -356,11 +391,11 @@ test("空白のみの入力は消されず、絞り込みもかからない", as
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("  ");
   await expect(page.getByRole("searchbox")).toHaveValue("  ");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
+  await expect(resultLabel(page)).toHaveText(ALL_LABEL);
 });
 
 test("?q= 付きURLを直接開くと絞り込まれた状態で復元される", async ({ page }) => {
   await openSheet(page, `${SHEET}?q=form`);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
+  await expect(resultLabel(page)).toHaveText(FORM_LABEL);
 });
