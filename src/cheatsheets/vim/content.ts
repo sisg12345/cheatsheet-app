@@ -21,7 +21,7 @@ import type { CheatSheetContent } from "../types";
 
 export const vimContent: CheatSheetContent = {
   id: "vim-reference",
-  updatedAt: "2026-09-16",
+  updatedAt: "2026-09-20",
   sources: [
     {
       label: "Vimリファレンスマニュアル（quickref）",
@@ -368,6 +368,24 @@ export const vimContent: CheatSheetContent = {
           "パス中の/をエスケープせずに書ける。",
         ),
         item(
+          "global-command",
+          "一致する行だけを処理",
+          ":g/DEBUG/d",
+          "パターンに一致する行に対してコマンドを実行する。ここでは一致した行をすべて削除する。",
+          ":v/pattern/d（または :g!）は逆に、一致しない行を消す。消す前に :g/pattern/p で対象を確かめる。削除しすぎても u で戻せる。",
+          "info",
+          ["global", "一括削除", "ログ"],
+        ),
+        item(
+          "filter-external",
+          "外部コマンドに通す",
+          ":%!jq .",
+          "バッファの内容を外部コマンドの入力に渡し、その出力で置き換える。",
+          ":%! は全体、:'<,'>! は選択範囲が対象。sort や column -t も同じように使える。コマンドが失敗すると中身が壊れるので、u で戻す。",
+          "warning",
+          ["filter", "jq", "sort"],
+        ),
+        item(
           "substitute-word",
           "単語全体のoldを確認付き置換",
           ":%s/\\<old\\>/new/gc",
@@ -418,6 +436,15 @@ export const vimContent: CheatSheetContent = {
           "ファイルの内容を現在行の下へ挿入",
           ":r {file}",
           "編集中の文書へ取り込む。",
+        ),
+        item(
+          "sudo-write",
+          "権限が足りないファイルを保存",
+          ":w !sudo tee % > /dev/null",
+          "sudo なしで開いてしまったファイルを、開き直さずに保存する。",
+          "保存後に「変更されました」と聞かれるので L（読み込み直す）を選ぶ。sudo のパスワード入力が必要。",
+          "info",
+          ["sudo", "権限", "readonly"],
         ),
         item(
           "open-from-shell",

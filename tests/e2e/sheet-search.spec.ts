@@ -87,7 +87,7 @@ test("目次アンカーを挟んで戻ると、URLと入力欄・絞り込み�
   await page.goBack();
   await expect(page).toHaveURL(/\?q=form/);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
+  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
 });
 
 test("?q= 付きで開いて目次アンカーを挟んで戻っても、URLと表示が一致する", async ({ page }) => {
@@ -106,7 +106,7 @@ test("?q= 付きで開いて目次アンカーを挟んで戻っても、URLと�
   await page.goBack();
   await expect(page).toHaveURL(/\?q=form/);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
+  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
 });
 
 test("目次アンカーへ進むと、q の無いURLに合わせて絞り込みが解除される", async ({ page }) => {
@@ -119,12 +119,12 @@ test("目次アンカーへ進むと、q の無いURLに合わせて絞り込み
   await page.goBack();
   await page.getByRole("searchbox").fill("form");
   await expect(page).toHaveURL(/\?q=form/);
-  await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
+  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
 
   await page.goForward();
   await expect(page).not.toHaveURL(/q=form/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 101 項目");
+  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
 });
 
 test("シートを切り替えると検索語が持ち越されない", async ({ page }) => {
@@ -169,12 +169,12 @@ test("同じシートのリンクを踏むと、q の消えたURLに合わせて
   // ルーターの push では popstate が飛ばず、slug が同じなので key による作り直しも
   // 起きない。URLだけ ?q= が消えて絞り込みが残る、という食い違いが起きやすい経路。
   await openSheet(page, `${SHEET}?q=form`);
-  await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
+  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
 
   await openSheetFromMenu(page, "HTML");
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 101 項目");
+  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
 });
 
 test("打った直後に同じシートのリンクを踏んでも、URLと表示が食い違わない", async ({ page }) => {
@@ -193,12 +193,12 @@ test("打った直後に同じシートのリンクを踏んでも、URLと表�
 
   await expect(page).not.toHaveURL(/q=/);
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 101 項目");
+  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
 
   // 続けて目次アンカーを踏んでも、消えた検索語が戻ってこないこと。
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
   await expect(page.getByRole("searchbox")).toHaveValue("");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 101 項目");
+  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
 });
 
 test("打った直後に目次アンカーを踏んでも検索語が消えない", async ({ page }) => {
@@ -210,7 +210,7 @@ test("打った直後に目次アンカーを踏んでも検索語が消えな�
   await page.getByRole("complementary").locator('a[href^="#"]').first().click();
 
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
+  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
   await expect(page).toHaveURL(/\?q=form#/);
 });
 
@@ -315,7 +315,7 @@ for (const inputBeforeEnd of [true, false]) {
     await typeWithIme(page, ["ひ", "ひょ", "ひょう"], "表", inputBeforeEnd);
     await expect(page.getByRole("searchbox")).toHaveValue("表");
     await expect(page).toHaveURL(/\?q=%E8%A1%A8/);
-    await expect(resultLabel(page)).not.toHaveText("10 セクション / 101 項目");
+    await expect(resultLabel(page)).not.toHaveText("10 セクション / 109 項目");
   });
 }
 
@@ -356,11 +356,11 @@ test("空白のみの入力は消されず、絞り込みもかからない", as
   await page.getByRole("searchbox").focus();
   await page.keyboard.type("  ");
   await expect(page.getByRole("searchbox")).toHaveValue("  ");
-  await expect(resultLabel(page)).toHaveText("10 セクション / 101 項目");
+  await expect(resultLabel(page)).toHaveText("10 セクション / 109 項目");
 });
 
 test("?q= 付きURLを直接開くと絞り込まれた状態で復元される", async ({ page }) => {
   await openSheet(page, `${SHEET}?q=form`);
   await expect(page.getByRole("searchbox")).toHaveValue("form");
-  await expect(resultLabel(page)).toHaveText("2 セクション / 2 項目");
+  await expect(resultLabel(page)).toHaveText("3 セクション / 4 項目");
 });

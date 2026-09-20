@@ -22,7 +22,7 @@ import type { CheatSheetContent } from "../types";
 
 export const nextjsContent: CheatSheetContent = {
   id: "nextjs-reference",
-  updatedAt: "2026-09-19",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "Next.js ドキュメント（App Router）", url: "https://nextjs.org/docs/app" },
     { label: "Next.js 16 リリース記事", url: "https://nextjs.org/blog/next-16" },
@@ -145,6 +145,15 @@ export const nextjsContent: CheatSheetContent = {
           "GET や POST などの名前の関数を export すると、API として応答する。",
           "同じフォルダに page.tsx と route.ts は置けない。",
         ),
+        item(
+          "parallel-route",
+          "並列ルート",
+          "app/@modal/page.tsx",
+          "@ で始まるフォルダを作ると、同じ URL の中で複数の画面を同時に描ける。layout が props で受け取る。",
+          "Next.js 16 から、すべてのスロットに default.tsx が必須。無いとビルドが落ちるので、notFound() を呼ぶか null を返すものを置く。",
+          "warning",
+          ["parallel routes", "モーダル", "slot"],
+        ),
       ],
     },
     // ページ間の移動。サーバーでの移動（redirect）とクライアントでの移動（useRouter）を分けて書く。
@@ -242,6 +251,15 @@ export const nextjsContent: CheatSheetContent = {
           "タイトルの書式",
           'title: { template: "%s | サイト名", default: "サイト名" }',
           "layout で、子のページのタイトルに付け足す書式を決める。",
+        ),
+        item(
+          "metadata-files",
+          "sitemap・robots・OGP 画像",
+          "app/sitemap.ts\napp/robots.ts\napp/opengraph-image.tsx",
+          "決まった名前のファイルを置くと、sitemap.xml・robots.txt・OGP 画像が自動で作られる。",
+          "opengraph-image.tsx は ImageResponse で画像を描ける。静的なら opengraph-image.png を置くだけでよい。",
+          "info",
+          ["sitemap", "robots", "ogp", "SEO"],
         ),
       ],
     },
@@ -440,7 +458,7 @@ export const nextjsContent: CheatSheetContent = {
           "Proxy（旧 Middleware）",
           'export default function proxy(request: NextRequest) {\n  return NextResponse.redirect(new URL("/login", request.url));\n}',
           "リクエストがページに届く前に、リダイレクトや書き換えを行う。",
-          "Next.js 16 で middleware.ts から proxy.ts に変わり、Node.js で動く。ファイルはプロジェクトのルート（または src）に置く。",
+          "Next.js 16 で middleware.ts から proxy.ts に変わり、Node.js で動く。ファイルはプロジェクトのルート（または src）に置く。middleware.ts も Edge 向けに残っているが非推奨で、いずれ削除される。",
         ),
         item(
           "proxy-matcher",
@@ -483,7 +501,7 @@ export const nextjsContent: CheatSheetContent = {
           "外部の画像を許可",
           'images: { remotePatterns: [new URL("https://cdn.example.com/**")] }',
           "next.config で、表示してよい外部の画像の URL を指定する。",
-          "images.domains は非推奨。",
+          "images.domains は非推奨。Next.js 16 から、クエリ付きのローカル画像にも images.localPatterns の指定が要る。既定の品質も [75] だけになった。",
         ),
         item(
           "next-font",

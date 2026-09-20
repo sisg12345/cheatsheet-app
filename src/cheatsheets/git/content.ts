@@ -19,7 +19,7 @@ import type { CheatSheetContent } from "../types";
 
 export const gitContent: CheatSheetContent = {
   id: "git-reference",
-  updatedAt: "2026-08-18",
+  updatedAt: "2026-09-20",
   sources: [{ label: "Git公式リファレンス", url: "https://git-scm.com/docs" }],
   sections: [
     // 最初の1回だけ実行する設定と、リポジトリの作り方。
@@ -126,7 +126,7 @@ export const gitContent: CheatSheetContent = {
           "直前コミットを修正",
           "git commit --amend",
           "内容やメッセージを修正する。",
-          "コミットIDが変わる。",
+          "コミットIDが変わる。push 済みのコミットを直すと強制pushが要るうえ、他の人の手元と食い違う。",
           "warning",
         ),
       ],
@@ -177,7 +177,7 @@ export const gitContent: CheatSheetContent = {
           "強制削除",
           "git branch -D feature/name",
           "未マージでもブランチ参照を削除する。",
-          "履歴を失う可能性がある。",
+          "マージしていないコミットが参照から外れる。直後なら git reflog でハッシュを見つけ、git switch -c で復帰できる。",
           "danger",
         ),
         item(
@@ -219,7 +219,7 @@ export const gitContent: CheatSheetContent = {
           "基点を積み直す",
           "git rebase main",
           "現在ブランチのコミットをmainの上へ積み直す。",
-          "公開済み共有履歴では原則避ける。",
+          "コミットIDが変わるので、すでに共有したブランチでは原則避ける。自分しか使っていないブランチなら気にしなくてよい。",
           "warning",
         ),
         item(
@@ -229,6 +229,13 @@ export const gitContent: CheatSheetContent = {
           "並べ替え、squash、fixup、rewordを行う。",
           "コミットIDが変わる。",
           "warning",
+        ),
+        item(
+          "commit-fixup",
+          "後で直すコミットを作る",
+          "git commit --fixup <commit>",
+          "どのコミットを直すための変更かを印として残したコミットを作る。",
+          "git rebase -i --autosquash <base> を実行すると、印の付いたコミットが元の位置へ自動でまとめられる。レビューの指摘を元のコミットへ戻すときに使う。",
         ),
         item(
           "rebase-continue",
@@ -311,7 +318,7 @@ export const gitContent: CheatSheetContent = {
           "リモートブランチ削除",
           "git push origin --delete feature/name",
           "共有先からブランチ参照を削除する。",
-          undefined,
+          "ほかの人がまだ使っていないかを確かめてから消す。手元に残る追跡参照は git fetch --prune で整理する。",
           "warning",
         ),
         item(
@@ -319,7 +326,7 @@ export const gitContent: CheatSheetContent = {
           "履歴を書き換えてpush",
           "git push --force-with-lease",
           "他者更新がないことを条件に強制pushする。",
-          "共有履歴を書き換える。",
+          "他の人が同じブランチに積んだコミットを消しうる。判定に使うのは手元のリモート追跡ブランチなので、エディタなどが裏で git fetch していると素通りする。--force-if-includes も付けると、相手のコミットを取り込んだ上での書き換えかまで確かめる。",
           "danger",
         ),
       ],
@@ -345,7 +352,7 @@ export const gitContent: CheatSheetContent = {
           "未ステージ変更を破棄",
           "git restore <file>",
           "ファイルをステージ内容へ戻す。",
-          "未コミット変更が消える。",
+          "そのファイルの未コミット変更が消える。一度もコミットもステージもしていない内容は戻せない。",
           "danger",
         ),
         item(
@@ -377,7 +384,7 @@ export const gitContent: CheatSheetContent = {
           "コミットと変更を破棄",
           "git reset --hard <commit>",
           "HEAD・ステージ・作業ツリーを一致させる。",
-          "追跡済み未コミット変更が消える。",
+          "追跡済みの未コミット変更が消える。外れたコミットは git reflog から戻せるが、一度もコミットしていない変更はどこにも残らない。",
           "danger",
         ),
         item(
@@ -443,7 +450,7 @@ export const gitContent: CheatSheetContent = {
           "適用して削除",
           "git stash pop",
           "適用に成功したstashを一覧から削除する。",
-          "競合する可能性がある。",
+          "競合したときは適用が途中で止まり、stash は一覧に残る。解消したあと自分で git stash drop する。",
           "warning",
         ),
         item(
@@ -457,7 +464,7 @@ export const gitContent: CheatSheetContent = {
           "1件削除",
           "git stash drop stash@{0}",
           "指定stashを削除する。",
-          undefined,
+          "番号を間違えると別の退避が消える。先に git stash list と git stash show -p で中身を確かめる。",
           "warning",
         ),
         item(
@@ -465,7 +472,7 @@ export const gitContent: CheatSheetContent = {
           "全件削除",
           "git stash clear",
           "すべてのstash参照を削除する。",
-          "復元が困難。",
+          "確認なしに全部消える。直後なら git fsck --unreachable でコミットを探せることもあるが、当てにしない。",
           "danger",
         ),
       ],
@@ -539,6 +546,14 @@ export const gitContent: CheatSheetContent = {
           "指定範囲を最後に変更したコミットを調べる。",
         ),
         item(
+          "blame-ignore-revs",
+          "整形コミットをblameから外す",
+          "git blame --ignore-revs-file .git-blame-ignore-revs <file>",
+          "一括整形などのコミットを飛ばし、中身を変えた人を表示する。",
+          "git config blame.ignoreRevsFile .git-blame-ignore-revs を設定しておくと、毎回付けなくてよい。",
+          "info",
+        ),
+        item(
           "show-file",
           "コミット時点のファイル",
           "git show <commit>:<path>",
@@ -595,7 +610,7 @@ export const gitContent: CheatSheetContent = {
           "こちら側を採用",
           "git restore --ours <file>",
           "競合ファイルでours側を採用する。",
-          "リベース中は意味に注意。",
+          "マージ中の ours は今いるブランチ側。リベース中は積み直す先（main など）が ours、自分のコミットが theirs になり、入れ替わる。",
           "warning",
         ),
         item(
@@ -603,7 +618,7 @@ export const gitContent: CheatSheetContent = {
           "相手側を採用",
           "git restore --theirs <file>",
           "競合ファイルでtheirs側を採用する。",
-          "内容確認後にgit add。",
+          "相手の変更で丸ごと置き換わるので、自分の変更が消えていないか確かめてから git add する。リベース中は ours と入れ替わる。",
           "warning",
         ),
         item("mergetool", "解消ツール", "git mergetool", "設定済みの競合解消ツールを起動する。"),
@@ -647,7 +662,7 @@ export const gitContent: CheatSheetContent = {
           "未追跡を削除",
           "git clean -fd",
           "未追跡ファイル・ディレクトリを削除する。",
-          "通常のGit復元対象外。",
+          "Gitが追跡していないので reflog でも戻せない。必ず先に git clean -nd で対象を確かめる。-x を足すと、.gitignore で無視しているファイル（ビルド結果や .env）まで消える。",
           "danger",
         ),
         item(
@@ -662,7 +677,7 @@ export const gitContent: CheatSheetContent = {
           "リモートタグ削除",
           "git push origin --delete v1.2.0",
           "共有タグを削除する。",
-          undefined,
+          "すでに取得した人の手元からは消えない。公開済みのタグは、消すより新しいタグを切るほうが安全。",
           "warning",
         ),
         item(
@@ -670,6 +685,13 @@ export const gitContent: CheatSheetContent = {
           "バグ混入を二分探索",
           "git bisect start HEAD v1.0.0",
           "異常地点と正常地点の間を効率よく絞る。",
+        ),
+        item(
+          "bisect-good-bad",
+          "良否を答える",
+          "git bisect good / git bisect bad",
+          "今チェックアウトされているコミットで問題が出なければ good、出れば bad と答える。Git が次に調べるコミットへ自動で移る。",
+          "ビルドが通らないなど判断できないコミットは git bisect skip で飛ばす。",
         ),
         item(
           "bisect-run",
@@ -689,6 +711,13 @@ export const gitContent: CheatSheetContent = {
           "作業ツリー一覧",
           "git worktree list",
           "パス・ブランチ・HEADを表示する。",
+        ),
+        item(
+          "worktree-remove",
+          "作業ツリーを片付ける",
+          "git worktree remove ../hotfix",
+          "使い終わった作業ツリーを削除する。",
+          "フォルダだけ手で消すと管理情報が残るので、そのときは git worktree prune で整理する。",
         ),
         item(
           "submodule",

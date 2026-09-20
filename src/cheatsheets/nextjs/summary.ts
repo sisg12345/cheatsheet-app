@@ -17,5 +17,5 @@ export const nextjsSummary: CheatSheetSummary = {
   accent: "var(--color-ink)",
   keywords: ["next", "nextjs", "app router", "server components", "ssr", "vercel"],
   sectionCount: 10,
-  itemCount: 68,
+  itemCount: 70,
 };

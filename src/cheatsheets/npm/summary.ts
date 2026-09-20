@@ -16,5 +16,5 @@ export const npmSummary: CheatSheetSummary = {
   accent: "#cb3837",
   keywords: ["npm", "npx", "package.json", "node", "パッケージ", "依存関係"],
   sectionCount: 9,
-  itemCount: 57,
+  itemCount: 58,
 };

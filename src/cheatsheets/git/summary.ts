@@ -16,5 +16,5 @@ export const gitSummary: CheatSheetSummary = {
   accent: "#f05033",
   keywords: ["git", "バージョン管理", "commit", "branch", "rebase", "stash"],
   sectionCount: 10,
-  itemCount: 112,
+  itemCount: 116,
 };

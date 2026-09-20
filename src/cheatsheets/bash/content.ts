@@ -21,7 +21,7 @@ import type { CheatSheetContent } from "../types";
 
 export const bashContent: CheatSheetContent = {
   id: "bash-reference",
-  updatedAt: "2026-09-19",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "GNU Bash リファレンスマニュアル", url: "https://www.gnu.org/software/bash/manual/" },
     { label: "ShellCheck", url: "https://www.shellcheck.net/" },
@@ -52,6 +52,22 @@ export const bashContent: CheatSheetContent = {
           "スクリプトを実行",
           "chmod +x deploy.sh && ./deploy.sh",
           "実行権限を付けて実行する。bash deploy.sh でも実行できる。",
+        ),
+        item(
+          "script-dir",
+          "スクリプト自身の場所を基準にする",
+          'cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"',
+          "スクリプトが置かれているディレクトリへ移動してから処理を始める。",
+          "どこから呼ばれても、相対パスの指定が同じ意味になる。$0 はシンボリックリンクや source 経由で当てにならないので BASH_SOURCE を使う。",
+          "info",
+          ["dirname", "BASH_SOURCE", "相対パス"],
+        ),
+        item(
+          "source",
+          "別のファイルを読み込む",
+          "source ./lib/common.sh",
+          "別のファイルの内容を、今のシェルでそのまま実行する。. ./lib/common.sh とも書ける。",
+          "別プロセスにならないので、中で定義した変数や関数が呼び出し側に残る。.env を読み込むときにも使うが、値に空白や # が入ると壊れるので、set -a と組み合わせるか専用の読み込みを使う。",
         ),
         item(
           "printf",
@@ -197,6 +213,7 @@ export const bashContent: CheatSheetContent = {
           "成功・失敗で続ける",
           'mkdir -p dist && cp -r src/* dist/ || echo "失敗しました"',
           "&& は前が成功したとき、|| は前が失敗したときに次を実行する。",
+          "この形は cp が失敗したときにも || の側が動く。「成功したら A、失敗したら B」を厳密に書き分けたいときは if 文にする。",
         ),
         item(
           "case",

@@ -23,7 +23,7 @@ import type { CheatSheetContent } from "../types";
 
 export const reactContent: CheatSheetContent = {
   id: "react-reference",
-  updatedAt: "2026-09-18",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "React リファレンス", url: "https://react.dev/reference/react" },
     { label: "React 学習ガイド", url: "https://react.dev/learn" },
@@ -237,6 +237,15 @@ export const reactContent: CheatSheetContent = {
           "複数の子で共有する値は共通の親の state にし、props で渡す。",
         ),
         item(
+          "reset-state-with-key",
+          "state を作り直す",
+          "<ProfileForm key={userId} user={user} />",
+          "key を変えると、React は別の要素とみなして中の state を最初から作り直す。",
+          "編集フォームを別の対象に切り替えるときなど、Effect で state を入れ直すより確実。",
+          "info",
+          ["リセット", "key", "state"],
+        ),
+        item(
           "use-reducer",
           "更新のロジックをまとめる",
           "const [state, dispatch] = useReducer(reducer, initialState);",
@@ -343,6 +352,13 @@ export const reactContent: CheatSheetContent = {
           "<div ref={(node) => { observer.observe(node); return () => observer.unobserve(node); }} />",
           "ref に関数を渡し、要素が外れるときの片付けを返す。",
           "React 19 以降。",
+        ),
+        item(
+          "use-imperative-handle",
+          "親に渡す操作を絞る",
+          "useImperativeHandle(ref, () => ({ focus: () => inputRef.current.focus() }), []);",
+          "ref で渡すものを DOM そのものではなく、決めた操作だけに限る。",
+          "親から DOM を自由に触られなくなる。まず props で足りないかを考えてから使う。",
         ),
         item(
           "fragment-ref",

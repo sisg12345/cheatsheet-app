@@ -22,7 +22,7 @@ import type { CheatSheetContent } from "../types";
 
 export const javascriptContent: CheatSheetContent = {
   id: "javascript-reference",
-  updatedAt: "2026-09-16",
+  updatedAt: "2026-09-20",
   sources: [
     {
       label: "MDN JavaScript リファレンス",
@@ -639,7 +639,7 @@ export const javascriptContent: CheatSheetContent = {
           "数値に変換",
           'Number("42")',
           "文字列全体を数値に変換する。",
-          "変換できないと NaN になる。",
+          "変換できないと NaN になる。空文字・null・空配列は 0 になるので、未入力を 0 と取り違えないよう、変換の前に空かどうかを確かめる。",
         ),
         item(
           "parse-int",
@@ -677,6 +677,15 @@ export const javascriptContent: CheatSheetContent = {
           "セキュリティ用途には crypto.getRandomValues() を使う。",
         ),
         item(
+          "random-uuid",
+          "UUID を作る",
+          "crypto.randomUUID()",
+          "重複しない識別子（UUID v4）を作る。",
+          "HTTPS などの安全なコンテキストでだけ使える。Node.js では node:crypto からも呼べる。",
+          "info",
+          ["uuid", "id", "識別子"],
+        ),
+        item(
           "number-format",
           "桁区切り・通貨で表示",
           'new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY" }).format(1234)',
@@ -696,6 +705,15 @@ export const javascriptContent: CheatSheetContent = {
           'date.toLocaleDateString("ja-JP")',
           "ロケールに合わせて日付を文字列にする。",
           "保存や送信には date.toISOString()（UTC）を使う。",
+        ),
+        item(
+          "temporal",
+          "Temporal",
+          'Temporal.PlainDate.from("2026-01-31").add({ months: 1 })',
+          "Date を置き換える日付・時刻の API。月は1始まりで、値を変更できない。",
+          "Chrome 144 と Firefox 139 が対応。Safari はまだなので、当面は Date か日付ライブラリで書く。",
+          "normal",
+          ["temporal", "日付", "date"],
         ),
         item(
           "json-stringify",
@@ -1125,11 +1143,29 @@ export const javascriptContent: CheatSheetContent = {
           "メソッド・ヘッダー・本文を指定して送信する。",
         ),
         item(
+          "form-data",
+          "フォーム・ファイルを送信",
+          'const body = new FormData(form);\nbody.append("file", input.files[0]);\nawait fetch("/api/upload", { method: "POST", body });',
+          "フォームの入力値やファイルを、multipart/form-data として送る。",
+          "Content-Type は自分で指定しない。指定すると境界文字列が付かず、サーバー側で解析できなくなる。",
+          "warning",
+          ["formdata", "アップロード", "multipart"],
+        ),
+        item(
           "abort-timeout",
           "タイムアウトで中断",
           "await fetch(url, { signal: AbortSignal.timeout(5000) });",
           "指定したミリ秒を過ぎたら、リクエストを中断する。",
           "任意のタイミングで中断するなら AbortController を使う。",
+        ),
+        item(
+          "abort-controller",
+          "任意のタイミングで中断",
+          "const controller = new AbortController();\nfetch(url, { signal: controller.signal });\ncontroller.abort();",
+          "画面を離れたときや入力し直したときに、走っている通信を止める。",
+          "中断すると AbortError で reject するので、エラー処理で他の失敗と区別する。addEventListener の第3引数にも signal を渡せて、まとめて解除できる。",
+          "info",
+          ["abort", "キャンセル", "中断"],
         ),
         item(
           "url-search-params",
@@ -1178,6 +1214,15 @@ export const javascriptContent: CheatSheetContent = {
           'matchMedia("(prefers-color-scheme: dark)").matches',
           "メディアクエリに一致するかを JavaScript で判定する。",
           "変化を監視するなら change イベントを登録する。",
+        ),
+        item(
+          "intersection-observer",
+          "画面に入ったかを監視",
+          "const io = new IntersectionObserver((entries) => {\n  for (const entry of entries) if (entry.isIntersecting) load(entry.target);\n});\nio.observe(el);",
+          "要素が表示領域に入ったことを検知する。無限スクロールや遅延読み込みに使う。",
+          "スクロールイベントと違い、毎フレーム走らない。使い終わったら disconnect() する。大きさの変化を見るなら ResizeObserver。",
+          "info",
+          ["無限スクロール", "遅延読み込み", "observer"],
         ),
       ],
     },

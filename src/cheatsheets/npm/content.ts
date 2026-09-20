@@ -23,7 +23,7 @@ import type { CheatSheetContent } from "../types";
 
 export const npmContent: CheatSheetContent = {
   id: "npm-reference",
-  updatedAt: "2026-09-19",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "npm CLI ドキュメント", url: "https://docs.npmjs.com/cli/" },
     { label: "npm CLI リリースノート", url: "https://github.com/npm/cli/releases" },
@@ -47,6 +47,7 @@ export const npmContent: CheatSheetContent = {
           "バージョン確認",
           "npm -v",
           "npm のバージョンを表示する。Node.js は node -v。",
+          "npm 12 は Node.js 22.22 以降か 24.15 以降で動く。Node.js に同梱される npm は古いことがあるので、npm install -g npm@latest で上げる。",
         ),
         item("npm-help", "ヘルプ", "npm install -h", "コマンドの使い方を表示する。"),
         item(
@@ -142,6 +143,15 @@ export const npmContent: CheatSheetContent = {
           "peerDependencies の衝突を無視してインストールする。",
           "依存関係の不整合を隠すだけなので、一時的な回避にとどめる。",
           "warning",
+        ),
+        item(
+          "allow-git-remote",
+          "git・URL の依存を許可",
+          "npm install --allow-git=all --allow-remote=all",
+          "GitHub などの git リポジトリや、tarball の URL を指定した依存関係を入れられるようにする。",
+          "npm 12 から既定が none になり、これを付けないとインストールが失敗する。毎回付けるなら .npmrc に allow-git=all と書く。root にすると、自分の package.json に直接書いたものだけを許す。",
+          "warning",
+          ["git", "github", "tarball", "npm 12"],
         ),
       ],
     },
@@ -263,7 +273,7 @@ export const npmContent: CheatSheetContent = {
           "lock ファイルをコミット",
           "package-lock.json",
           "実際に入ったバージョンを記録する。Git にコミットして、全員が同じものを使う。",
-          undefined,
+          "npm 12 で npm shrinkwrap は削除され、npm-shrinkwrap.json も読まれなくなった。残っている場合は package-lock.json に名前を変える。",
           "info",
         ),
         item("audit", "脆弱性を確認", "npm audit", "依存関係の既知の脆弱性を一覧する。"),

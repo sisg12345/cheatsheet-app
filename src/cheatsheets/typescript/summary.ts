@@ -16,5 +16,5 @@ export const typescriptSummary: CheatSheetSummary = {
   accent: "#3178c6",
   keywords: ["typescript", "ts", "型", "ジェネリクス", "tsconfig", "tsc"],
   sectionCount: 14,
-  itemCount: 123,
+  itemCount: 125,
 };

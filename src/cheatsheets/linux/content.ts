@@ -23,7 +23,7 @@ import type { CheatSheetContent } from "../types";
 
 export const linuxContent: CheatSheetContent = {
   id: "linux-reference",
-  updatedAt: "2026-09-19",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "man ページ（man7.org）", url: "https://man7.org/linux/man-pages/" },
     { label: "GNU Coreutils マニュアル", url: "https://www.gnu.org/software/coreutils/manual/" },
@@ -413,7 +413,7 @@ export const linuxContent: CheatSheetContent = {
           "ディスクの空き",
           "df -h",
           "ファイルシステムごとの使用量と空きを表示する。",
-          undefined,
+          "空きがあるのに書き込めないときは df -i を見る。小さいファイルが大量にあると、容量より先に inode を使い切る。",
           "info",
         ),
         item(
@@ -599,6 +599,24 @@ export const linuxContent: CheatSheetContent = {
           "自動起動にする",
           "sudo systemctl enable --now nginx",
           "OS の起動時に自動で起動するようにし、今すぐ起動もする。",
+        ),
+        item(
+          "daemon-reload",
+          "unit ファイルの変更を反映",
+          "sudo systemctl daemon-reload",
+          "サービスの定義ファイル（.service）を書き換えたあと、systemd に読み直させる。",
+          "これをしないと、restart しても古い定義のまま起動する。変更後に警告が出るが、見逃しやすい。",
+          "warning",
+          ["systemd", "unit", "service"],
+        ),
+        item(
+          "crontab",
+          "定期的に実行する",
+          "crontab -e\n# 分 時 日 月 曜日\n0 3 * * * /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1",
+          "決まった時刻にコマンドを実行する設定を編集する。crontab -l で一覧する。",
+          "cron の PATH は対話シェルと違うので、コマンドは絶対パスで書く。出力を捨てるとエラーに気付けないため、ログに残す。systemd timer でも同じことができ、journalctl でログを追える。",
+          "info",
+          ["cron", "定期実行", "スケジュール"],
         ),
         item(
           "systemctl-list",

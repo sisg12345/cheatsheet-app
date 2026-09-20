@@ -16,5 +16,5 @@ export const vueSummary: CheatSheetSummary = {
   accent: "#42b883",
   keywords: ["vue", "vue.js", "vue3", "composition api", "script setup", "リアクティブ"],
   sectionCount: 12,
-  itemCount: 80,
+  itemCount: 82,
 };

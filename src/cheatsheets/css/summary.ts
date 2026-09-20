@@ -18,5 +18,5 @@ export const cssSummary: CheatSheetSummary = {
   accent: "light-dark(#663399, #9d6fe0)",
   keywords: ["css", "スタイル", "スタイルシート", "stylesheet", "レイアウト", "デザイン"],
   sectionCount: 16,
-  itemCount: 165,
+  itemCount: 167,
 };

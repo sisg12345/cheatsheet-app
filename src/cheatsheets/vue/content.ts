@@ -23,7 +23,7 @@ import type { CheatSheetContent } from "../types";
 
 export const vueContent: CheatSheetContent = {
   id: "vue-reference",
-  updatedAt: "2026-09-18",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "Vue.js ガイド", url: "https://ja.vuejs.org/guide/introduction.html" },
     { label: "Vue.js API リファレンス", url: "https://ja.vuejs.org/api/" },
@@ -55,6 +55,15 @@ export const vueContent: CheatSheetContent = {
           "アプリをマウント",
           'createApp(App).mount("#app");',
           "アプリを作り、HTML の要素に描画する。",
+        ),
+        item(
+          "app-config",
+          "プラグインと全体の設定",
+          'const app = createApp(App);\napp.use(router);\napp.config.errorHandler = (error, instance, info) => report(error, info);\napp.mount("#app");',
+          "プラグインを登録し、どこでも拾えなかったエラーの受け口を決める。",
+          "errorHandler は描画中とライフサイクルのエラーを受け取る。イベントハンドラーの中で投げた例外は届かないので、そこは自分で捕まえる。",
+          "info",
+          ["plugin", "errorHandler", "エラー"],
         ),
         item(
           "sfc",
@@ -495,6 +504,15 @@ button { font-weight: bold; }
           '<MyButton class="large" />',
           "props として宣言していない属性は、子のルート要素にそのまま引き継がれる。",
           "引き継がせないなら defineOptions({ inheritAttrs: false }) を書く。",
+        ),
+        item(
+          "define-expose",
+          "親に公開する",
+          "defineExpose({ focus, reset });",
+          "親がテンプレート参照から呼べるものを指定する。",
+          "<script setup> のコンポーネントは既定で閉じていて、これを書かないと親から中の関数を呼べない。公開するものは必要な分だけに絞る。",
+          "info",
+          ["expose", "テンプレート参照"],
         ),
         item(
           "dynamic-component",

@@ -16,5 +16,5 @@ export const bashSummary: CheatSheetSummary = {
   accent: "#7cb82f",
   keywords: ["bash", "shell", "シェル", "シェルスクリプト", "sh", "script"],
   sectionCount: 9,
-  itemCount: 63,
+  itemCount: 65,
 };

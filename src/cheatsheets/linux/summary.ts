@@ -16,5 +16,5 @@ export const linuxSummary: CheatSheetSummary = {
   accent: "#fcc624",
   keywords: ["linux", "unix", "コマンド", "ターミナル", "ubuntu", "サーバー"],
   sectionCount: 13,
-  itemCount: 93,
+  itemCount: 95,
 };
