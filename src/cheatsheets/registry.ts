@@ -1,22 +1,29 @@
 /**
  * シートを追加するときは `sheets` 配列に足す。ルーティングも一覧カードもヘッダーのメニューも
  * 以下の派生データから組み立てられるが、シート名をべた書きしている箇所
- * （CatalogPage.tsx の予告カードの文言、index.html の meta description）は手で直す。
+ * （index.html の meta description と README）は手で直す。
  *
  * 最初に読み込むバンドルに入るのは各シートの summary.ts だけで、中身の content.ts は
  * シートを開いたときに loadCheatSheet が動的 import で読み込む（シートごとに別のチャンクになる）。
  * content.ts をどこかで静的に import すると、そのシートの中身が最初のバンドルに戻るので、
  * 中身へは必ず loadCheatSheet を通す。
  */
+import { bashSummary } from "./bash/summary";
 import { claudeCodeSummary } from "./claude-code/summary";
+import { cssSummary } from "./css/summary";
 import { dockerSummary } from "./docker/summary";
 import { gitSummary } from "./git/summary";
 import { htmlSummary } from "./html/summary";
 import { javascriptSummary } from "./javascript/summary";
+import { linuxSummary } from "./linux/summary";
+import { nextjsSummary } from "./nextjs/summary";
+import { npmSummary } from "./npm/summary";
+import { nuxtSummary } from "./nuxt/summary";
 import { reactSummary } from "./react/summary";
 import type { CheatSheetContent, CheatSheetSummary } from "./types";
 import { typescriptSummary } from "./typescript/summary";
 import { vimSummary } from "./vim/summary";
+import { viteSummary } from "./vite/summary";
 import { vueSummary } from "./vue/summary";
 
 interface SheetEntry {
@@ -45,6 +52,13 @@ const sheets: SheetEntry[] = [
   },
   { summary: reactSummary, load: () => import("./react/content").then((m) => m.reactContent) },
   { summary: vueSummary, load: () => import("./vue/content").then((m) => m.vueContent) },
+  { summary: nextjsSummary, load: () => import("./nextjs/content").then((m) => m.nextjsContent) },
+  { summary: nuxtSummary, load: () => import("./nuxt/content").then((m) => m.nuxtContent) },
+  { summary: linuxSummary, load: () => import("./linux/content").then((m) => m.linuxContent) },
+  { summary: bashSummary, load: () => import("./bash/content").then((m) => m.bashContent) },
+  { summary: viteSummary, load: () => import("./vite/content").then((m) => m.viteContent) },
+  { summary: npmSummary, load: () => import("./npm/content").then((m) => m.npmContent) },
+  { summary: cssSummary, load: () => import("./css/content").then((m) => m.cssContent) },
 ];
 
 const sheetsBySlug: Readonly<Record<string, SheetEntry>> = Object.fromEntries(

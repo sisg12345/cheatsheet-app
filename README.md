@@ -1,6 +1,6 @@
 # CheatSheet Hub
 
-HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Docker・TypeScript・React.js・Vue.jsを収録しています。
+HTMLタグ、Gitコマンドなど、複数の技術チートシートを検索・閲覧できるReactアプリです。現在はHTML・Git・Vim・Claude Code・JavaScript・Docker・TypeScript・React.js・Vue.js・Next.js・Nuxt.js・Linux・Bash・Vite・npm・CSSを収録しています。
 
 ## 構成
 
@@ -76,7 +76,14 @@ cheatsheet-app/
 │   │   ├── docker/                 Dockerシート
 │   │   ├── typescript/             TypeScriptシート
 │   │   ├── react/                  React.jsシート
-│   │   └── vue/                    Vue.jsシート
+│   │   ├── vue/                    Vue.jsシート
+│   │   ├── nextjs/                 Next.jsシート
+│   │   ├── nuxt/                   Nuxt.jsシート
+│   │   ├── linux/                  Linuxシート
+│   │   ├── bash/                   Bashシート
+│   │   ├── vite/                   Viteシート
+│   │   ├── npm/                    npmシート
+│   │   └── css/                    CSSシート
 │   ├── components/                 表示層：Atomic Designで階層化したUI
 │   │   ├── atoms/                  Badge・Button（最小UI、状態を持たない）
 │   │   ├── molecules/              CodeBlock・SearchBox（atomsの組み合わせ）
@@ -206,7 +213,7 @@ main.tsx
 
 1. `src/cheatsheets/<slug>/summary.ts` に `CheatSheetSummary` 型の表書きと件数を、`content.ts` に `CheatSheetContent` 型の中身を作成します（項目は `item()` 経由）。`name` はカードの題名・シートのページの見出し・ヘッダーのメニューに出るので、"CC" のような省略形にせず正式名（例: "Claude Code"）で書きます。
 2. `src/cheatsheets/registry.ts` の `sheets` 配列へ、`summary` と `load`（`() => import("./<slug>/content").then((m) => m.xxxContent)`）の組を追加します。`import()` の引数は文字列のまま書きます（変数にするとシートごとのチャンクに分かれません）。
-3. シート名をべた書きしている箇所を直します：一覧の予告カードの文言（`CatalogPage.tsx`）、`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
+3. シート名をべた書きしている箇所を直します：`index.html` の meta description、このREADME冒頭の収録一覧とディレクトリ構成。
 4. `npm run typecheck && npm test && npm run build` で確認します。件数が中身と食い違っていれば `npm test` が正しい値を示します。
 
 ルーティング、一覧カード、ヘッダーの「チートシート」メニューはレジストリから自動的に生成されます。

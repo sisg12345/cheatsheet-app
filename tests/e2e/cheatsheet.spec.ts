@@ -65,6 +65,23 @@ const addedSheets = [
     path: "/cheatsheets/react",
   },
   { query: "Vue", navLabel: "Vue.js", title: "Vue.js チートシート", path: "/cheatsheets/vue" },
+  {
+    query: "Next.js",
+    navLabel: "Next.js",
+    title: "Next.js チートシート",
+    path: "/cheatsheets/nextjs",
+  },
+  {
+    query: "Nuxt",
+    navLabel: "Nuxt.js",
+    title: "Nuxt.js チートシート",
+    path: "/cheatsheets/nuxt",
+  },
+  { query: "Linux", navLabel: "Linux", title: "Linux チートシート", path: "/cheatsheets/linux" },
+  { query: "Bash", navLabel: "Bash", title: "Bash チートシート", path: "/cheatsheets/bash" },
+  { query: "Vite", navLabel: "Vite", title: "Vite チートシート", path: "/cheatsheets/vite" },
+  { query: "npm", navLabel: "npm", title: "npm チートシート", path: "/cheatsheets/npm" },
+  { query: "CSS", navLabel: "CSS", title: "CSS チートシート", path: "/cheatsheets/css" },
 ];
 
 for (const sheet of addedSheets) {
@@ -83,6 +100,16 @@ for (const sheet of addedSheets) {
     await expect(sheetHeading(page, sheet.navLabel)).toBeVisible();
   });
 }
+
+test("light-dark() で指定したシート色は、テーマに合わせて切り替わる", async ({ page }) => {
+  // CSS シートの色は light-dark(#663399, #9d6fe0)。値が無効になると見出しは親の文字色で
+  // 表示され、見た目では気づきにくいので、計算後の色で確かめる。
+  await page.goto("/cheatsheets/css");
+  await expect(sheetHeading(page, "CSS")).toHaveCSS("color", "rgb(102, 51, 153)");
+
+  await page.getByRole("button", { name: "ダークモードに切り替え" }).click();
+  await expect(sheetHeading(page, "CSS")).toHaveCSS("color", "rgb(157, 111, 224)");
+});
 
 test("メニューは今いるシートを示し、選ぶと閉じる", async ({ page }) => {
   await page.goto("/cheatsheets/git");
