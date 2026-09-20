@@ -5,6 +5,7 @@
  */
 import { expect, test, type Page } from "@playwright/test";
 import { openSheetFromMenu } from "./sheetMenu";
+import { openSheet } from "./sheetPage";
 
 function scrollY(page: Page) {
   return page.evaluate(() => window.scrollY);
@@ -26,7 +27,7 @@ test("一覧の下のほうでカードを押すと、シートのページは�
 test("シートのページを下まで読んでからメニューで別のシートへ移ると、先頭から表示される", async ({
   page,
 }) => {
-  await page.goto("/cheatsheets/html");
+  await openSheet(page, "/cheatsheets/html");
   await page.evaluate(() => window.scrollTo({ top: 3000, behavior: "instant" }));
   await expect.poll(() => scrollY(page)).toBeGreaterThan(1000);
 
@@ -36,7 +37,7 @@ test("シートのページを下まで読んでからメニューで別のシ�
 });
 
 test("目次のアンカーで同じページの中を移るときは、先頭へ戻さない", async ({ page }) => {
-  await page.goto("/cheatsheets/html");
+  await openSheet(page, "/cheatsheets/html");
   await page.getByRole("complementary").locator('a[href^="#"]').nth(3).click();
   await expect(page).toHaveURL(/#/);
   await expect.poll(() => scrollY(page)).toBeGreaterThan(0);

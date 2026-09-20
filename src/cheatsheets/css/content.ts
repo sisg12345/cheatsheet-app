@@ -17,22 +17,13 @@
  *   MDN の互換性データで確認済み（2026-09-19）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const cssCheatSheet: CheatSheet = {
+export const cssContent: CheatSheetContent = {
   id: "css-reference",
-  slug: "css",
-  title: "CSS チートシート",
-  name: "CSS",
-  description:
-    "セレクターとカスケード、ボックスモデル、Flexbox・Grid、配置、文字と色、レスポンシブ、アニメーション、:has() や @layer などの新しい機能までをまとめたCSSリファレンス。",
-  eyebrow: "Style sheet language",
-  // CSS の公式ロゴの色（rebeccapurple）。そのままではダークの背景で暗すぎて読みにくいので、
-  // ダークでは明るい紫にする。
-  accent: "light-dark(#663399, #9d6fe0)",
-  keywords: ["css", "スタイル", "スタイルシート", "stylesheet", "レイアウト", "デザイン"],
   updatedAt: "2026-09-20",
   sources: [
     { label: "MDN CSS", url: "https://developer.mozilla.org/ja/docs/Web/CSS" },

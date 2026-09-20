@@ -16,20 +16,13 @@
  *   note に書く。バージョンに依存する記述は公式ブログと GitHub のリリースで確認済み（2026-09-18）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const vueCheatSheet: CheatSheet = {
+export const vueContent: CheatSheetContent = {
   id: "vue-reference",
-  slug: "vue",
-  title: "Vue.js チートシート",
-  name: "Vue.js",
-  description:
-    "テンプレート構文、ディレクティブ、ref と reactive、computed と watch、props と emit、スロットまでをまとめたVue 3リファレンス。",
-  eyebrow: "UI framework",
-  accent: "#42b883",
-  keywords: ["vue", "vue.js", "vue3", "composition api", "script setup", "リアクティブ"],
   updatedAt: "2026-09-18",
   sources: [
     { label: "Vue.js ガイド", url: "https://ja.vuejs.org/guide/introduction.html" },

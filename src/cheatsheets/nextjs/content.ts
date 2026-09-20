@@ -15,21 +15,13 @@
  *   Cache Components など）は note に書く。バージョンに依存する記述は公式ブログで確認済み（2026-09-19）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const nextjsCheatSheet: CheatSheet = {
+export const nextjsContent: CheatSheetContent = {
   id: "nextjs-reference",
-  slug: "nextjs",
-  title: "Next.js チートシート",
-  name: "Next.js",
-  description:
-    "App Router のルーティング、Server Components、データ取得とキャッシュ、Server Actions、Proxy、設定までをまとめたNext.jsリファレンス。",
-  eyebrow: "React framework",
-  // ブランドが白黒なので、テーマの文字色（ライトは黒、ダークは白）をそのまま使う。
-  accent: "var(--color-ink)",
-  keywords: ["next", "nextjs", "app router", "server components", "ssr", "vercel"],
   updatedAt: "2026-09-19",
   sources: [
     { label: "Next.js ドキュメント（App Router）", url: "https://nextjs.org/docs/app" },

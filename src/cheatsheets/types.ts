@@ -34,8 +34,14 @@ export interface CheatSheetSection {
   items: CheatSheetItem[];
 }
 
-export interface CheatSheet {
-  id: string;
+/**
+ * シートの表書きと件数。各シートの summary.ts に書く。
+ *
+ * 一覧のカード・ヘッダーのメニュー・シートのページの見出しはこれだけで描けるので、最初に
+ * 読み込むバンドルにはこちらだけを入れ、セクションの中身（`CheatSheetContent`）はシートを
+ * 開いたときに読み込む。
+ */
+export interface CheatSheetSummary {
   /** URLに使う識別子。`/cheatsheets/<slug>` になる。 */
   slug: string;
   /** シートの呼び名（例: "HTMLタグ チートシート"）。画面には出さず、一覧の検索に使う。 */
@@ -55,25 +61,20 @@ export interface CheatSheet {
    */
   accent: string;
   keywords: string[];
+  /**
+   * content.ts の sections の数と、その items の合計。中身を読み込まずに一覧へ出すため手で持つ。
+   * 中身と食い違うと tests/unit/registry.test.ts が落ち、正しい値を示す。
+   */
+  sectionCount: number;
+  itemCount: number;
+}
+
+/** シートの中身。各シートの content.ts に書き、registry の loadCheatSheet が開いたときに読み込む。 */
+export interface CheatSheetContent {
+  id: string;
   /** 配列順がそのまま表示順・採番順になる。 */
   sections: CheatSheetSection[];
   sources: SourceLink[];
   /** YYYY-MM-DD。内容を直したら更新する。 */
   updatedAt: string;
-}
-
-/**
- * 一覧画面用の軽量サマリー。registry が `CheatSheet` から派生させる。
- * sections の中身は持たず件数だけ集計済みなので、一覧描画で全項目を走査せずに済む。
- */
-export interface CheatSheetSummary {
-  slug: string;
-  title: string;
-  name: string;
-  description: string;
-  eyebrow: string;
-  accent: string;
-  keywords: string[];
-  sectionCount: number;
-  itemCount: number;
 }

@@ -15,20 +15,13 @@
  *   バージョンに依存する記述は公式ブログとドキュメントで確認済み（2026-09-19）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const nuxtCheatSheet: CheatSheet = {
+export const nuxtContent: CheatSheetContent = {
   id: "nuxt-reference",
-  slug: "nuxt",
-  title: "Nuxt.js チートシート",
-  name: "Nuxt.js",
-  description:
-    "ディレクトリ構成、ルーティング、useFetch などのデータ取得、状態と設定、サーバー API、SEO、描画モードまでをまとめたNuxtリファレンス。",
-  eyebrow: "Vue framework",
-  accent: "#00dc82",
-  keywords: ["nuxt", "nuxt4", "nuxi", "nitro", "ssr", "usefetch"],
   updatedAt: "2026-09-19",
   sources: [
     { label: "Nuxt ドキュメント", url: "https://nuxt.com/docs/4.x/getting-started/introduction" },

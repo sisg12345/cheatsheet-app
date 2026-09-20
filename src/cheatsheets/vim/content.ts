@@ -14,20 +14,13 @@
  *   「／」「 / 」＝対になる操作の併記、{文字} ＝置き換える値
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const vimCheatSheet: CheatSheet = {
+export const vimContent: CheatSheetContent = {
   id: "vim-reference",
-  slug: "vim",
-  title: "Vim チートシート",
-  name: "Vim",
-  description:
-    "モード切替、移動、編集、検索・置換、保存、分割、マクロまでをまとめたVimリファレンス。",
-  eyebrow: "Text editor",
-  accent: "#019833",
-  keywords: ["vim", "vi", "エディタ", "モード", "置換", "マクロ"],
   updatedAt: "2026-09-16",
   sources: [
     {

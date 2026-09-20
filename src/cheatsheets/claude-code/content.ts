@@ -15,20 +15,13 @@
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容は公式ドキュメント（2026-09-06確認）に基づく。Claude Code は更新が速いので、
  *   手元の claude --help と食い違ったら公式ドキュメントに合わせて直し、updatedAt も更新する
+ * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
-import type { CheatSheet } from "../types";
+import type { CheatSheetContent } from "../types";
 
-export const claudeCodeCheatSheet: CheatSheet = {
+export const claudeCodeContent: CheatSheetContent = {
   id: "claude-code-reference",
-  slug: "claude-code",
-  title: "Claude Code チートシート",
-  name: "Claude Code",
-  description:
-    "起動・セッション操作、CLAUDE.md、権限、MCP、Skills・Subagents、Hooks、自動化までをまとめたClaude Codeリファレンス。",
-  eyebrow: "AI coding agent",
-  accent: "#d97757",
-  keywords: ["claude", "claude code", "cc", "ai", "エージェント", "cli", "mcp"],
   updatedAt: "2026-09-16",
   sources: [
     { label: "Claude Code公式ドキュメント", url: "https://code.claude.com/docs/en/overview" },
