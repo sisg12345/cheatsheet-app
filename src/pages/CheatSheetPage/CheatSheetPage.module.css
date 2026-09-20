@@ -118,13 +118,12 @@
   color: var(--color-muted);
 }
 
-/* 更新日、対象の版、出典リンク。3つ並ぶので、出典のリンクが増えて入りきらない幅では
-   折り返す（出典はリンクが1〜3本あり、いちばん幅が変わるので右端に置いている）。 */
+/* 更新日、対象の版、出典リンク。3つの並びはどのシートでも同じにしたいので、ここでは折り返さない。
+   入りきらないときは、いちばん幅の変わる出典（リンクが1〜3本）が自分の中で折り返す。 */
 .footer {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1.5rem var(--space-block);
+  gap: var(--space-block);
   padding: var(--space-block) var(--page-padding-x);
   border-top: 1px solid var(--color-line);
   color: var(--color-muted);
@@ -135,6 +134,12 @@
   gap: 1rem;
   align-items: center;
   flex-wrap: wrap;
+}
+
+/* 更新日と対象の版は縮めない。縮むとラベルと値が上下に分かれ、出典のリンクが多いシートだけ
+   ほかと違う見た目になる。入りきらないときは、最後の出典だけが自分の中で折り返す。 */
+.footer div:not(:last-child) {
+  flex-shrink: 0;
 }
 
 .footer span {
