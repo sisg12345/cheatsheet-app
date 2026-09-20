@@ -51,6 +51,7 @@ export interface CheatSheet {
   /**
    * シート固有の色。CSS変数 `--sheet-accent` に流し込まれる。CSS の色の値なら何でもよく、
    * 白黒のブランドでは `var(--color-ink)` のようにテーマのトークンを使うと、ライト／ダークで反転する。
+   * ダークの背景で暗すぎる色は `light-dark(ライトの色, ダークの色)` で切り替える。
    */
   accent: string;
   keywords: string[];

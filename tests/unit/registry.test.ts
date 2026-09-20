@@ -28,6 +28,7 @@ describe("cheatSheetRegistry", () => {
     "bash",
     "vite",
     "npm",
+    "css",
   ])("%s を slug で取得できる", (slug) => {
     expect(getCheatSheet(slug)?.slug).toBe(slug);
   });
