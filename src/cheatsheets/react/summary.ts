@@ -16,5 +16,5 @@ export const reactSummary: CheatSheetSummary = {
   accent: "#149eca",
   keywords: ["react", "jsx", "hooks", "フック", "コンポーネント", "usestate"],
   sectionCount: 13,
-  itemCount: 79,
+  itemCount: 81,
 };

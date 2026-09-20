@@ -16,5 +16,5 @@ export const nuxtSummary: CheatSheetSummary = {
   accent: "#00dc82",
   keywords: ["nuxt", "nuxt4", "nuxi", "nitro", "ssr", "usefetch"],
   sectionCount: 8,
-  itemCount: 53,
+  itemCount: 56,
 };

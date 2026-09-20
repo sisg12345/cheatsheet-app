@@ -22,7 +22,7 @@ import type { CheatSheetContent } from "../types";
 
 export const nuxtContent: CheatSheetContent = {
   id: "nuxt-reference",
-  updatedAt: "2026-09-19",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "Nuxt ドキュメント", url: "https://nuxt.com/docs/4.x/getting-started/introduction" },
     { label: "Nuxt 4 リリース記事", url: "https://nuxt.com/blog/v4" },
@@ -39,7 +39,7 @@ export const nuxtContent: CheatSheetContent = {
           "プロジェクトを作る",
           "npm create nuxt@latest my-app",
           "Nuxt のひな形を作る。",
-          "Node.js 22 以降が必要。",
+          "Node.js 22.19 以降か 24.11 以降が必要（Nuxt 4.5）。23 や 25 などの奇数バージョンは対象外。",
           "info",
           ["setup", "nuxi"],
         ),
@@ -292,6 +292,15 @@ export const nuxtContent: CheatSheetContent = {
           "warning",
         ),
         item(
+          "nuxt-config",
+          "設定ファイル",
+          'export default defineNuxtConfig({\n  compatibilityDate: "2026-07-18",\n  modules: ["@nuxt/image"],\n  runtimeConfig: { public: { apiBase: "/api" } },\n});',
+          "nuxt.config.ts に設定を書く。import は要らない。",
+          "compatibilityDate は、Nitro やモジュールの既定の振る舞いをその日時点のものに固定する。ひな形が入れるので、消さずに残す。",
+          "info",
+          ["nuxt.config", "設定", "compatibilityDate"],
+        ),
+        item(
           "runtime-config",
           "実行時の設定",
           'runtimeConfig: { apiSecret: "", public: { apiBase: "/api" } }',
@@ -367,6 +376,24 @@ export const nuxtContent: CheatSheetContent = {
           "エラーを返す",
           'throw createError({ statusCode: 404, statusMessage: "Not Found" });',
           "ステータスコード付きのエラーを返す。",
+        ),
+        item(
+          "server-middleware",
+          "サーバーミドルウェア",
+          "// server/middleware/log.ts\nexport default defineEventHandler((event) => {\n  console.log(event.method, event.path);\n});",
+          "server/middleware に置くと、すべてのリクエストで先に実行される。",
+          "app/middleware のルートミドルウェア（ページの移動時に動く）とは別物。ここで値を返すとレスポンスになってしまうので、認証の確認などは何も返さずに進める。",
+          "warning",
+          ["middleware", "nitro", "サーバー"],
+        ),
+        item(
+          "use-request-headers",
+          "リクエストのヘッダーを引き継ぐ",
+          'const headers = useRequestHeaders(["cookie"]);\nconst { data } = await useFetch("/api/me", { headers });',
+          "SSR のとき、ブラウザから届いた cookie などを内部の API 呼び出しへ引き継ぐ。",
+          "サーバー側の fetch にはブラウザの cookie が自動では付かないため、これが無いとログイン済みでも未ログイン扱いになる。useRequestFetch() でも同じことができる。",
+          "warning",
+          ["cookie", "SSR", "認証"],
         ),
       ],
     },

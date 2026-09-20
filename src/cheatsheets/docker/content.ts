@@ -25,7 +25,7 @@ import type { CheatSheetContent } from "../types";
 
 export const dockerContent: CheatSheetContent = {
   id: "docker-reference",
-  updatedAt: "2026-09-16",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "Docker CLI リファレンス", url: "https://docs.docker.com/reference/cli/docker/" },
     { label: "Dockerfile リファレンス", url: "https://docs.docker.com/reference/dockerfile/" },
@@ -699,6 +699,17 @@ volumes:
           "Dockerfile やソースを変更したときに使う。",
         ),
         item(
+          "compose-depends-healthy",
+          "依存先が受付可能になるまで待つ",
+          `depends_on:
+  db:
+    condition: service_healthy`,
+          "依存するサービスのヘルスチェックが healthy になってから起動する。",
+          "素の depends_on はコンテナが起動しただけで次へ進むため、DB がまだ接続を受け付けず、アプリが起動直後に落ちる。待たせる側（db）に HEALTHCHECK が要る。docker compose up --wait を使うと、コマンド自体も healthy になるまで戻らない。",
+          "info",
+          ["depends_on", "healthcheck", "起動順"],
+        ),
+        item(
           "compose-down",
           "停止して片付け",
           "docker compose down",
@@ -837,6 +848,15 @@ volumes:
           "docker builder prune",
           "ビルドキャッシュを削除してディスクを空ける。",
           "次のビルドはキャッシュが無いぶん時間がかかる。",
+        ),
+        item(
+          "log-rotation",
+          "ログの肥大を防ぐ",
+          "docker run --log-opt max-size=10m --log-opt max-file=3 app",
+          "既定の json-file ドライバーのログを、大きさと世代数で回す。",
+          "既定では上限が無く、長く動かすコンテナのログがディスクを埋める。docker system df には出てこないので気付きにくい。全体に効かせるなら daemon.json の log-opts、Compose なら services 配下の logging に書く。",
+          "warning",
+          ["ログ", "ディスク", "log-opt"],
         ),
         item(
           "system-prune",

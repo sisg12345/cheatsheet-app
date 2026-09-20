@@ -13,8 +13,8 @@
  * - コマンドを持たない実践項目は syntax を undefined にする（コード欄は — になる）
  * - 複数行の設定例は syntax にそのまま書く。CodeBlock が改行を保ったまま表示・コピーする
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
- * - 内容は公式ドキュメント（2026-09-06確認）に基づく。Claude Code は更新が速いので、
- *   手元の claude --help と食い違ったら公式ドキュメントに合わせて直し、updatedAt も更新する
+ * - 内容は公式ドキュメントと手元の claude --help（2026-09-20確認）に基づく。Claude Code は
+ *   更新が速いので、食い違いを見つけたら claude --help の実物に合わせて直し、updatedAt も更新する
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
  */
 import { item } from "../helpers";
@@ -22,7 +22,7 @@ import type { CheatSheetContent } from "../types";
 
 export const claudeCodeContent: CheatSheetContent = {
   id: "claude-code-reference",
-  updatedAt: "2026-09-16",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "Claude Code公式ドキュメント", url: "https://code.claude.com/docs/en/overview" },
   ],
@@ -158,6 +158,15 @@ export const claudeCodeContent: CheatSheetContent = {
           "claude --add-dir ../shared",
           "追加の作業ディレクトリへアクセスする。",
         ),
+        item(
+          "background-session",
+          "裏で走らせる",
+          'claude --bg "リファクタして"\nclaude agents\nclaude attach <id>',
+          "セッションを背景で開始し、すぐ手元に戻る。一覧・再接続・ログの確認はあとから行う。",
+          "--bg が表示する短い id を、attach・logs・stop・rm に渡す。長い処理を待たずに別の作業へ移れる。",
+          "info",
+          ["background", "並行", "agents"],
+        ),
       ],
     },
     // 起動時に付けるフラグ。そのセッションだけに効く。
@@ -170,14 +179,16 @@ export const claudeCodeContent: CheatSheetContent = {
         item(
           "effort-flag",
           "思考量指定",
-          "--effort low|medium|high|max",
+          "--effort low|medium|high|xhigh|max",
           "対応モデルで推論努力を調整する。",
+          "セッション中は /effort でも切り替えられる。",
         ),
         item(
           "permission-mode-flag",
           "権限モード",
           "--permission-mode plan",
           "まず読み取りと計画に限定する。",
+          "ほかに acceptEdits・auto・manual・dontAsk・bypassPermissions が選べる。",
         ),
         item(
           "allowed-tools-flag",
@@ -214,6 +225,24 @@ export const claudeCodeContent: CheatSheetContent = {
           "-p 実行のAPI費用を制限する。",
         ),
         item("verbose-debug-flag", "詳細ログ", "--verbose / --debug", "調査時のみ有効化する。"),
+        item(
+          "worktree-flag",
+          "専用の作業ツリーで始める",
+          "claude -w <name>",
+          "このセッション用の git worktree を作り、その中で作業する。",
+          "元のチェックアウトを触らずに並行して進められる。--tmux を足すと、その worktree 用の tmux セッションも作る。",
+          "info",
+          ["worktree", "並行作業"],
+        ),
+        item(
+          "skip-permissions-flag",
+          "確認をすべて飛ばす",
+          "claude --dangerously-skip-permissions",
+          "すべての権限確認を省いて実行する。",
+          "確認なしにファイルの削除やコマンドの実行まで進む。インターネットに出られないサンドボックス以外では使わない。CI で使うなら --allowedTools で操作を絞る。",
+          "danger",
+          ["bypass", "権限", "yolo"],
+        ),
       ],
     },
     // セッション中に入力するスラッシュコマンド。label は用途、description は使いどころ。
@@ -767,6 +796,15 @@ export const claudeCodeContent: CheatSheetContent = {
           "設定が効かない",
           "/status",
           "設定元、優先順位、JSONのエラーを確認する。",
+        ),
+        item(
+          "safe-mode",
+          "設定を疑う",
+          "claude --safe-mode",
+          "CLAUDE.md・Skill・Plugin・Hook・MCP などの追加設定をすべて無効にして起動する。",
+          "これで直るなら、原因は自分の設定側。認証・モデル・組み込みツール・権限は通常どおり動く。",
+          "info",
+          ["safe mode", "切り分け"],
         ),
         item(
           "trouble-mcp",

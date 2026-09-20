@@ -16,5 +16,5 @@ export const dockerSummary: CheatSheetSummary = {
   accent: "#2496ed",
   keywords: ["docker", "コンテナ", "container", "dockerfile", "compose", "イメージ"],
   sectionCount: 12,
-  itemCount: 123,
+  itemCount: 125,
 };

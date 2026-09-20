@@ -10,9 +10,9 @@
  * - status は normal / info / warning / danger。省略時は normal
  * - ブラウザに公開される値に秘密情報を入れる書き方には warning、推奨の書き方には info を付ける。
  *   バッジの色が唯一の警告表示になるため、付け忘れると危険が伝わらない
- * - 対象は Vite 8（8.1、2026-06）。バンドラーが Rolldown に変わり、build.rollupOptions は
+ * - 対象は Vite 8（8.3、2026-09）。バンドラーが Rolldown に変わり、build.rollupOptions は
  *   build.rolldownOptions に名前が変わった。バージョンに依存する記述は公式ブログと
- *   移行ガイドで確認済み（2026-09-19）
+ *   移行ガイド、および vite の型定義で確認済み（2026-09-20）
  * - keywords は検索用の別名。全角/半角・大文字小文字は normalizeSearch が吸収する
  * - 内容を直したら updatedAt も更新する
  * - セクション・項目を増減したら summary.ts の件数も直す（tests/unit/registry.test.ts が突き合わせる）
@@ -22,7 +22,7 @@ import type { CheatSheetContent } from "../types";
 
 export const viteContent: CheatSheetContent = {
   id: "vite-reference",
-  updatedAt: "2026-09-19",
+  updatedAt: "2026-09-20",
   sources: [
     { label: "Vite ガイド", url: "https://vite.dev/guide/" },
     { label: "Vite 設定リファレンス", url: "https://vite.dev/config/" },
@@ -136,6 +136,15 @@ export const viteContent: CheatSheetContent = {
           "コマンドやモードで切り替え",
           'export default defineConfig(({ command, mode }) => ({\n  base: mode === "production" ? "/app/" : "/",\n}));',
           "関数にすると、serve / build のどちらか、どのモードかで設定を変えられる。",
+        ),
+        item(
+          "define",
+          "値を埋め込む",
+          "define: { __APP_VERSION__: JSON.stringify(pkg.version) }",
+          "ビルド時に、コード中の名前を決まった値へ置き換える。",
+          "置き換えは文字列としてそのまま差し込まれるので、文字列を入れるときは JSON.stringify() で包む。import.meta.env と違い、VITE_ の接頭辞が要らないぶん、秘密情報を入れないよう注意する。",
+          "warning",
+          ["define", "定数", "バージョン"],
         ),
       ],
     },
@@ -281,6 +290,15 @@ export const viteContent: CheatSheetContent = {
           'build: { lib: { entry: "src/index.ts", name: "MyLib", fileName: "my-lib" } }',
           "アプリではなく、npm に公開するライブラリとして出力する。",
           "React などの依存関係は、同梱しないよう外部として指定する。",
+        ),
+        item(
+          "build-manifest",
+          "出力の対応表を書き出す",
+          "build: { manifest: true }",
+          "元のファイル名と、ハッシュの付いた出力ファイル名の対応表（.vite/manifest.json）を出力する。",
+          "Rails や Laravel など、HTML をサーバー側で組み立てる構成で、読み込む JS と CSS の名前を決めるのに使う。",
+          "info",
+          ["manifest", "バックエンド", "統合"],
         ),
       ],
     },

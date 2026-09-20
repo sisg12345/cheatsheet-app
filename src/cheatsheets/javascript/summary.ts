@@ -16,5 +16,5 @@ export const javascriptSummary: CheatSheetSummary = {
   accent: "#b58900",
   keywords: ["javascript", "js", "ecmascript", "es6", "dom", "非同期", "fetch"],
   sectionCount: 15,
-  itemCount: 151,
+  itemCount: 156,
 };

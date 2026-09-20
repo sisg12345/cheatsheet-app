@@ -16,5 +16,5 @@ export const vimSummary: CheatSheetSummary = {
   accent: "#019833",
   keywords: ["vim", "vi", "エディタ", "モード", "置換", "マクロ"],
   sectionCount: 14,
-  itemCount: 126,
+  itemCount: 129,
 };

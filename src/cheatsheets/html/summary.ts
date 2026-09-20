@@ -16,5 +16,5 @@ export const htmlSummary: CheatSheetSummary = {
   accent: "#6f4cff",
   keywords: ["html", "タグ", "マークアップ", "フォーム", "アクセシビリティ"],
   sectionCount: 10,
-  itemCount: 101,
+  itemCount: 109,
 };

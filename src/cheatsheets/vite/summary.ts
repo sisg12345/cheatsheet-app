@@ -16,5 +16,5 @@ export const viteSummary: CheatSheetSummary = {
   accent: "#bd34fe",
   keywords: ["vite", "vitejs", "rolldown", "bundler", "バンドラー", "hmr"],
   sectionCount: 6,
-  itemCount: 38,
+  itemCount: 40,
 };

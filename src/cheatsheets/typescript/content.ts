@@ -23,7 +23,7 @@ import type { CheatSheetContent } from "../types";
 
 export const typescriptContent: CheatSheetContent = {
   id: "typescript-reference",
-  updatedAt: "2026-09-18",
+  updatedAt: "2026-09-20",
   sources: [
     {
       label: "TypeScript ハンドブック",
@@ -559,6 +559,7 @@ export const typescriptContent: CheatSheetContent = {
           "キーのユニオン",
           "type UserKey = keyof User;",
           "オブジェクト型のキーを、ユニオン型で取り出す。",
+          "Object.keys() の戻り値は keyof T ではなく string[]。型どおりでないキーが実行時に入りうるため、必要なら as で絞るか、キーの一覧を as const で別に持つ。",
         ),
         item(
           "typeof-type",
@@ -857,7 +858,7 @@ export const typescriptContent: CheatSheetContent = {
           "バンドラー向けの解決方法",
           '"module": "esnext", "moduleResolution": "bundler"',
           "Vite などのバンドラーで読み込む前提で、import を解決する。",
-          "node / node10 と classic は 7.0 で使えなくなった。",
+          "module は 6.0 から既定が esnext。moduleResolution の node / node10 と classic は 6.0 で非推奨になり、7.0 で使えなくなった。",
         ),
         item(
           "module-nodenext",
@@ -908,6 +909,22 @@ export const typescriptContent: CheatSheetContent = {
           '"extends": "./tsconfig.base.json"',
           "共通の設定を、別の tsconfig から引き継ぐ。",
           "最終的な設定は tsc --showConfig で確かめられる。",
+        ),
+        item(
+          "lib",
+          "使える組み込みの型",
+          '"lib": ["es2023", "dom", "dom.iterable"]',
+          "document や fetch など、実行環境が持つ API の型定義を指定する。",
+          "書かないと target から決まる。ブラウザ向けには dom が要り、サーバーだけで動くコードから外すと、window を誤って使ったときに型エラーで気付ける。",
+        ),
+        item(
+          "ignore-deprecations",
+          "非推奨の警告を先送りする",
+          '"ignoreDeprecations": "6.0"',
+          "6.0 で非推奨になった設定を、警告なしで使い続ける。",
+          "7.0 では消えて使えなくなるので、上げる前に直す。6.0 へ上げる作業と、設定を直す作業を分けたいときの一時しのぎ。",
+          "warning",
+          ["移行", "deprecated", "マイグレーション"],
         ),
       ],
     },

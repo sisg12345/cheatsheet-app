@@ -16,5 +16,5 @@ export const claudeCodeSummary: CheatSheetSummary = {
   accent: "#d97757",
   keywords: ["claude", "claude code", "cc", "ai", "エージェント", "cli", "mcp"],
   sectionCount: 14,
-  itemCount: 114,
+  itemCount: 118,
 };
