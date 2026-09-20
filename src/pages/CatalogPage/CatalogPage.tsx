@@ -117,7 +117,7 @@ export function CatalogPage({ sheets }: CatalogPageProps) {
                 <span>{formatIndex(sheets.length)}+</span>
                 <div>
                   <strong>MORE SOON</strong>
-                  <p>CSS などを追加予定です。</p>
+                  <p>ほかのシートも順次追加予定です。</p>
                 </div>
               </article>
             ) : null}

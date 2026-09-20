@@ -1,10 +1,11 @@
 /**
  * シートを追加するときは `sheets` 配列に足す。ルーティングも一覧カードもヘッダーのメニューも
  * 以下の派生データから組み立てられるが、シート名をべた書きしている箇所
- * （CatalogPage.tsx の予告カードの文言、index.html の meta description）は手で直す。
+ * （index.html の meta description と README）は手で直す。
  */
 import { bashCheatSheet } from "./bash/content";
 import { claudeCodeCheatSheet } from "./claude-code/content";
+import { cssCheatSheet } from "./css/content";
 import { dockerCheatSheet } from "./docker/content";
 import { gitCheatSheet } from "./git/content";
 import { htmlCheatSheet } from "./html/content";
@@ -37,6 +38,7 @@ const sheets = [
   bashCheatSheet,
   viteCheatSheet,
   npmCheatSheet,
+  cssCheatSheet,
 ] as const;
 
 export const cheatSheetRegistry: Readonly<Record<string, CheatSheet>> = Object.fromEntries(
